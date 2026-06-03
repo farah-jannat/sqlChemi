@@ -5,7 +5,7 @@ const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey });
 
 interface GenerationParams {
-  company: string;
+  company?: string;
   theme: string;
   difficulty: "Easy" | "Medium" | "Hard";
   count: number;
