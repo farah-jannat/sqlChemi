@@ -127,34 +127,32 @@
   html {
     @apply font-sans;
   }
-  .cute-scrollbar::-webkit-scrollbar {
+  .custom-scroll::-webkit-scrollbar {
     width: 8px;
   }
 
-  /* 2. The background track (light gray container) */
-  .cute-scrollbar::-webkit-scrollbar-track {
-    background-color: #f1f5f9; /* Tailwind's slate-100 */
-    border-radius: 0 0 24px 0; /* Perfectly rounds the bottom-right corner of the card */
+  /* Track */
+  .custom-scroll::-webkit-scrollbar-track {
+    background: transparent;
   }
 
-  /* 3. The cute indigo thumb with a matching deep indigo border */
-  .cute-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #818cf8; /* Soft Indigo */
-  
-  /* 1. Use a dark background-clip so the color stays inside the borders */
-  background-clip: padding-box; 
-  
-  /* 2. Your actual visible side border */
-  border: 2px solid #4f46e5; 
-  
-  /* 3. Add large transparent top/bottom borders to "shrink" the height */
-  border-top-width: 12px;
-  border-bottom-width: 12px;
-  
-  border-radius: 100px;}
+  /* Handle */
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background: #4f46e5;
+    border-radius: 3px;
+  }
 
-  /* 4. Hover state for responsiveness */
-  .cute-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: #6366f1; /* Tailwind's indigo-500 */
+  /* .gray-scroll::-webkit-scrollbar-thumb {
+    background: #2f3137;
+    border-radius: 5px;
+  } */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
