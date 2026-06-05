@@ -127,32 +127,31 @@
   html {
     @apply font-sans;
   }
+
   .custom-scroll::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
   }
 
-  /* Track */
   .custom-scroll::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  /* Handle */
   .custom-scroll::-webkit-scrollbar-thumb {
-    background: #4f46e5;
-    border-radius: 3px;
+    /* background: #4f46e5; */
+    background: #475569;
+    border-radius: 4px;
   }
 
-  /* .gray-scroll::-webkit-scrollbar-thumb {
+  .gray-scroll::-webkit-scrollbar-thumb {
     background: #2f3137;
     border-radius: 5px;
-  } */
+  }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
-  /* Hide scrollbar for IE, Edge, and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

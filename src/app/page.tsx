@@ -1,11 +1,9 @@
-// ----- here new one ---------
-
 "use client";
 
 import { useState, useEffect } from "react";
 import { generateCustomQuiz } from "@/services/gemini";
-import { seedQuestions } from "@/datas";
 import { SQLQuestion } from "@/types/quiz";
+import { transpileToPostgres } from "@/utils/sqlTranslator";
 
 // Import shadcn select primitives
 import {
@@ -16,115 +14,170 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function DynamicSQLQuiz() {
-  // Simple 2-Theme Toggle State ('dark' = original cute charcoal-slate, 'light' = clean light)
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+declare global {
+  interface Window {
+    SQL: any;
+  }
+}
 
-  // Form Configuration States
+export default function DynamicSQLQuiz() {
+  // 1. Single State Tracking for the Engine
+  const [pgEngine, setPgEngine] = useState<any>(null);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+
+  // 2. Form Configuration States
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [selectedTag, setSelectedTag] = useState<string>("ALL_TAGS");
   const [difficulty, setDifficulty] = useState<"Easy" | "Medium" | "Hard">(
     "Easy",
   );
-  const [numQuestions, setNumQuestions] = useState<number>(1);
+  const [numQuestions, setNumQuestions] = useState<number>(2);
   const [availableTags, setAvailableTags] = useState<string[]>([]);
 
-  // Quiz Engine States
+  // 3. Quiz Engine States
+  const [allQuestionsBank, setAllQuestionsBank] = useState<SQLQuestion[]>([]);
   const [questions, setQuestions] = useState<SQLQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [userQuery, setUserQuery] = useState<string>("");
   const [showHint, setShowHint] = useState<boolean>(false);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<{
-    status: "correct" | "incorrect" | null;
+    status: "correct" | "incorrect" | "error" | null;
     message: string;
   }>({ status: null, message: "" });
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
-  // NAVIGATION STATES
+  // button animatin state
+  const [animationKey, setAnimationKey] = useState(0);
+
+  // 4. Navigation States
   const [hasHydrated, setHasHydrated] = useState<boolean>(false);
   const [isViewingSetup, setIsViewingSetup] = useState<boolean>(true);
 
-  // Hydrate exact initial data profiles
-  // Hydrate exact initial data profiles
+  const activeQuestion = questions[currentIndex] || null;
+
+  // 5. Clean Client-Side PostgreSQL Loading Pipeline
+  // 6. Fetch Local Questions Bank and Aggregate Tags
+
+  // ==========================================
+  // ✅ 1st useEffect: INITIALIZE THE DATABASE (REPLACE WITH THIS)
+  // ==========================================
   useEffect(() => {
-    // 1. Core tag aggregation logic
-    const tagsSet = new Set<string>();
-    seedQuestions.forEach((q) => {
-      if (q.tags && Array.isArray(q.tags)) {
-        q.tags.forEach((tag) => tagsSet.add(tag));
+    let isMounted = true;
+    if (typeof window === "undefined") return;
+
+    const loadDatabaseEngine = async () => {
+      try {
+        setIsGenerating(true);
+
+        // Dynamically load the client-side PGlite instance inside the browser window
+        const { PGlite } = await import("@electric-sql/pglite");
+        const db = await PGlite.create();
+
+        if (isMounted) {
+          setPgEngine(db); // This fills pgEngine so handleCheckAnswer can run!
+          console.log("象 PGlite Engine loaded successfully!");
+        }
+      } catch (error) {
+        console.error("Failed to initialize browser PostgreSQL engine:", error);
+      } finally {
+        if (isMounted) setIsGenerating(false);
       }
-    });
-    setAvailableTags(Array.from(tagsSet).sort());
+    };
 
-    // 2. Fetch existing local cache keys
-    const savedQuestions = localStorage.getItem("sql_quiz_questions");
-    const savedIndex = localStorage.getItem("sql_quiz_index");
-    const savedQuery = localStorage.getItem("sql_quiz_user_query");
-    const savedView = localStorage.getItem("sql_quiz_viewing_setup");
+    loadDatabaseEngine();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // ==========================================
+  // 🔍 2nd useEffect: FETCH QUESTIONS JSON (KEEP THIS AS IS)
+  // ==========================================
+  useEffect(() => {
+    let isMounted = true;
+
+    // Temporary: Clear old broken cache states if they exist
+    localStorage.removeItem("sql_quiz_questions");
+    localStorage.removeItem("sql_quiz_index");
+
+    // Sync theme immediately on mount
     const savedTheme = localStorage.getItem("sql_quiz_theme");
-
     if (savedTheme && ["dark", "light"].includes(savedTheme)) {
       setTheme(savedTheme as "dark" | "light");
     }
 
-    // 3. Fallback conditional branching
-    if (savedQuestions) {
-      try {
-        const parsed = JSON.parse(savedQuestions);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setQuestions(parsed);
-          if (savedIndex) setCurrentIndex(Number(savedIndex));
-          if (savedQuery) setUserQuery(savedQuery);
-          if (savedView) {
-            setIsViewingSetup(savedView === "true");
-          } else {
+    fetch("/sql_questions.json")
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
+      .then((data: SQLQuestion[]) => {
+        if (!isMounted) return;
+
+        setAllQuestionsBank(data);
+
+        // Core tag aggregation logic
+        const tagsSet = new Set<string>();
+        data.forEach((q) => {
+          if (q.tags && Array.isArray(q.tags)) {
+            q.tags.forEach((tag) => tagsSet.add(tag));
+          }
+        });
+        setAvailableTags(Array.from(tagsSet).sort());
+
+        // Fetch existing local cache keys
+        const savedQuestions = localStorage.getItem("sql_quiz_questions");
+        const savedIndex = localStorage.getItem("sql_quiz_index");
+        const savedQuery = localStorage.getItem("sql_quiz_user_query");
+        const savedView = localStorage.getItem("sql_quiz_viewing_setup");
+
+        if (savedQuestions) {
+          try {
+            const parsed = JSON.parse(savedQuestions);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setQuestions(parsed);
+              if (savedIndex) setCurrentIndex(Number(savedIndex));
+              if (savedQuery) setUserQuery(savedQuery);
+              if (savedView) {
+                setIsViewingSetup(savedView === "true");
+              } else {
+                setIsViewingSetup(false);
+              }
+            }
+          } catch (e) {
+            console.error("Failed to restore quiz state", e);
+          }
+        } else {
+          // RANDOM AUTOLOAD LOGIC FOR NEW USERS:
+          const easyQuestions = data.filter((q) => q.difficulty === "Easy");
+          const shuffled = [...easyQuestions].sort(() => 0.5 - Math.random());
+          const defaultBatch = shuffled.slice(0, 1);
+
+          if (defaultBatch.length > 0) {
+            setQuestions(defaultBatch);
+            setCurrentIndex(0);
+            setUserQuery("");
             setIsViewingSetup(false);
           }
         }
-      } catch (e) {
-        console.error("Failed to restore quiz state", e);
-      }
-    } else {
-      // 🎲 4. RANDOM AUTOLOAD LOGIC FOR NEW USERS:
-      // Shallow copy seed questions, shuffle them up, and pull out a clean batch of 3
-      const easyQuestions = seedQuestions.filter(
-        (q) => q.difficulty === "Easy",
-      );
-      const shuffled = [...easyQuestions].sort(() => 0.5 - Math.random());
-      const defaultBatch = shuffled.slice(0, 1);
+        setHasHydrated(true);
+      })
+      .catch((err) => {
+        console.error("🚨 CRITICAL FETCH ERROR:", err);
+        if (isMounted) setHasHydrated(true);
+      });
 
-      if (defaultBatch.length > 0) {
-        setQuestions(defaultBatch);
-        setCurrentIndex(0);
-        setUserQuery("");
-        setIsViewingSetup(false); // Bypasses dashboard setup so they see a playground screen instantly
-      }
-    }
-
-    setHasHydrated(true);
+    return () => {
+      isMounted = false;
+    };
   }, []);
-
-  useEffect(() => {
-    if (!hasHydrated) return;
-    localStorage.setItem("sql_quiz_viewing_setup", isViewingSetup.toString());
-    localStorage.setItem("sql_quiz_theme", theme);
-
-    if (questions && questions.length > 0) {
-      localStorage.setItem("sql_quiz_questions", JSON.stringify(questions));
-      localStorage.setItem("sql_quiz_index", currentIndex.toString());
-      localStorage.setItem("sql_quiz_user_query", userQuery);
-    } else {
-      localStorage.removeItem("sql_quiz_questions");
-      localStorage.removeItem("sql_quiz_index");
-      localStorage.removeItem("sql_quiz_user_query");
-    }
-  }, [questions, currentIndex, userQuery, isViewingSetup, theme, hasHydrated]);
 
   const handleLoadStaticQuiz = (e: React.FormEvent) => {
     e.preventDefault();
     if (numQuestions <= 0) return;
 
-    const localBank = seedQuestions.filter((question) => {
+    // 1. Filter the entire local database bank using your updated select dropdown values
+    const localBank = allQuestionsBank.filter((question) => {
       const matchesDifficulty = question.difficulty === difficulty;
       const actualTagFilter = selectedTag === "ALL_TAGS" ? "" : selectedTag;
       const matchesTag = actualTagFilter
@@ -143,9 +196,13 @@ export default function DynamicSQLQuiz() {
       return;
     }
 
-    setQuestions(localBank.slice(0, numQuestions));
+    // 2. Shuffle or slice perfectly according to the newly chosen input length state
+    const freshlySliced = localBank.slice(0, numQuestions);
+
+    // 3. Clear slate setup execution environments
     setCurrentIndex(0);
     setUserQuery("");
+    setQuestions(freshlySliced); // This forces the new batch to write over the old one
     setShowHint(false);
     setShowAnswer(false);
     setFeedback({ status: null, message: "" });
@@ -187,48 +244,131 @@ export default function DynamicSQLQuiz() {
       setIsGenerating(false);
     }
   };
-
-  const handleCheckAnswer = () => {
+  const handleCheckAnswer = async () => {
+    setAnimationKey((prev) => prev + 1);
     const activeQ = questions[currentIndex];
-    if (!activeQ || !activeQ.correctQuery) return;
+    if (!activeQ || !pgEngine) return;
 
-    const cleanUser = userQuery
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase()
-      .replace(/;$/, "");
-    const cleanCorrect = activeQ.correctQuery
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase()
-      .replace(/;$/, "");
+    // 🧠 THE FIX: Check the metadata flag directly!
+    // If enforceOrder is explicitly false, STRICT_LEETCODE_MODE becomes false.
+    // If enforceOrder is missing or true, default it to true.
+    const STRICT_LEETCODE_MODE = activeQ.enforceOrder !== false;
 
-    if (cleanUser === cleanCorrect) {
+    // 1. Process the user query through your translator layer
+    let translatedQuery = transpileToPostgres(userQuery);
+
+    // Fallback cleanup pass for explicit dialect items
+    translatedQuery = translatedQuery
+      .replace(/`([^`]+)`/g, '"$1"')
+      .replace(/LIMIT\s+(\d+)\s*,\s*(\d+)/i, "LIMIT $2 OFFSET $1");
+
+    try {
+      // ========================================================
+      // 🔥 RESET PHASE: Nuke the entire public schema to reset PGlite
+      // ========================================================
+      if (activeQ.setupSQL) {
+        await pgEngine.exec(`
+        DROP SCHEMA public CASCADE;
+        CREATE SCHEMA public;
+        GRANT ALL ON SCHEMA public TO public;
+      `);
+
+        // Now run the seed script on a truly blank slate database
+        await pgEngine.exec(activeQ.setupSQL);
+      }
+
+      // 2. Execute both the solution query and the user's query inside PGlite
+      const goldenResult = await pgEngine.query(activeQ.correctQuery);
+      const studentResult = await pgEngine.query(translatedQuery);
+
+      // ========================================================
+      // 📊 PHASE 3: DATA NORMALIZATION (NO SORTING YET)
+      // ========================================================
+      const normalizeDataset = (rows: any[]) => {
+        if (!rows || rows.length === 0) return [];
+
+        return rows.map((row) => {
+          const normalizedRow: any = {};
+          for (const key in row) {
+            const val = row[key];
+
+            // Standardize numeric precision variants
+            if (val !== null && val !== "" && !isNaN(Number(val))) {
+              normalizedRow[key] = Number(val);
+            } else if (typeof val === "string") {
+              normalizedRow[key] = val.trim();
+            } else {
+              normalizedRow[key] = val;
+            }
+          }
+          return normalizedRow;
+        });
+      };
+
+      // Clean data types and spacing for both results identically
+      const goldenCleaned = normalizeDataset(goldenResult.rows);
+      const studentCleaned = normalizeDataset(studentResult.rows);
+
+      // Helper sorting logic used for comparison or fallback hints
+      const sortFn = (a: any, b: any) =>
+        JSON.stringify(a).localeCompare(JSON.stringify(b));
+
+      let isMatch = false;
+
+      // ========================================================
+      // ⚔️ PHASE 4: CONDITIONAL EVALUATION MATCH ENGINE
+      // ========================================================
+      if (STRICT_LEETCODE_MODE) {
+        // 🚫 LEETCODE STYLE: Row order matters! Direct row-by-row string matching.
+        isMatch =
+          JSON.stringify(goldenCleaned) === JSON.stringify(studentCleaned);
+      } else {
+        // 🔍 LOGIC STYLE: Order independent. Sort datasets first before matching.
+        const goldenSorted = [...goldenCleaned].sort(sortFn);
+        const studentSorted = [...studentCleaned].sort(sortFn);
+        isMatch =
+          JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
+      }
+
+      // ========================================================
+      // 🎯 PHASE 5: SMART FEEDBACK DISPATCHER
+      // ========================================================
+      if (isMatch) {
+        setFeedback({
+          status: "correct",
+          message:
+            "🎉 🏆 Success! Your SQL script logic and row ordering line up perfectly! 🐾",
+        });
+      } else {
+        // Run a quick back-end check to see if their data is right, but just sorted wrong
+        const goldenSorted = [...goldenCleaned].sort(sortFn);
+        const studentSorted = [...studentCleaned].sort(sortFn);
+        const dataIsCorrectButOrderIsWrong =
+          JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
+
+        if (STRICT_LEETCODE_MODE && dataIsCorrectButOrderIsWrong) {
+          setFeedback({
+            status: "incorrect",
+            message:
+              "📐 Ordering Mismatch! Your data values are perfectly accurate, but the row sequence is wrong. Did you forget an 'ORDER BY' clause or use the wrong sorting direction?",
+          });
+        } else {
+          setFeedback({
+            status: "incorrect",
+            message:
+              "❌ Output Mismatch. Your query executed, but the resulting table rows do not match the target solution layout.",
+          });
+        }
+      }
+    } catch (error: any) {
       setFeedback({
-        status: "correct",
-        message: "✨ Amazing! Your SQL script logic lines up perfectly! 🐾",
-      });
-    } else {
-      setFeedback({
-        status: "incorrect",
-        message:
-          "❌ Code syntax mismatched. Check your execution conditions or filtering keys.",
+        status: "error",
+        message: `💻 Database Syntax Error: ${error.message || error}`,
       });
     }
   };
-
-  if (!hasHydrated) {
-    return (
-      <div className="min-h-screen bg-[#111318] flex items-center justify-center">
-        <div className="text-center space-y-3">
-          <div className="w-10 h-10 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-slate-400 font-medium text-sm tracking-wide">
-            Syncing local canvas engine...
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // --------------------------------------------------------
+  console.log("Current Active Question Data:", activeQuestion);
 
   const pageBg = {
     dark: "bg-gradient-to-br from-[#12141c] to-[#1a1d26] text-slate-200",
@@ -287,10 +427,10 @@ export default function DynamicSQLQuiz() {
     <main
       className={`min-h-screen p-4 md:p-8 selection:bg-indigo-500/30 transition-colors duration-300 ${pageBg}`}
     >
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6 md:space-y-4 lg:space-y-6">
         {/* TOP CONFIGURATION BOX */}
         <div
-          className={`border rounded-2xl p-3.5 shadow-xl transition-all  ${panelBg}`}
+          className={`border rounded-2xl p-3.5 shadow-xl transition-all   ${panelBg}`}
         >
           <form
             onSubmit={handleLoadStaticQuiz}
@@ -413,7 +553,6 @@ export default function DynamicSQLQuiz() {
                 title={`Switch to ${theme === "dark" ? "Light" : "Cute Dark"} Mode`}
               >
                 {theme === "dark" ? (
-                  // Elegant Modern Sun Icon
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -428,7 +567,6 @@ export default function DynamicSQLQuiz() {
                     />
                   </svg>
                 ) : (
-                  // Elegant Micro Moon Icon
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -474,10 +612,13 @@ export default function DynamicSQLQuiz() {
                   disabled={isGenerating}
                   className={`w-full sm:w-auto px-4 h-[38px] border rounded-xl font-medium text-xs tracking-wide shadow-sm hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 whitespace-nowrap cursor-pointer ${staticBtn}`}
                 >
-                  ✨{" "}
+                  {/* 🧹{" "}
                   {questions.length > 0
-                    ? "Reset Playground"
-                    : "Static Playroom"}
+                    ? "Reset "
+                    : "Static Playroom"} */}
+
+                  🧹{" "} Reset
+
                 </button>
 
                 <button
@@ -490,7 +631,7 @@ export default function DynamicSQLQuiz() {
                       : "bg-purple-600 text-white hover:bg-purple-500 disabled:bg-purple-800"
                   }`}
                 >
-                  {isGenerating ? "Synthesizing... 🐾" : "🤖 Build Gemini Quiz"}
+                  {isGenerating ? "Synthesizing... 🐾" : "🤖 Gemini Quiz"}
                 </button>
               </div>
             </div>
@@ -499,10 +640,11 @@ export default function DynamicSQLQuiz() {
 
         {/* Primary View Workspace Grid */}
         {questions.length > 0 && questions[currentIndex] && (
-          <div className="grid grid-cols-1  lg:grid-cols-12 gap-6 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6   md:gap-4 lg:gap-6 items-start">
             {/* LEFT AREA PANEL: SCENARIO & SCHEMA */}
             <section
-              className={`border h-[calc(100vh-10.5rem)] h-[100vh] overflow-y-auto custom-scroll p-5 rounded-3xl shadow-xl space-y-5 transition-all ${panelBg} lg:col-span-5`}
+              // className={`border h-[calc(100vh-10.5rem)] h-[100vh] overflow-y-auto custom-scroll p-5 rounded-3xl shadow-xl space-y-5 transition-all ${panelBg} lg:col-span-5`}
+              className={`${theme === "light" ? "light" : "dark"} border h-[calc(100vh-10.5rem)] overflow-y-auto custom-scroll p-5 rounded-3xl md:col-span-5 shadow-xl space-y-5 transition-all ${panelBg} `}
             >
               <div
                 className={`flex items-center justify-between border-b pb-3 ${theme === "light" ? "border-slate-200" : "border-slate-800/60"}`}
@@ -524,7 +666,7 @@ export default function DynamicSQLQuiz() {
                     className={`px-2.5 py-1 rounded-lg text-xs font-bold tracking-wide border ${
                       questions[currentIndex].difficulty === "Easy"
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-300"
-                        : questions[currentIndex].difficulty === "Medium" // Removed the double quotes here!
+                        : questions[currentIndex].difficulty === "Medium"
                           ? "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-300"
                           : "bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-300"
                     }`}
@@ -541,56 +683,68 @@ export default function DynamicSQLQuiz() {
                   EXERCISE {currentIndex + 1} OF {questions.length}
                 </span>
                 <h2 className={`text-lg font-bold leading-snug ${titleText}`}>
-                  {questions[currentIndex].title}
+                  {questions[currentIndex]?.title}
                 </h2>
                 <p
                   className={`text-sm p-4 rounded-2xl border leading-relaxed font-medium transition-all ${subPanelBg}`}
                 >
-                  {questions[currentIndex].scenario}
+                  {/* {questions[currentIndex]?.scenario ||  (questions[currentIndex] as any)?.description} */}
+                  {questions[currentIndex]?.scenario}
                 </p>
               </div>
 
               {/* Dynamic Relational Schema Panel */}
-              <div className="space-y-3">
-                <h3
-                  className={`text-xs font-bold uppercase tracking-widest ${theme === "light" ? "text-indigo-500/70" : "text-purple-300/40"}`}
-                >
-                  Target Relation Schemas
-                </h3>
+              {/* Dynamic Relational Schema Panel */}
+              <div className="space-y-4">
+                {(() => {
+                  const rawSchema = questions[currentIndex]?.tableSchema || "";
 
-                <div className="space-y-4">
-                  {(() => {
-                    const rawSchema = questions[currentIndex].tableSchema || "";
-                    let tableName = "Target Relations";
+                  // 1. Clean and split the schema into individual table definitions
+                  // Handles multi-table definitions separated by newlines or semicolons
+                  const tableDefinitions = rawSchema
+                    .split(/[\n;]+/)
+                    .map((t) => t.replace(/CREATE\s+TABLE\s+/i, "").trim())
+                    .filter(Boolean);
+
+                  // If there's no schema data available, show a fallback layout
+                  if (tableDefinitions.length === 0) {
+                    return (
+                      <div className="text-xs font-medium text-slate-500 italic p-2">
+                        No schema provided.
+                      </div>
+                    );
+                  }
+
+                  // 2. Loop through every individual table definition discovered
+                  return tableDefinitions.map((tableStr, tableIdx) => {
+                    let tableName = "Target Relation";
                     let columns: string[] = [];
 
-                    const match = rawSchema.match(
-                      /^([a-zA-Z_0-9]+)\s*\((.*)\)$/,
+                    // Match: table_name (col1 INT, col2 VARCHAR)
+                    const match = tableStr.match(
+                      /^([a-zA-Z_0-9]+)\s*\(([\s\S]*)\)$/,
                     );
+
                     if (match) {
                       tableName = match[1];
                       columns = match[2]
                         .split(/,\s*/)
                         .map((col) => col.trim())
                         .filter(Boolean);
-                    } else if (
-                      rawSchema.includes("\n") ||
-                      rawSchema.includes(",")
-                    ) {
-                      const cleanLines = rawSchema
-                        .split(/[\n,]+/)
-                        .map((l) => l.trim())
-                        .filter(Boolean);
-                      columns = cleanLines.filter(
-                        (line) => !line.endsWith("{") && !line.endsWith("("),
-                      );
                     } else {
-                      columns = [rawSchema];
+                      // Fallback fallback if the table structure lacks standard parens
+                      columns = [tableStr];
                     }
 
+                    // 3. Return a clean, independent card structure for each table
                     return (
                       <div
-                        className={`border rounded-2xl overflow-hidden transition-all ${theme === "light" ? "border-slate-200" : "border-slate-800"}`}
+                        key={tableIdx}
+                        className={`border rounded-2xl overflow-hidden transition-all ${
+                          theme === "light"
+                            ? "border-slate-200"
+                            : "border-slate-800"
+                        }`}
                       >
                         <div
                           className={`px-4 py-2.5 border-b flex items-center justify-between ${schemaHeader}`}
@@ -613,10 +767,11 @@ export default function DynamicSQLQuiz() {
                           className={`divide-y bg-transparent font-mono text-xs ${schemaRows}`}
                         >
                           {columns.map((columnStr, idx) => {
-                            const parts = columnStr
+                            const cleanColStr = columnStr
+                              .replace(/PRIMARY\s+KEY|NOT\s+NULL/i, "")
                               .replace(/[()]/g, "")
-                              .trim()
-                              .split(/\s+/);
+                              .trim();
+                            const parts = cleanColStr.split(/\s+/);
                             const columnName = parts[0] || "column_idx";
                             const dataType =
                               parts.slice(1).join(" ") || "VARCHAR";
@@ -627,7 +782,11 @@ export default function DynamicSQLQuiz() {
                                 className="px-4 py-2.5 flex items-center justify-between transition-colors"
                               >
                                 <span
-                                  className={`font-semibold tracking-tight ${theme === "light" ? "text-slate-700" : "text-slate-200"}`}
+                                  className={`font-semibold tracking-tight ${
+                                    theme === "light"
+                                      ? "text-slate-700"
+                                      : "text-slate-200"
+                                  }`}
                                 >
                                   {columnName}
                                 </span>
@@ -642,10 +801,10 @@ export default function DynamicSQLQuiz() {
                                             .toUpperCase()
                                             .includes("TEXT")
                                         ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border-emerald-500/20"
-                                        : "bg-amber-500/10 text-amber-600 dark:text-amber-300 border-amber-500/20"
+                                        : "bg-slate-500/10 text-slate-400 border-slate-500/20"
                                   }`}
                                 >
-                                  {dataType.toLowerCase()}
+                                  {dataType}
                                 </span>
                               </div>
                             );
@@ -653,38 +812,39 @@ export default function DynamicSQLQuiz() {
                         </div>
                       </div>
                     );
-                  })()}
-                </div>
+                  });
+                })()}
               </div>
             </section>
 
             {/* RIGHT AREA PANEL: WORKSPACE EDITOR */}
             <section
-              className={`border  p-5 rounded-3xl shadow-xl space-y-4 transition-all ${panelBg} lg:col-span-7`}
+              className={`border   p-5 rounded-3xl shadow-xl space-y-4 transition-all ${panelBg} md:col-span-7`}
             >
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 ">
                 <label
                   htmlFor="sql-editor"
                   className={`block text-xs font-bold uppercase tracking-widest ${theme === "light" ? "text-indigo-500/70" : "text-purple-300/40"}`}
                 >
                   Standard SQL Solution Workspace:
                 </label>
-              <div
-  className={`relative rounded-2xl overflow-hidden border transition-all ${
-    theme === "light" 
-      ? "border-slate-200 focus-within:ring-2 focus-within:ring-indigo-400/30" 
-      : "border-slate-800 focus-within:ring-2 focus-within:ring-purple-400/30"
-  } ${textEditor}`} // 🌟 1. Moved the background color here to fill the entire card structure
->
-  <textarea
-    id="sql-editor"
-    rows={14}
-    value={userQuery}
-    onChange={(e) => setUserQuery(e.target.value)}
-    placeholder="SELECT&#10;  column_name&#10;FROM&#10;  table_target;&#10;"
-    className="w-full font-mono text-sm p-4 outline-none resize-none leading-relaxed transition-all bg-transparent" // 🌟 2. Changed this to bg-transparent
-  />
-</div></div>
+                <div
+                  className={`relative  rounded-2xl overflow-hidden border transition-all   ${
+                    theme === "light"
+                      ? "border-slate-200 focus-within:ring-2 focus-within:ring-indigo-400/30"
+                      : "border-slate-800 focus-within:ring-2 focus-within:ring-purple-400/30"
+                  } ${textEditor}`}
+                >
+                  <textarea
+                    id="sql-editor"
+                    rows={14}
+                    value={userQuery}
+                    onChange={(e) => setUserQuery(e.target.value)}
+                    placeholder="SELECT&#10;  column_name&#10;FROM&#10;  table_target;&#10;"
+                    className="w-full overflow-y-auto no-scrollbar font-mono text-sm p-4 outline-none resize-none leading-relaxed transition-all bg-transparent"
+                  />
+                </div>
+              </div>
 
               {/* INTERACTION HUB */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
@@ -707,7 +867,11 @@ export default function DynamicSQLQuiz() {
                     💡 {showHint ? "Conceal" : "Hint"}
                   </button>
                   <button
-                    onClick={() => setShowAnswer(!showAnswer)}
+                    onClick={() => {
+                      setShowAnswer(!showAnswer);
+                      // setAnimationKey((prev) => prev + 1);
+                    }}
+                    // setAnimationKey(prev => prev + 1);
                     className={`px-3 h-[38px] border rounded-xl text-xs font-bold transition-all active:scale-95 cursor-pointer ${theme === "light" ? "bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border-indigo-200" : "bg-slate-800/80 hover:bg-slate-800 text-purple-300 border-purple-900/40"}`}
                     title="Toggle System Solution Model Statement"
                   >
@@ -735,7 +899,7 @@ export default function DynamicSQLQuiz() {
                     ◀
                   </button>
                   <span
-                    className={`text-xs font-bold px-1.5 ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}
+                    className={`text-xs font-mono font-bold px-2.5 tracking-tight ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}
                   >
                     {currentIndex + 1} / {questions.length}
                   </span>
@@ -757,42 +921,48 @@ export default function DynamicSQLQuiz() {
                 </div>
               </div>
 
-              {/* LIVE EVALUATION FEEDBACK PROFILE BLOCK */}
+              {/* DYNAMIC FEEDBACK BANNER AREA */}
               {feedback.status && (
                 <div
-                  className={`p-4 rounded-2xl border text-xs font-semibold tracking-wide transition-all animate-in fade-in slide-in-from-bottom-2 duration-300 ${
+                  key={animationKey}
+                  className={`p-4 rounded-2xl border text-sm font-medium animate-in fade-in slide-in-from-bottom-2 duration-200 ${
                     feedback.status === "correct"
-                      ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                      : "bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400"
+                      ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                      : feedback.status === "incorrect"
+                        ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
+                        : "bg-rose-500/10 text-rose-500 border-rose-500/20 font-mono text-xs leading-relaxed"
                   }`}
                 >
-                  <p>{feedback.message}</p>
+                  {feedback.message}
                 </div>
               )}
 
-              {/* DYNAMIC COMPONENT EXPANSIONS */}
-              {showHint && (
+              {/* EXPANDABLE HINT BLOCK */}
+              {showHint && activeQuestion && (
                 <div
-                  className={`p-4 rounded-2xl border text-xs font-mono tracking-tight leading-relaxed transition-all animate-in zoom-in-95 duration-200 ${subPanelBg}`}
+                  className={`p-4 border rounded-2xl text-xs leading-relaxed font-medium transition-all ${subPanelBg}`}
                 >
-                  <span
-                    className={`font-bold block mb-1 uppercase tracking-wider ${theme === "light" ? "text-indigo-600" : "text-purple-400"}`}
-                  >
-                    💡 Structural Logic Prompt Trace:
-                  </span>
-                  {questions[currentIndex].hint ||
-                    "Analyze matching target conditional filter flags carefully."}
+                  📌{" "}
+                  <span className="font-bold uppercase tracking-wider">
+                    Strategic Hint:
+                  </span>{" "}
+                  {activeQuestion.hint ||
+                    "Review core data relations and columns on the left to structure your filtering variables properly."}
                 </div>
               )}
 
-              {showAnswer && (
-                <div className="p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 text-xs font-mono text-emerald-600 dark:text-emerald-400 tracking-tight leading-relaxed transition-all animate-in zoom-in-95 duration-200">
-                  <span className="font-bold block mb-1 uppercase tracking-wider text-emerald-500">
-                    🔑 Verified Execution Statement Target:
+              {/* EXPANDABLE SOLUTION MODEL BLOCK */}
+              {showAnswer && activeQuestion && (
+                <div
+                  className={`p-4 border rounded-2xl font-mono text-xs leading-relaxed tracking-tight transition-all ${subPanelBg}`}
+                >
+                  💡{" "}
+                  <span className="font-bold uppercase font-sans tracking-wider">
+                    Expected Query Layout:
                   </span>
-                  <pre className="whitespace-pre-wrap">
-                    {questions[currentIndex].correctQuery ||
-                      "SELECT * FROM target_relation;"}
+                  <pre className="mt-2 text-indigo-400 whitespace-pre-wrap">
+                    {activeQuestion.correctQuery ||
+                      "No reference solution registered for this entity."}
                   </pre>
                 </div>
               )}

@@ -1,25 +1,3 @@
-// export interface SQLQuestion {
-//   id: string | number;
-//   title: string;
-//   difficulty: "Easy" | "Medium" | "Hard";
-//   scenario: string;
-//   tableSchema: string;
-//   expectedOutput: string;
-//   hint: string;
-//   correctQuery: string;
-// }
-// export interface SQLQuestion {
-//   id: string | number; // 👈 Change this from number to string | number
-//   title: string;
-//   difficulty: 'Easy' | 'Medium' | 'Hard';
-//   scenario: string;
-//   tableSchema: string;
-//   expectedOutput: string;
-//   hint: string;
-//   correctQuery: string;
-//   setupSQL?: string; // Optional field for your sandbox seed setups
-// }
-
 export interface SQLQuestion {
   /** Accepts string IDs like 'se1' from seeds or numbers like 3 from Gemini */
   id: string | number;
@@ -48,4 +26,10 @@ export interface SQLQuestion {
 
   /** Optional raw SQL DDL/DML statements to spin up database state */
   setupSQL?: string;
+
+  /** * Determines if the validator should enforce strict row ordering.
+   * If true, the user result must match the golden result row-by-row.
+   * If false, the validator will sort both datasets before comparing.
+   */
+  enforceOrder: boolean;
 }
