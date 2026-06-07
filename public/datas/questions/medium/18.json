@@ -1,0 +1,15 @@
+{
+  "id": 18,
+  "title": "User Activity for Past 30 Days",
+  "difficulty": "Medium",
+  "company": "LeetCode 1141",
+  "tags": [
+    "Date Arithmetic"
+  ],
+  "scenario": "Find the number of daily active users for a period of 30 days ending 2019-07-27.",
+  "tableSchema": "Activity (user_id INT, session_id INT, activity_date DATE, activity_type VARCHAR)",
+  "hint": "Filter by date range and use COUNT(DISTINCT ...).",
+  "correctQuery": "SELECT activity_date AS day, COUNT(DISTINCT user_id) AS active_users FROM Activity WHERE activity_date > '2019-06-27' AND activity_date <= '2019-07-27' GROUP BY activity_date;",
+  "setupSQL": "CREATE TABLE Activity (user_id INT, session_id INT, activity_date DATE, activity_type VARCHAR); INSERT INTO Activity VALUES (1, 1, '2019-07-20', 'open_session'), (1, 1, '2019-07-20', 'scroll_down'), (2, 4, '2019-07-20', 'open_session');",
+  "enforceOrder": false
+}

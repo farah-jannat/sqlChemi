@@ -1,0 +1,232 @@
+[
+  {
+    "id": 1,
+    "difficulty": "Easy",
+    "tags": [
+      "Filtering",
+      "Null Handling"
+    ]
+  },
+  {
+    "id": 2,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries",
+      "Filtering"
+    ]
+  },
+  {
+    "id": 3,
+    "difficulty": "None",
+    "tags": [
+      "Subqueries",
+      "Window Functions",
+      "COALESCE"
+    ]
+  },
+  {
+    "id": 4,
+    "difficulty": "Medium",
+    "tags": [
+      "Conditional Logic",
+      "Window Functions",
+      "CASE WHEN"
+    ]
+  },
+  {
+    "id": 5,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "DENSE_RANK",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 6,
+    "difficulty": "Medium",
+    "tags": [
+      "Self-Joins",
+      "Subqueries",
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 7,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Date Arithmetic",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 8,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "DENSE_RANK",
+      "Joins"
+    ]
+  },
+  {
+    "id": 9,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "LEFT JOIN"
+    ]
+  },
+  {
+    "id": 10,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "UNION ALL"
+    ]
+  },
+  {
+    "id": 11,
+    "difficulty": "Medium",
+    "tags": [
+      "UNION ALL",
+      "ORDER BY",
+      "LIMIT"
+    ]
+  },
+  {
+    "id": 12,
+    "difficulty": "Medium",
+    "tags": [
+      "UNION ALL",
+      "GROUP BY"
+    ]
+  },
+  {
+    "id": 13,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 14,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "DENSE_RANK"
+    ]
+  },
+  {
+    "id": 15,
+    "difficulty": "Medium",
+    "tags": [
+      "CASE Statement",
+      "UNION"
+    ]
+  },
+  {
+    "id": 16,
+    "difficulty": "Medium",
+    "tags": [
+      "Conditional Aggregation"
+    ]
+  },
+  {
+    "id": 17,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 18,
+    "difficulty": "Medium",
+    "tags": [
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 19,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Self Join",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 20,
+    "difficulty": "Hard",
+    "tags": [
+      "JOIN",
+      "Aggregation",
+      "Percentage"
+    ]
+  },
+  {
+    "id": 21,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 22,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Running Total"
+    ]
+  },
+  {
+    "id": 23,
+    "difficulty": "Hard",
+    "tags": [
+      "Date Arithmetic",
+      "Grouping"
+    ]
+  },
+  {
+    "id": 24,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "EXCEPT"
+    ]
+  },
+  {
+    "id": 25,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "HAVING"
+    ]
+  },
+  {
+    "id": 26,
+    "difficulty": "Hard",
+    "tags": [
+      "Recursive CTE",
+      "Left Join"
+    ]
+  },
+  {
+    "id": 27,
+    "difficulty": "Hard",
+    "tags": [
+      "Union",
+      "Grouping"
+    ]
+  },
+  {
+    "id": 28,
+    "difficulty": "Hard",
+    "tags": [
+      "String Functions",
+      "Data Cleaning"
+    ]
+  }
+]

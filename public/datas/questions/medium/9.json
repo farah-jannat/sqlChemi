@@ -1,0 +1,16 @@
+{
+  "id": 9,
+  "title": "Confirmation Rate",
+  "difficulty": "Medium",
+  "company": "None",
+  "tags": [
+    "Aggregation",
+    "LEFT JOIN"
+  ],
+  "scenario": "Find the confirmation rate of each user, which is the number of confirmed messages divided by the total number of requested confirmation messages. Return 0 if the user requested no confirmation messages.",
+  "tableSchema": "Signups (user_id INT, time_stamp DATETIME), Confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Use a LEFT JOIN to include all users. Use ROUND(AVG(CASE ...), 2) for the percentage calculation.",
+  "correctQuery": "SELECT s.user_id, ROUND(COALESCE(AVG(CASE WHEN c.action = 'confirmed' THEN 1 ELSE 0 END), 0), 2) AS confirmation_rate FROM Signups s LEFT JOIN Confirmations c ON s.user_id = c.user_id GROUP BY s.user_id;",
+  "setupSQL": "CREATE TABLE Signups (user_id INT, time_stamp DATETIME); CREATE TABLE Confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO Signups VALUES (3, '2020-03-21'), (7, '2020-01-04'); INSERT INTO Confirmations VALUES (3, '2021-01-06', 'timeout'), (3, '2021-07-14', 'confirmed'), (7, '2021-06-12', 'confirmed');",
+  "enforceOrder": false
+}

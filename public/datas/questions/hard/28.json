@@ -1,0 +1,16 @@
+{
+  "id": 28,
+  "title": "Fix Names in a Table",
+  "difficulty": "Hard",
+  "company": "LeetCode 1667",
+  "tags": [
+    "String Functions",
+    "Data Cleaning"
+  ],
+  "scenario": "Write a solution to fix the names so that only the first character is uppercase and the rest are lowercase. Return the result table containing 'user_id' and 'name', ordered by 'user_id'.",
+  "tableSchema": "users (user_id INT, name VARCHAR)",
+  "hint": "Use UPPER(), LOWER(), SUBSTR(), and CONCAT().",
+  "correctQuery": "SELECT user_id, UPPER(LEFT(name, 1)) || LOWER(SUBSTRING(name FROM 2)) AS name FROM users ORDER BY user_id;",
+  "setupSQL": "CREATE TABLE users (user_id INT, name VARCHAR); INSERT INTO users VALUES (1, 'aLice'), (2, 'bOB'), (3, 'cHARlie');",
+  "enforceOrder": true
+}

@@ -1,0 +1,16 @@
+{
+  "id": 21,
+  "title": "Median Salary",
+  "difficulty": "Hard",
+  "company": "LeetCode 569",
+  "tags": [
+    "Window Functions",
+    "Subqueries"
+  ],
+  "scenario": "Find the median salary for each company. Return the result table containing 'company', 'salary'. The result should include all rows from the original table that represent the median salary.",
+  "tableSchema": "employee (id INT, company VARCHAR, salary INT)",
+  "hint": "Use ROW_NUMBER() to rank employees within each company by salary, and check if the rank corresponds to the middle position(s).",
+  "correctQuery": "WITH ranked AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY company ORDER BY salary) AS rn, COUNT(*) OVER(PARTITION BY company) AS cnt FROM employee) SELECT id, company, salary FROM ranked WHERE rn BETWEEN cnt/2.0 AND cnt/2.0 + 1;",
+  "setupSQL": "CREATE TABLE employee (id INT, company VARCHAR, salary INT); INSERT INTO employee VALUES (1, 'A', 2341), (2, 'A', 341), (3, 'A', 15), (4, 'A', 15314), (5, 'A', 451), (6, 'A', 513), (7, 'B', 15), (8, 'B', 13), (9, 'B', 1154), (10, 'B', 1345), (11, 'B', 1221);",
+  "enforceOrder": false
+}

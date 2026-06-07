@@ -1,0 +1,16 @@
+{
+  "id": 15,
+  "title": "Count Salary Categories",
+  "difficulty": "Medium",
+  "company": "LeetCode 1907",
+  "tags": [
+    "CASE Statement",
+    "UNION"
+  ],
+  "scenario": "Categorize accounts into 'Low Salary' (< 20000), 'Average Salary' (20000-50000), and 'High Salary' (> 50000).",
+  "tableSchema": "Accounts (account_id INT, income INT)",
+  "hint": "Use UNION to ensure all categories appear even if the count is 0.",
+  "correctQuery": "SELECT 'Low Salary' AS category, COUNT(*) AS accounts_count FROM Accounts WHERE income < 20000 UNION SELECT 'Average Salary', COUNT(*) FROM Accounts WHERE income BETWEEN 20000 AND 50000 UNION SELECT 'High Salary', COUNT(*) FROM Accounts WHERE income > 50000;",
+  "setupSQL": "CREATE TABLE Accounts (account_id INT, income INT); INSERT INTO Accounts VALUES (1, 3000), (2, 25000), (3, 60000);",
+  "enforceOrder": true
+}

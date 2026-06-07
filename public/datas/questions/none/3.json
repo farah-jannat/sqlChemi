@@ -1,0 +1,17 @@
+{
+  "id": 3,
+  "title": "Product Price at a Given Date",
+  "difficulty": "None",
+  "company": "LeetCode 1164",
+  "tags": [
+    "Subqueries",
+    "Window Functions",
+    "COALESCE"
+  ],
+  "scenario": "Write a query to find the prices of all products on '2019-08-16'. Assume the price of all products before any change is 10. Output should contain product_id and its price at that specific date.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Break this into two pools: 1) Products whose max change_date is <= '2019-08-16' (use a window function or subquery to find their latest price). 2) Products whose earliest change_date is after that date (default their price to 10 using a UNION).",
+  "correctQuery": "SELECT product_id, new_price AS price FROM products WHERE (product_id, change_date) IN (SELECT product_id, MAX(change_date) FROM products WHERE change_date <= '2019-08-16' GROUP BY product_id) UNION SELECT DISTINCT product_id, 10 AS price FROM products WHERE product_id NOT IN (SELECT product_id FROM products WHERE change_date <= '2019-08-16');",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE); INSERT INTO products VALUES (1, 20, '2019-08-14'), (2, 50, '2019-08-14'), (1, 30, '2019-08-15'), (1, 35, '2019-08-16'), (2, 65, '2019-08-17'), (3, 20, '2019-08-18');",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 2,
+  "title": "Most Expensive Product in Category",
+  "difficulty": "Medium",
+  "company": "None",
+  "tags": [
+    "Subqueries",
+    "Filtering"
+  ],
+  "scenario": "Write a query to find the names and prices of products that possess the maximum price listed in category 'Electronics'.",
+  "tableSchema": "store_items (item_id INT, name VARCHAR, category VARCHAR, price DECIMAL)",
+  "hint": "Use a subquery to find MAX(price) for the Electronics category, then filter your primary query based on it.",
+  "correctQuery": "SELECT name, price FROM store_items WHERE category = 'Electronics' AND price = (SELECT MAX(price) FROM store_items WHERE category = 'Electronics');",
+  "setupSQL": "CREATE TABLE store_items (item_id INT, name VARCHAR, category VARCHAR, price DECIMAL); INSERT INTO store_items VALUES (1, 'Phone', 'Electronics', 699.99), (2, 'TV', 'Electronics', 1199.99), (3, 'Couch', 'Furniture', 1500.00), (4, 'Radio', 'Electronics', 45.50);",
+  "enforceOrder": false
+}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { generateCustomQuiz } from "@/services/gemini";
 import { SQLQuestion } from "@/types/quiz";
-import { transpileToPostgres } from "@/utils/sqlTranslator";
+// import { transpileToPostgres } from "@/utils/sqlTranslator";
 
 // Import shadcn select primitives
 import {
@@ -59,7 +59,7 @@ export default function DynamicSQLQuiz() {
   // 6. Fetch Local Questions Bank and Aggregate Tags
 
   // ==========================================
-  // ✅ 1st useEffect: INITIALIZE THE DATABASE (REPLACE WITH THIS)
+  // ✅ 1st useEffect: INITIALIZE THE DATABASE
   // ==========================================
   useEffect(() => {
     let isMounted = true;
@@ -68,14 +68,12 @@ export default function DynamicSQLQuiz() {
     const loadDatabaseEngine = async () => {
       try {
         setIsGenerating(true);
-
-        // Dynamically load the client-side PGlite instance inside the browser window
         const { PGlite } = await import("@electric-sql/pglite");
         const db = await PGlite.create();
 
         if (isMounted) {
-          setPgEngine(db); // This fills pgEngine so handleCheckAnswer can run!
-          console.log("象 PGlite Engine loaded successfully!");
+          setPgEngine(db);
+          console.log("🐘 PGlite Engine loaded successfully!");
         }
       } catch (error) {
         console.error("Failed to initialize browser PostgreSQL engine:", error);
@@ -88,125 +86,162 @@ export default function DynamicSQLQuiz() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, []); // <--- Empty dependency array means it only runs on mount.
 
   // ==========================================
-  // 🔍 2nd useEffect: FETCH QUESTIONS JSON (KEEP THIS AS IS)
+  // 🔍 2nd useEffect: DYNAMIC FETCHING PIPELINE
   // ==========================================
+  // useEffect(() => {
+  //   let isMounted = true;
+
+  //   const loadQuestions = async () => {
+  //     try {
+  //       // 1. Fetch the manifest
+  //       const manifestRes = await fetch("/datas/manifest.json");
+  //       if (!manifestRes.ok) throw new Error("Could not load manifest");
+  //       const manifest = await manifestRes.json();
+
+  //       // 2. Filter logic (case-insensitive for reliability)
+  //       let filtered = manifest.filter(
+  //         (q: any) => q.difficulty.toLowerCase() === difficulty.toLowerCase(),
+  //       );
+
+  //       if (selectedTag !== "ALL_TAGS") {
+  //         filtered = filtered.filter((q: any) =>
+  //           q.tags?.some(
+  //             (t: string) => t.toLowerCase() === selectedTag.toLowerCase(),
+  //           ),
+  //         );
+  //       }
+
+  //       if (filtered.length === 0) {
+  //         console.warn("No questions match these criteria");
+  //         // Optional: setQuestions([]) to clear UI if nothing found
+  //         return;
+  //       }
+
+  //       // 3. Shuffle and pick subset
+  //       const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+  //       const selectedSubset = shuffled.slice(0, numQuestions);
+
+  //       // 4. Batch fetch contents
+  //       const questionContents = await Promise.all(
+  //         selectedSubset.map(async (item: any) => {
+  //           const res = await fetch(
+  //             `/datas/questions/${item.difficulty.toLowerCase()}/${item.id}.json`,
+  //           );
+  //           return res.json();
+  //         }),
+  //       );
+
+  //       // 5. Update UI state
+  //       if (isMounted) {
+  //         setQuestions(questionContents);
+  //         setCurrentIndex(0);
+  //         setIsViewingSetup(false);
+  //         setHasHydrated(true);
+  //         setFeedback({ status: null, message: "" });
+  //       }
+
+  //       const allTags = manifest.flatMap((q: any) => q.tags || []);
+  //       const uniqueTags = Array.from(new Set(allTags)) as string[];
+
+  //       setAvailableTags(uniqueTags);
+  //     } catch (err) {
+  //       console.error("Failed to load dynamic quiz data:", err);
+  //     }
+  //   };
+
+  //   loadQuestions();
+  //   return () => {
+  //     isMounted = false;
+  //   };
+
+  //   // This array ensures the quiz refreshes whenever user changes settings
+  // }, [difficulty, selectedTag, numQuestions]);
+
+  // Add this effect to populate the tags only once on mount
   useEffect(() => {
-    let isMounted = true;
-
-    // Temporary: Clear old broken cache states if they exist
-    localStorage.removeItem("sql_quiz_questions");
-    localStorage.removeItem("sql_quiz_index");
-
-    // Sync theme immediately on mount
-    const savedTheme = localStorage.getItem("sql_quiz_theme");
-    if (savedTheme && ["dark", "light"].includes(savedTheme)) {
-      setTheme(savedTheme as "dark" | "light");
-    }
-
-    fetch("/sql_questions.json")
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-      })
-      .then((data: SQLQuestion[]) => {
-        if (!isMounted) return;
-
-        setAllQuestionsBank(data);
-
-        // Core tag aggregation logic
-        const tagsSet = new Set<string>();
-        data.forEach((q) => {
-          if (q.tags && Array.isArray(q.tags)) {
-            q.tags.forEach((tag) => tagsSet.add(tag));
-          }
-        });
-        setAvailableTags(Array.from(tagsSet).sort());
-
-        // Fetch existing local cache keys
-        const savedQuestions = localStorage.getItem("sql_quiz_questions");
-        const savedIndex = localStorage.getItem("sql_quiz_index");
-        const savedQuery = localStorage.getItem("sql_quiz_user_query");
-        const savedView = localStorage.getItem("sql_quiz_viewing_setup");
-
-        if (savedQuestions) {
-          try {
-            const parsed = JSON.parse(savedQuestions);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              setQuestions(parsed);
-              if (savedIndex) setCurrentIndex(Number(savedIndex));
-              if (savedQuery) setUserQuery(savedQuery);
-              if (savedView) {
-                setIsViewingSetup(savedView === "true");
-              } else {
-                setIsViewingSetup(false);
-              }
-            }
-          } catch (e) {
-            console.error("Failed to restore quiz state", e);
-          }
-        } else {
-          // RANDOM AUTOLOAD LOGIC FOR NEW USERS:
-          const easyQuestions = data.filter((q) => q.difficulty === "Easy");
-          const shuffled = [...easyQuestions].sort(() => 0.5 - Math.random());
-          const defaultBatch = shuffled.slice(0, 1);
-
-          if (defaultBatch.length > 0) {
-            setQuestions(defaultBatch);
-            setCurrentIndex(0);
-            setUserQuery("");
-            setIsViewingSetup(false);
-          }
-        }
-        setHasHydrated(true);
-      })
-      .catch((err) => {
-        console.error("🚨 CRITICAL FETCH ERROR:", err);
-        if (isMounted) setHasHydrated(true);
-      });
-
-    return () => {
-      isMounted = false;
+    const loadTags = async () => {
+      try {
+        const res = await fetch("/datas/manifest.json");
+        const manifest = await res.json();
+        const allTags = manifest.flatMap((q: any) => q.tags || []);
+        const uniqueTags = Array.from(new Set(allTags)) as string[];
+        setAvailableTags(uniqueTags);
+      } catch (err) {
+        console.error("Could not load tags for dropdown:", err);
+      }
     };
+    loadTags();
   }, []);
 
-  const handleLoadStaticQuiz = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (numQuestions <= 0) return;
-
-    // 1. Filter the entire local database bank using your updated select dropdown values
-    const localBank = allQuestionsBank.filter((question) => {
-      const matchesDifficulty = question.difficulty === difficulty;
-      const actualTagFilter = selectedTag === "ALL_TAGS" ? "" : selectedTag;
-      const matchesTag = actualTagFilter
-        ? question.tags?.some(
-            (t) => t.toLowerCase() === actualTagFilter.toLowerCase(),
-          )
-        : true;
-      return matchesDifficulty && matchesTag;
-    });
-
-    if (localBank.length === 0) {
-      const displayTag = selectedTag === "ALL_TAGS" ? "Any" : selectedTag;
-      alert(
-        `No pre-written exercises found for "${displayTag}" (${difficulty}). Try the Gemini synthesis engine instead!`,
-      );
-      return;
+  // 3rd use Effect
+  // ✅ This runs once immediately when the app loads
+  useEffect(() => {
+    // Only trigger if we haven't loaded any questions yet
+    if (questions.length === 0 && !isGenerating) {
+      // We simulate a "Reset" trigger to load the first set of questions
+      const initialEvent = { preventDefault: () => {} } as React.FormEvent;
+      handleLoadStaticQuiz(initialEvent);
     }
+  }, []); // Empty dependency array = runs once on mount
 
-    // 2. Shuffle or slice perfectly according to the newly chosen input length state
-    const freshlySliced = localBank.slice(0, numQuestions);
+  const handleLoadStaticQuiz = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsGenerating(true);
 
-    // 3. Clear slate setup execution environments
-    setCurrentIndex(0);
-    setUserQuery("");
-    setQuestions(freshlySliced); // This forces the new batch to write over the old one
-    setShowHint(false);
-    setShowAnswer(false);
-    setFeedback({ status: null, message: "" });
-    setIsViewingSetup(false);
+    try {
+      const manifestRes = await fetch("/datas/manifest.json");
+      const manifest = await manifestRes.json();
+
+      // 1. Filter based on current state (when button is clicked)
+      let filtered = manifest.filter(
+        (q: any) => q.difficulty.toLowerCase() === difficulty.toLowerCase(),
+      );
+
+      if (selectedTag !== "ALL_TAGS") {
+        filtered = filtered.filter((q: any) =>
+          q.tags?.some(
+            (t: string) => t.toLowerCase() === selectedTag.toLowerCase(),
+          ),
+        );
+      }
+
+      if (filtered.length === 0) {
+        alert("No questions match your criteria.");
+        return;
+      }
+
+      // 2. Shuffle and pick
+      const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+      const selectedSubset = shuffled.slice(0, numQuestions);
+
+      // 3. Batch fetch
+      const questionContents = await Promise.all(
+        selectedSubset.map(async (item: any) => {
+          const res = await fetch(
+            `/datas/questions/${item.difficulty.toLowerCase()}/${item.id}.json`,
+          );
+          return res.json();
+        }),
+      );
+
+      // 4. Update UI
+      setQuestions(questionContents);
+      setCurrentIndex(0);
+      setUserQuery("");
+      setShowHint(false);
+      setShowAnswer(false);
+      setFeedback({ status: null, message: "" });
+      setIsViewingSetup(false);
+      setHasHydrated(true);
+    } catch (error) {
+      console.error("Error loading quiz:", error);
+      alert("There was an error loading the questions.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleLoadAIQuiz = async () => {
@@ -244,131 +279,219 @@ export default function DynamicSQLQuiz() {
       setIsGenerating(false);
     }
   };
+
+  // --------------------------------------------------------
+
+  console.log("Current Active Question Data:", activeQuestion);
+
+  // const handleCheckAnswer = async () => {
+  //   setAnimationKey((prev) => prev + 1);
+  //   const activeQ = questions[currentIndex];
+  //   if (!activeQ || !pgEngine) return;
+
+  //   let translatedQuery = transpileToPostgres(userQuery);
+  //   translatedQuery = translatedQuery
+  //     .replace(/`([^`]+)`/g, '"$1"')
+  //     .replace(/LIMIT\s+(\d+)\s*,\s*(\d+)/i, "LIMIT $2 OFFSET $1");
+
+  //   try {
+  //     if (activeQ.setupSQL) {
+  //       await pgEngine.exec(`
+  //         DROP SCHEMA public CASCADE;
+  //         CREATE SCHEMA public;
+  //         GRANT ALL ON SCHEMA public TO public;
+  //       `);
+  //       await pgEngine.exec(activeQ.setupSQL);
+  //     }
+
+  //     const goldenResult = await pgEngine.query(activeQ.correctQuery);
+  //     const studentResult = await pgEngine.query(translatedQuery);
+
+  //     // ========================================================
+  //     // 📊 PHASE 3 & 4: UNIVERSAL NORMALIZATION & MATCH ENGINE
+  //     // ========================================================
+  //     const normalize = (rows: any[]) => {
+  //       if (!rows || !Array.isArray(rows)) return [];
+
+  //       return rows.map((row) => {
+  //         const normalizedRow: any = {};
+  //         // Sort keys to ensure column order independence
+  //         const sortedKeys = Object.keys(row).sort();
+
+  //         for (const key of sortedKeys) {
+  //           const val = row[key];
+  //           // Standardize types and strings to allow loose matching
+  //           if (val === null || val === undefined) {
+  //             normalizedRow[key] = null;
+  //           } else if (typeof val === "string") {
+  //             normalizedRow[key] = val.trim().toLowerCase();
+  //           } else if (typeof val === "number") {
+  //             normalizedRow[key] = val;
+  //           } else {
+  //             normalizedRow[key] = val;
+  //           }
+  //         }
+  //         return normalizedRow;
+  //       });
+  //     };
+
+  //     const goldenCleaned = normalize(goldenResult.rows);
+  //     const studentCleaned = normalize(studentResult.rows);
+
+  //     //
+
+  //     // Sort function for row-order independence
+  //     const sortFn = (a: any, b: any) => JSON.stringify(a).localeCompare(JSON.stringify(b));
+
+  //     // Sort both datasets by their string representation
+  //     const goldenSorted = [...goldenCleaned].sort(sortFn);
+  //     const studentSorted = [...studentCleaned].sort(sortFn);
+
+  //     // Final comparison: only cares about final data content
+  //     const isMatch = JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
+
+  //       console.log("Golden:", JSON.stringify(goldenCleaned));
+  //       console.log("Student:", JSON.stringify(studentCleaned));
+
+  //     // ========================================================
+  //     // 🎯 PHASE 5: FEEDBACK DISPATCHER
+  //     // ========================================================
+  //     if (isMatch) {
+  //       setFeedback({
+  //         status: "correct",
+  //         message: "🎉 🏆 Success! Your query produced the correct data results! 🐾",
+  //       });
+  //     } else {
+  //       setFeedback({
+  //         status: "incorrect",
+  //         message: "❌ Output Mismatch. The data returned by your query does not match the target solution.",
+  //       });
+  //     }
+  //   } catch (error: any) {
+  //     setFeedback({
+  //       status: "error",
+  //       message: `💻 Database Syntax Error: ${error.message || error}`,
+  //     });
+  //   }
+  // };
+
   const handleCheckAnswer = async () => {
     setAnimationKey((prev) => prev + 1);
     const activeQ = questions[currentIndex];
     if (!activeQ || !pgEngine) return;
 
-    // 🧠 THE FIX: Check the metadata flag directly!
-    // If enforceOrder is explicitly false, STRICT_LEETCODE_MODE becomes false.
-    // If enforceOrder is missing or true, default it to true.
-    const STRICT_LEETCODE_MODE = activeQ.enforceOrder !== false;
-
-    // 1. Process the user query through your translator layer
-    let translatedQuery = transpileToPostgres(userQuery);
-
-    // Fallback cleanup pass for explicit dialect items
-    translatedQuery = translatedQuery
-      .replace(/`([^`]+)`/g, '"$1"')
-      .replace(/LIMIT\s+(\d+)\s*,\s*(\d+)/i, "LIMIT $2 OFFSET $1");
-
     try {
-      // ========================================================
-      // 🔥 RESET PHASE: Nuke the entire public schema to reset PGlite
-      // ========================================================
+      // 1. Reset and Rebuild the Database Environment
+      // We await these strictly to ensure the table exists before querying
       if (activeQ.setupSQL) {
         await pgEngine.exec(`
-        DROP SCHEMA public CASCADE;
+        DROP SCHEMA IF EXISTS public CASCADE;
         CREATE SCHEMA public;
         GRANT ALL ON SCHEMA public TO public;
       `);
-
-        // Now run the seed script on a truly blank slate database
         await pgEngine.exec(activeQ.setupSQL);
       }
 
-      // 2. Execute both the solution query and the user's query inside PGlite
+      // 2. Execute Queries
+      // Use NOT EXISTS in your JSON's correctQuery instead of NOT IN to avoid NULL traps.
       const goldenResult = await pgEngine.query(activeQ.correctQuery);
-      const studentResult = await pgEngine.query(translatedQuery);
+      const studentResult = await pgEngine.query(userQuery);
 
-      // ========================================================
-      // 📊 PHASE 3: DATA NORMALIZATION (NO SORTING YET)
-      // ========================================================
-      const normalizeDataset = (rows: any[]) => {
-        if (!rows || rows.length === 0) return [];
+      // 3. Normalization: Standardize rows to be order and case-insensitive
+      // const normalize = (rows: any[]) => {
+      //   if (!rows || !Array.isArray(rows)) return [];
+
+      //   return rows.map((row) => {
+      //     const normalizedRow: any = {};
+      //     // Sort keys alphabetically to ignore column selection order
+      //     const sortedKeys = Object.keys(row).sort();
+
+      //     for (const key of sortedKeys) {
+      //       const val = row[key];
+      //       // Standardize types/strings for content-only matching
+      //       if (val === null || val === undefined) {
+      //         normalizedRow[key] = null;
+      //       } else if (typeof val === "string") {
+      //         normalizedRow[key] = val.trim().toLowerCase();
+      //       } else {
+      //         normalizedRow[key] = val;
+      //       }
+      //     }
+      //     return normalizedRow;
+      //   });
+      // };
+
+      console.log("Golden raw:", goldenResult.rows);
+      console.log("Student raw:", studentResult.rows);
+
+      const normalize = (rows: any[]) => {
+        if (!rows || !Array.isArray(rows)) return [];
 
         return rows.map((row) => {
           const normalizedRow: any = {};
-          for (const key in row) {
-            const val = row[key];
+          const sortedKeys = Object.keys(row).sort();
 
-            // Standardize numeric precision variants
-            if (val !== null && val !== "" && !isNaN(Number(val))) {
-              normalizedRow[key] = Number(val);
-            } else if (typeof val === "string") {
-              normalizedRow[key] = val.trim();
-            } else {
-              normalizedRow[key] = val;
+          for (const key of sortedKeys) {
+            const val = row[key];
+            const normalizedKey = key.toLowerCase();
+
+            // Handle nulls explicitly
+            if (val === null || val === undefined) {
+              normalizedRow[normalizedKey] = null;
+            }
+            // Convert Dates to ISO string for consistency
+            else if (val instanceof Date) {
+              normalizedRow[normalizedKey] = val.toISOString();
+            }
+            // Standardize strings and numbers
+            else {
+              // String(val) handles both numbers (840) and strings ('840')
+              // .trim() removes accidental spaces
+              // .toLowerCase() keeps case consistency
+              normalizedRow[normalizedKey] = String(val).trim().toLowerCase();
             }
           }
           return normalizedRow;
         });
       };
+      const goldenCleaned = normalize(goldenResult.rows);
+      const studentCleaned = normalize(studentResult.rows);
 
-      // Clean data types and spacing for both results identically
-      const goldenCleaned = normalizeDataset(goldenResult.rows);
-      const studentCleaned = normalizeDataset(studentResult.rows);
-
-      // Helper sorting logic used for comparison or fallback hints
+      // 4. Comparison: Sort rows to ignore "ORDER BY" variations
       const sortFn = (a: any, b: any) =>
         JSON.stringify(a).localeCompare(JSON.stringify(b));
 
-      let isMatch = false;
+      const goldenSorted = [...goldenCleaned].sort(sortFn);
+      const studentSorted = [...studentCleaned].sort(sortFn);
 
-      // ========================================================
-      // ⚔️ PHASE 4: CONDITIONAL EVALUATION MATCH ENGINE
-      // ========================================================
-      if (STRICT_LEETCODE_MODE) {
-        // 🚫 LEETCODE STYLE: Row order matters! Direct row-by-row string matching.
-        isMatch =
-          JSON.stringify(goldenCleaned) === JSON.stringify(studentCleaned);
-      } else {
-        // 🔍 LOGIC STYLE: Order independent. Sort datasets first before matching.
-        const goldenSorted = [...goldenCleaned].sort(sortFn);
-        const studentSorted = [...studentCleaned].sort(sortFn);
-        isMatch =
-          JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
-      }
+      const isMatch =
+        JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
 
-      // ========================================================
-      // 🎯 PHASE 5: SMART FEEDBACK DISPATCHER
-      // ========================================================
+      // Debugging logs for your console
+      console.log("Golden (Normalized):", goldenSorted);
+      console.log("Student (Normalized):", studentSorted);
+
+      // 5. Feedback Dispatcher
       if (isMatch) {
         setFeedback({
           status: "correct",
-          message:
-            "🎉 🏆 Success! Your SQL script logic and row ordering line up perfectly! 🐾",
+          message: "🎉 🏆 Success! Your query produced the correct results! 🐾",
         });
       } else {
-        // Run a quick back-end check to see if their data is right, but just sorted wrong
-        const goldenSorted = [...goldenCleaned].sort(sortFn);
-        const studentSorted = [...studentCleaned].sort(sortFn);
-        const dataIsCorrectButOrderIsWrong =
-          JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
-
-        if (STRICT_LEETCODE_MODE && dataIsCorrectButOrderIsWrong) {
-          setFeedback({
-            status: "incorrect",
-            message:
-              "📐 Ordering Mismatch! Your data values are perfectly accurate, but the row sequence is wrong. Did you forget an 'ORDER BY' clause or use the wrong sorting direction?",
-          });
-        } else {
-          setFeedback({
-            status: "incorrect",
-            message:
-              "❌ Output Mismatch. Your query executed, but the resulting table rows do not match the target solution layout.",
-          });
-        }
+        setFeedback({
+          status: "incorrect",
+          message:
+            "❌ Output Mismatch. Your query executed, but the data result does not match the solution.",
+        });
       }
     } catch (error: any) {
+      console.error("Database Execution Error:", error);
       setFeedback({
         status: "error",
-        message: `💻 Database Syntax Error: ${error.message || error}`,
+        message: `💻 Database Error: ${error.message || error}`,
       });
     }
   };
-  // --------------------------------------------------------
-  console.log("Current Active Question Data:", activeQuestion);
 
   const pageBg = {
     dark: "bg-gradient-to-br from-[#12141c] to-[#1a1d26] text-slate-200",
@@ -534,7 +657,7 @@ export default function DynamicSQLQuiz() {
                   max={20}
                   value={numQuestions}
                   onChange={(e) => setNumQuestions(Number(e.target.value))}
-                  className={`w-full h-[38px] border rounded-xl px-3.5 py-2 text-xs focus:ring-2 outline-none transition-all font-medium text-center ${inputBg} ${theme === "light" ? "focus:ring-indigo-400/30" : "focus:ring-purple-400/30"}`}
+                  className={`w-full h-[32px] border rounded-xl px-3.5 py-2 text-xs focus:ring-2 outline-none transition-all font-medium text-center ${inputBg} ${theme === "light" ? "focus:ring-indigo-400/30" : "focus:ring-purple-400/30"}`}
                 />
               </div>
             </div>
@@ -616,19 +739,17 @@ export default function DynamicSQLQuiz() {
                   {questions.length > 0
                     ? "Reset "
                     : "Static Playroom"} */}
-
-                  🧹{" "} Reset
-
+                  🧹 Reset
                 </button>
 
                 <button
                   type="button"
                   onClick={handleLoadAIQuiz}
                   disabled={isGenerating}
-                  className={`w-full sm:w-auto px-4 h-[38px] rounded-xl font-medium text-xs tracking-wide shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all whitespace-nowrap cursor-pointer ${
+                  className={`px-5 h-[38px] rounded-xl text-xs font-bold tracking-wide transition-all shadow-md active:scale-95 cursor-pointer text-white ${
                     theme === "light"
-                      ? "bg-indigo-600 text-white hover:bg-indigo-500 disabled:bg-indigo-800"
-                      : "bg-purple-600 text-white hover:bg-purple-500 disabled:bg-purple-800"
+                      ? "bg-indigo-600 hover:bg-indigo-500"
+                      : "bg-purple-600 hover:bg-purple-500"
                   }`}
                 >
                   {isGenerating ? "Synthesizing... 🐾" : "🤖 Gemini Quiz"}
@@ -822,12 +943,17 @@ export default function DynamicSQLQuiz() {
               className={`border   p-5 rounded-3xl shadow-xl space-y-4 transition-all ${panelBg} md:col-span-7`}
             >
               <div className="space-y-1.5 ">
-                <label
-                  htmlFor="sql-editor"
-                  className={`block text-xs font-bold uppercase tracking-widest ${theme === "light" ? "text-indigo-500/70" : "text-purple-300/40"}`}
-                >
-                  Standard SQL Solution Workspace:
-                </label>
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="sql-editor"
+                    className={`block text-xs font-bold uppercase tracking-widest ${theme === "light" ? "text-indigo-500/70" : "text-purple-300/40"}`}
+                  >
+                    Standard SQL Solution Workspace:
+                  </label>
+                  <span className="bg-blue-500/10 text-blue-600 dark:text-blue-300 border border-blue-500/20 py-[4px] px-[10px] rounded-md text-[12px] font-bold">
+                    PostgreSQL
+                  </span>
+                </div>
                 <div
                   className={`relative  rounded-2xl overflow-hidden border transition-all   ${
                     theme === "light"

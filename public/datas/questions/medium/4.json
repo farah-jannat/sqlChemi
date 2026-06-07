@@ -1,0 +1,17 @@
+{
+  "id": 4,
+  "title": "Exchange Seats",
+  "difficulty": "Medium",
+  "company": "None",
+  "tags": [
+    "Conditional Logic",
+    "Window Functions",
+    "CASE WHEN"
+  ],
+  "scenario": "Write a query to swap the seat id of every two consecutive students. If the number of students is odd, the id of the last student is not swapped. Order the result by id in ascending order.",
+  "tableSchema": "seat (id INT, student VARCHAR)",
+  "hint": "Use a CASE statement to modify the id. If the id is odd and it is the last id, keep it. If it is odd and not the last, add 1. If it is even, subtract 1.",
+  "correctQuery": "SELECT CASE WHEN id % 2 != 0 AND id = (SELECT MAX(id) FROM seat) THEN id WHEN id % 2 != 0 THEN id + 1 ELSE id - 1 END AS id, student FROM seat ORDER BY id ASC;",
+  "setupSQL": "CREATE TABLE seat (id INT, student VARCHAR); INSERT INTO seat VALUES (1, 'Abbot'), (2, 'Doris'), (3, 'Emerson'), (4, 'Green'), (5, 'Jeames');",
+  "enforceOrder": true
+}

@@ -1,0 +1,15 @@
+{
+  "id": 16,
+  "title": "Capital Gain/Loss",
+  "difficulty": "Medium",
+  "company": "LeetCode 1393",
+  "tags": [
+    "Conditional Aggregation"
+  ],
+  "scenario": "Calculate the capital gain/loss for each stock after all operations.",
+  "tableSchema": "Stocks (stock_name VARCHAR, operation VARCHAR, operation_day INT, price INT)",
+  "hint": "Subtract price when operation is 'Sell' and add when it is 'Buy'.",
+  "correctQuery": "SELECT stock_name, SUM(CASE WHEN operation = 'Sell' THEN price ELSE -price END) AS capital_gain_loss FROM Stocks GROUP BY stock_name;",
+  "setupSQL": "CREATE TABLE Stocks (stock_name VARCHAR, operation VARCHAR, operation_day INT, price INT); INSERT INTO Stocks VALUES ('Leetcode', 'Buy', 1, 1000), ('Corona Masks', 'Buy', 2, 10), ('Leetcode', 'Sell', 5, 9000), ('Corona Masks', 'Sell', 10, 100);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 25,
+  "title": "Active Businesses",
+  "difficulty": "Hard",
+  "company": "LeetCode 1127",
+  "tags": [
+    "Aggregation",
+    "HAVING"
+  ],
+  "scenario": "An active business is a business that has more than one event type with occurrences greater than the average occurrences of that event type across all businesses. Find the 'business_id' of all active businesses.",
+  "tableSchema": "events (business_id INT, event_type VARCHAR, occurences INT)",
+  "hint": "Calculate average occurrences per event type first, then filter businesses that exceed this average for more than one event type.",
+  "correctQuery": "SELECT business_id FROM events e JOIN (SELECT event_type, AVG(occurences) AS avg_occ FROM events GROUP BY event_type) avg_e ON e.event_type = avg_e.event_type WHERE e.occurences > avg_e.avg_occ GROUP BY business_id HAVING COUNT(*) > 1;",
+  "setupSQL": "CREATE TABLE events (business_id INT, event_type VARCHAR, occurences INT); INSERT INTO events VALUES (1, 'reviews', 7), (3, 'reviews', 3), (1, 'ads', 11), (2, 'ads', 7), (3, 'ads', 6), (1, 'page_views', 3), (2, 'page_views', 12);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 26,
+  "title": "Number of Transactions per Visit",
+  "difficulty": "Hard",
+  "company": "LeetCode 1225",
+  "tags": [
+    "Recursive CTE",
+    "Left Join"
+  ],
+  "scenario": "Find how many users visited the bank without making any transactions, one transaction, two, and so on. Return 'transactions_count' and 'visits_count'.",
+  "tableSchema": "visits (user_id INT, visit_date DATE), transactions (user_id INT, transaction_date DATE, amount INT)",
+  "hint": "Use a recursive CTE to generate numbers from 0 to max transactions, and left join with the count of actual transactions per visit.",
+  "correctQuery": "WITH RECURSIVE cnt AS (SELECT 0 AS n UNION SELECT n + 1 FROM cnt WHERE n < (SELECT COALESCE(MAX(t_count), 0) FROM (SELECT COUNT(amount) AS t_count FROM visits v LEFT JOIN transactions t ON v.user_id = t.user_id AND v.visit_date = t.transaction_date GROUP BY v.user_id, v.visit_date) AS sub)) SELECT c.n AS transactions_count, COUNT(v.user_id) AS visits_count FROM cnt c LEFT JOIN (SELECT v.user_id, v.visit_date, COUNT(t.amount) AS t_count FROM visits v LEFT JOIN transactions t ON v.user_id = t.user_id AND v.visit_date = t.transaction_date GROUP BY v.user_id, v.visit_date) v ON c.n = v.t_count GROUP BY c.n ORDER BY c.n;",
+  "setupSQL": "CREATE TABLE visits (user_id INT, visit_date DATE); CREATE TABLE transactions (user_id INT, transaction_date DATE, amount INT); INSERT INTO visits VALUES (1, '2020-01-01'), (2, '2020-01-02'); INSERT INTO transactions VALUES (1, '2020-01-01', 100), (2, '2020-01-02', 200), (2, '2020-01-02', 300);",
+  "enforceOrder": true
+}

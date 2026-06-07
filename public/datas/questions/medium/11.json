@@ -1,0 +1,17 @@
+{
+  "id": 11,
+  "title": "Movie Rating",
+  "difficulty": "Medium",
+  "company": "None",
+  "tags": [
+    "UNION ALL",
+    "ORDER BY",
+    "LIMIT"
+  ],
+  "scenario": "Find the user who has rated the most movies (alphabetical order in tie), and the movie with the highest average rating in Feb 2020 (alphabetical order in tie).",
+  "tableSchema": "Movies (movie_id INT, title VARCHAR), Users (user_id INT, name VARCHAR), MovieRating (movie_id INT, user_id INT, rating INT, created_at DATE)",
+  "hint": "You need two separate queries joined by UNION ALL.",
+  "correctQuery": "(SELECT u.name AS results FROM Users u JOIN MovieRating mr ON u.user_id = mr.user_id GROUP BY u.name ORDER BY COUNT(*) DESC, u.name ASC LIMIT 1) UNION ALL (SELECT m.title FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id WHERE mr.created_at >= '2020-02-01' AND mr.created_at <= '2020-02-29' GROUP BY m.title ORDER BY AVG(mr.rating) DESC, m.title ASC LIMIT 1);",
+  "setupSQL": "CREATE TABLE Movies (movie_id INT, title VARCHAR); CREATE TABLE Users (user_id INT, name VARCHAR); CREATE TABLE MovieRating (movie_id INT, user_id INT, rating INT, created_at DATE); INSERT INTO Movies VALUES (1, 'Avengers'), (2, 'Frozen'); INSERT INTO Users VALUES (1, 'Daniel'), (2, 'Monica'); INSERT INTO MovieRating VALUES (1, 1, 3, '2020-01-12'), (1, 2, 4, '2020-02-11'), (2, 1, 5, '2020-02-12');",
+  "enforceOrder": true
+}

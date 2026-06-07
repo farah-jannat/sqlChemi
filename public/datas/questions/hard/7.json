@@ -1,0 +1,17 @@
+{
+  "id": 7,
+  "title": "Restaurant Growth",
+  "difficulty": "Hard",
+  "company": "None",
+  "tags": [
+    "Window Functions",
+    "Date Arithmetic",
+    "Aggregation"
+  ],
+  "scenario": "You are the restaurant owner and you want to know a possible expansion. Compute the moving average of how much the customer paid in a 7-day window (current day + 6 days before). Display visited_on, the summed amount of those 7 days, and the average amount rounded to 2 decimals. Order by visited_on ASC.",
+  "tableSchema": "customer (customer_id INT, name VARCHAR, visited_on DATE, amount INT)",
+  "hint": "First aggregate daily totals using a subquery or CTE, then apply a rolling window function: SUM(amount) OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND CURRENT ROW). Remember, the first 6 days won't have a full 7-day window, so filter them out using an OFFSET or date baseline filter.",
+  "correctQuery": "WITH daily_spending AS (SELECT visited_on, SUM(amount) AS daily_amount FROM customer GROUP BY visited_on), rolling_metrics AS (SELECT visited_on, SUM(daily_amount) OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS amount, ROUND(AVG(daily_amount) OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND CURRENT ROW), 2) AS average_amount, ROW_NUMBER() OVER (ORDER BY visited_on) AS row_num FROM daily_spending) SELECT visited_on, amount, average_amount FROM rolling_metrics WHERE row_num >= 7 ORDER BY visited_on ASC;",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, name VARCHAR, visited_on DATE, amount INT); INSERT INTO customer VALUES (1, 'Jhon', '2019-01-01', 100), (2, 'Daniel', '2019-01-02', 110), (3, 'Jade', '2019-01-03', 120), (4, 'Khaled', '2019-01-04', 130), (5, 'Winston', '2019-01-05', 110), (6, 'Elvis', '2019-01-06', 140), (7, 'Anna', '2019-01-07', 150), (8, 'Maria', '2019-01-08', 80), (9, 'Jame', '2019-01-09', 110);",
+  "enforceOrder": true
+}

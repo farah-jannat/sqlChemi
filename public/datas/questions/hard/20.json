@@ -1,0 +1,17 @@
+{
+  "id": 20,
+  "title": "Trips and Users",
+  "difficulty": "Hard",
+  "company": "LeetCode 262",
+  "tags": [
+    "JOIN",
+    "Aggregation",
+    "Percentage"
+  ],
+  "scenario": "Write a query to find the cancellation rate of requests with unbanned users (both client and driver must not be banned) between '2013-10-01' and '2013-10-03'. The cancellation rate is computed by dividing the number of canceled requests by the total number of requests. Return the result table containing 'day' and 'cancellation_rate' (rounded to 2 decimal places).",
+  "tableSchema": "trips (id INT, client_id INT, driver_id INT, status VARCHAR, request_at DATE)\nusers (users_id INT, banned VARCHAR, role VARCHAR)",
+  "hint": "Filter the trips by date and joined users status. Use CASE WHEN for cancellation count.",
+  "correctQuery": "SELECT request_at AS Day, ROUND(SUM(CASE WHEN status != 'completed' THEN 1 ELSE 0 END)::NUMERIC / COUNT(*), 2) AS \"cancellation_rate\" FROM trips WHERE client_id IN (SELECT users_id FROM users WHERE banned = 'No') AND driver_id IN (SELECT users_id FROM users WHERE banned = 'No') AND request_at BETWEEN '2013-10-01' AND '2013-10-03' GROUP BY request_at;",
+  "setupSQL": "CREATE TABLE trips (id INT, client_id INT, driver_id INT, status VARCHAR, request_at DATE); CREATE TABLE users (users_id INT, banned VARCHAR, role VARCHAR); INSERT INTO users VALUES (1, 'No', 'client'), (2, 'Yes', 'client'), (3, 'No', 'client'), (10, 'No', 'driver'); INSERT INTO trips VALUES (1, 1, 10, 'completed', '2013-10-01'), (2, 2, 10, 'cancelled_by_driver', '2013-10-01'), (3, 3, 10, 'completed', '2013-10-01');",
+  "enforceOrder": false
+}

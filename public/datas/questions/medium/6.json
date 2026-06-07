@@ -1,0 +1,17 @@
+{
+  "id": 6,
+  "title": "Consecutive Numbers",
+  "difficulty": "Medium",
+  "company": "None",
+  "tags": [
+    "Self-Joins",
+    "Subqueries",
+    "Window Functions"
+  ],
+  "scenario": "Find all numbers that appear at least three times consecutively in the logs table. Return the result column as ConsecutiveNums.",
+  "tableSchema": "logs (id INT, num INT)",
+  "hint": "You can join the table to itself twice (l1, l2, l3) where l2.id = l1.id + 1 and l3.id = l2.id + 1, ensuring all three share the same num value.",
+  "correctQuery": "SELECT DISTINCT l1.num AS \"ConsecutiveNums\" FROM logs l1 JOIN logs l2 ON l1.id = l2.id - 1 JOIN logs l3 ON l2.id = l3.id - 1 WHERE l1.num = l2.num AND l2.num = l3.num;",
+  "setupSQL": "CREATE TABLE logs (id INT, num INT); INSERT INTO logs VALUES (1, 1), (2, 1), (3, 1), (4, 2), (5, 1), (6, 2), (7, 2);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 10,
+  "title": "Monthly Transactions II",
+  "difficulty": "Medium",
+  "company": "None",
+  "tags": [
+    "Aggregation",
+    "UNION ALL"
+  ],
+  "scenario": "Find for each month and country: number of approved transactions, their total amount, number of chargeback transactions, and their total amount.",
+  "tableSchema": "Transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE), Chargebacks (trans_id INT, trans_date DATE)",
+  "hint": "Use UNION ALL to combine transactions and chargebacks, then group by month and country.",
+  "correctQuery": "SELECT month, country, SUM(approved_count) AS approved_count, SUM(approved_amount) AS approved_amount, SUM(chargeback_count) AS chargeback_count, SUM(chargeback_amount) AS chargeback_amount FROM (SELECT TO_CHAR(trans_date, 'YYYY-MM') AS month, country, COUNT(*) AS approved_count, SUM(amount) AS approved_amount, 0 AS chargeback_count, 0 AS chargeback_amount FROM Transactions WHERE state = 'approved' GROUP BY 1, 2 UNION ALL SELECT TO_CHAR(c.trans_date, 'YYYY-MM'), t.country, 0, 0, COUNT(*), SUM(t.amount) FROM Chargebacks c JOIN Transactions t ON c.trans_id = t.id GROUP BY 1, 2) AS T GROUP BY 1, 2;",
+  "setupSQL": "CREATE TABLE Transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); CREATE TABLE Chargebacks (trans_id INT, trans_date DATE); INSERT INTO Transactions VALUES (1, 'US', 'approved', 1000, '2019-01-01'), (2, 'US', 'declined', 500, '2019-01-02'), (3, 'US', 'approved', 2000, '2019-02-01'); INSERT INTO Chargebacks VALUES (1, '2019-01-05');",
+  "enforceOrder": false
+}

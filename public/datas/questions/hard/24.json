@@ -1,0 +1,16 @@
+{
+  "id": 24,
+  "title": "Find the Quiet Students in All Exams",
+  "difficulty": "Hard",
+  "company": "LeetCode 1412",
+  "tags": [
+    "Aggregation",
+    "EXCEPT"
+  ],
+  "scenario": "A quiet student is one who took at least one exam and did not score the highest or the lowest score in any exam. Find the 'student_id' and 'student_name' of all quiet students, ordered by 'student_id'.",
+  "tableSchema": "student (student_id INT, student_name VARCHAR), exam (exam_id INT, student_id INT, score INT)",
+  "hint": "Identify students with max/min scores and exclude them from the list of students who took exams.",
+  "correctQuery": "SELECT s.student_id, s.student_name FROM student s JOIN exam e ON s.student_id = e.student_id GROUP BY s.student_id, s.student_name HAVING s.student_id NOT IN (SELECT student_id FROM exam WHERE score IN (SELECT MAX(score) FROM exam GROUP BY exam_id) OR score IN (SELECT MIN(score) FROM exam GROUP BY exam_id)) ORDER BY s.student_id;",
+  "setupSQL": "CREATE TABLE student (student_id INT, student_name VARCHAR); CREATE TABLE exam (exam_id INT, student_id INT, score INT); INSERT INTO student VALUES (1, 'Daniel'), (2, 'Jade'), (3, 'Stella'); INSERT INTO exam VALUES (10, 1, 70), (10, 2, 80), (10, 3, 90), (20, 1, 80);",
+  "enforceOrder": true
+}

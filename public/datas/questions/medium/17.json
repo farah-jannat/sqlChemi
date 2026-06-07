@@ -1,0 +1,15 @@
+{
+  "id": 17,
+  "title": "Last Person to Fit in the Bus",
+  "difficulty": "Medium",
+  "company": "LeetCode 1204",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the last person to board the bus such that the total weight <= 1000.",
+  "tableSchema": "Queue (person_id INT, person_name VARCHAR, weight INT, turn INT)",
+  "hint": "Use a running total (SUM OVER ORDER BY turn) and take the last row where the sum <= 1000.",
+  "correctQuery": "SELECT person_name FROM (SELECT person_name, SUM(weight) OVER(ORDER BY turn) AS running_weight FROM Queue) t WHERE running_weight <= 1000 ORDER BY running_weight DESC LIMIT 1;",
+  "setupSQL": "CREATE TABLE Queue (person_id INT, person_name VARCHAR, weight INT, turn INT); INSERT INTO Queue VALUES (5, 'Alice', 250, 1), (4, 'Bob', 500, 2), (3, 'John', 400, 3);",
+  "enforceOrder": false
+}

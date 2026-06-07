@@ -1,0 +1,16 @@
+{
+  "id": 23,
+  "title": "Report Contiguous Dates",
+  "difficulty": "Hard",
+  "company": "LeetCode 1225",
+  "tags": [
+    "Date Arithmetic",
+    "Grouping"
+  ],
+  "scenario": "Report the period of start_date and end_date for each task ('failed' or 'succeeded') that occurred in 2019. Consecutive days should be grouped into one period. Return 'period_state', 'start_date', 'end_date'.",
+  "tableSchema": "failed (fail_date DATE), succeeded (success_date DATE)",
+  "hint": "Combine tables, subtract a row_number from the date to create groups of consecutive dates.",
+  "correctQuery": "WITH T AS (SELECT fail_date AS date, 'failed' AS state FROM failed UNION ALL SELECT success_date, 'succeeded' FROM succeeded) SELECT state AS period_state, MIN(date) AS start_date, MAX(date) AS end_date FROM (SELECT *, ROW_NUMBER() OVER(PARTITION BY state ORDER BY date) AS rn, (date - (ROW_NUMBER() OVER(PARTITION BY state ORDER BY date) * INTERVAL '1 day'))::DATE AS grp FROM T WHERE date BETWEEN '2019-01-01' AND '2019-12-31') AS T2 GROUP BY state, grp ORDER BY start_date;",
+  "setupSQL": "CREATE TABLE failed (fail_date DATE); CREATE TABLE succeeded (success_date DATE); INSERT INTO failed VALUES ('2019-01-01'), ('2019-01-02'), ('2019-01-03'), ('2019-01-06'); INSERT INTO succeeded VALUES ('2019-01-04'), ('2019-01-05'), ('2019-01-07');",
+  "enforceOrder": true
+}

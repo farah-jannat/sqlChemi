@@ -1,0 +1,16 @@
+{
+  "id": 13,
+  "title": "Investments in 2016",
+  "difficulty": "Medium",
+  "company": "",
+  "tags": [
+    "Window Functions",
+    "Subqueries"
+  ],
+  "scenario": "Find the sum of all total investment values of all policyholders who have the same tiv_2015 as at least one other policyholder, and are not located in the same city as any other policyholder.",
+  "tableSchema": "Insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Count by tiv_2015 and Count by lat/lon to identify duplicates.",
+  "correctQuery": "SELECT ROUND(SUM(tiv_2016), 2) AS tiv_2016 FROM Insurance WHERE tiv_2015 IN (SELECT tiv_2015 FROM Insurance GROUP BY tiv_2015 HAVING COUNT(*) > 1) AND (lat, lon) IN (SELECT lat, lon FROM Insurance GROUP BY lat, lon HAVING COUNT(*) = 1);",
+  "setupSQL": "CREATE TABLE Insurance (pid INT, tiv_2015 DECIMAL(5,2), tiv_2016 DECIMAL(5,2), lat DECIMAL(5,2), lon DECIMAL(5,2)); INSERT INTO Insurance VALUES (1, 10, 5, 10, 10), (2, 20, 20, 20, 20), (3, 10, 30, 30, 30);",
+  "enforceOrder": false
+}
