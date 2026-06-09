@@ -860,7 +860,7 @@ export default function DynamicSQLQuiz() {
             {/* LEFT AREA PANEL: SCENARIO & SCHEMA */}
             <section
               // className={`border h-[calc(100vh-10.5rem)] h-[100vh] overflow-y-auto custom-scroll p-5 rounded-3xl shadow-xl space-y-5 transition-all ${panelBg} lg:col-span-5`}
-              className={`${theme === "light" ? "light" : "dark"} border h-[calc(100vh-10.5rem)] overflow-y-auto custom-scroll p-5 rounded-3xl md:col-span-5 shadow-xl space-y-5 transition-all ${panelBg} `}
+              className={`${theme === "light" ? "light" : "dark"} border h-[calc(100vh-9.8rem)] overflow-y-auto custom-scroll p-5 rounded-3xl md:col-span-5 shadow-xl space-y-5 transition-all ${panelBg} `}
             >
               <div
                 className={`flex items-center justify-between border-b pb-3 ${theme === "light" ? "border-slate-200" : "border-slate-800/60"}`}
