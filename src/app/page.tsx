@@ -189,7 +189,8 @@ export default function DynamicSQLQuiz() {
 
   const handleLoadStaticQuiz = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsGenerating(true);
+    setIsViewingSetup(true);
+    // setIsGenerating(true);
 
     try {
       const manifestRes = await fetch("/datas/manifest.json");
@@ -240,7 +241,7 @@ export default function DynamicSQLQuiz() {
       console.error("Error loading quiz:", error);
       alert("There was an error loading the questions.");
     } finally {
-      setIsGenerating(false);
+      // setIsGenerating(false);
     }
   };
 
@@ -830,14 +831,10 @@ export default function DynamicSQLQuiz() {
               <div className="flex items-center gap-2.5 w-full sm:w-auto">
                 <button
                   type="submit"
-                  disabled={isGenerating}
+                  disabled={isViewingSetup}
                   className={`w-full sm:w-auto px-4 h-[38px] border rounded-xl font-medium text-xs tracking-wide shadow-sm hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 whitespace-nowrap cursor-pointer ${staticBtn}`}
                 >
-                  {/* 🧹{" "}
-                  {questions.length > 0
-                    ? "Reset "
-                    : "Static Playroom"} */}
-                  🧹 Reset
+                  {isViewingSetup ? "Loading... 🐾" : "🧹 Reset"}
                 </button>
 
                 <button
