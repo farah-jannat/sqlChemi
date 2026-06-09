@@ -257,7 +257,7 @@ export default function DynamicSQLQuiz() {
         company: "",
         theme: actualTagFilter,
         difficulty,
-        count: numQuestions,
+        count: 5,
       });
 
       if (customBatch && customBatch.length > 0) {
@@ -375,14 +375,144 @@ export default function DynamicSQLQuiz() {
   //   }
   // };
 
+  // const handleCheckAnswer = async () => {
+  //   setAnimationKey((prev) => prev + 1);
+  //   const activeQ = questions[currentIndex];
+  //   if (!activeQ || !pgEngine) return;
+
+  //   try {
+  //     // 1. Reset and Rebuild the Database Environment
+  //     // We await these strictly to ensure the table exists before querying
+  //     if (activeQ.setupSQL) {
+  //       await pgEngine.exec(`
+  //       DROP SCHEMA IF EXISTS public CASCADE;
+  //       CREATE SCHEMA public;
+  //       GRANT ALL ON SCHEMA public TO public;
+  //     `);
+  //       await pgEngine.exec(activeQ.setupSQL);
+  //     }
+
+  //     // 2. Execute Queries
+  //     // Use NOT EXISTS in your JSON's correctQuery instead of NOT IN to avoid NULL traps.
+  //     const goldenResult = await pgEngine.query(activeQ.correctQuery);
+  //     const studentResult = await pgEngine.query(userQuery);
+
+  //     // 3. Normalization: Standardize rows to be order and case-insensitive
+  //     // const normalize = (rows: any[]) => {
+  //     //   if (!rows || !Array.isArray(rows)) return [];
+
+  //     //   return rows.map((row) => {
+  //     //     const normalizedRow: any = {};
+  //     //     // Sort keys alphabetically to ignore column selection order
+  //     //     const sortedKeys = Object.keys(row).sort();
+
+  //     //     for (const key of sortedKeys) {
+  //     //       const val = row[key];
+  //     //       // Standardize types/strings for content-only matching
+  //     //       if (val === null || val === undefined) {
+  //     //         normalizedRow[key] = null;
+  //     //       } else if (typeof val === "string") {
+  //     //         normalizedRow[key] = val.trim().toLowerCase();
+  //     //       } else {
+  //     //         normalizedRow[key] = val;
+  //     //       }
+  //     //     }
+  //     //     return normalizedRow;
+  //     //   });
+  //     // };
+
+  //     console.log("Golden raw:", goldenResult.rows);
+  //     console.log("Student raw:", studentResult.rows);
+
+  //     const normalize = (rows: any[]) => {
+  //       if (!rows || !Array.isArray(rows)) return [];
+
+  //       return rows.map((row) => {
+  //         const normalizedRow: any = {};
+  //         const sortedKeys = Object.keys(row).sort();
+
+  //         for (const key of sortedKeys) {
+  //           const val = row[key];
+  //           const normalizedKey = key.toLowerCase();
+
+  //           // Handle nulls explicitly
+  //           if (val === null || val === undefined) {
+  //             normalizedRow[normalizedKey] = null;
+  //           }
+  //           // Convert Dates to ISO string for consistency
+  //           else if (val instanceof Date) {
+  //             normalizedRow[normalizedKey] = val.toISOString();
+  //           }
+  //           // Standardize strings and numbers
+  //           else {
+  //             // String(val) handles both numbers (840) and strings ('840')
+  //             // .trim() removes accidental spaces
+  //             // .toLowerCase() keeps case consistency
+  //             normalizedRow[normalizedKey] = String(val).trim().toLowerCase();
+  //           }
+  //         }
+  //         return normalizedRow;
+  //       });
+  //     };
+  //     const goldenCleaned = normalize(goldenResult.rows);
+  //     const studentCleaned = normalize(studentResult.rows);
+
+  //     // 4. Comparison: Sort rows to ignore "ORDER BY" variations
+  //     const sortFn = (a: any, b: any) =>
+  //       JSON.stringify(a).localeCompare(JSON.stringify(b));
+
+  //     const goldenSorted = [...goldenCleaned].sort(sortFn);
+  //     const studentSorted = [...studentCleaned].sort(sortFn);
+
+  //     const isMatch =
+  //       JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
+
+  //     // Debugging logs for your console
+  //     console.log("Golden (Normalized):", goldenSorted);
+  //     console.log("Student (Normalized):", studentSorted);
+
+  //     // 5. Feedback Dispatcher
+  //     if (isMatch) {
+  //       setFeedback({
+  //         status: "correct",
+  //         message: "🎉 🏆 Success! Your query produced the correct results! 🐾",
+  //       });
+  //     } else {
+  //       setFeedback({
+  //         status: "incorrect",
+  //         message:
+  //           "❌ Output Mismatch. Your query executed, but the data result does not match the solution.",
+  //       });
+  //     }
+  //   } catch (error: any) {
+  //     console.error("Database Execution Error:", error);
+  //     setFeedback({
+  //       status: "error",
+  //       message: `💻 Database Error: ${error.message || error}`,
+  //     });
+  //   }
+  // };
+
+  //  ---- handlecheck ans for static and ai qustions ----
   const handleCheckAnswer = async () => {
     setAnimationKey((prev) => prev + 1);
     const activeQ = questions[currentIndex];
-    if (!activeQ || !pgEngine) return;
 
+    // Safety check
+    if (!activeQ || !pgEngine) return;
+    if (!activeQ.correctQuery) {
+      setFeedback({
+        status: "error",
+        message: "Question missing correctQuery.",
+      });
+      return;
+    }
+
+    // setIsChecking(true); // Assuming you have a loading state for the button
     try {
       // 1. Reset and Rebuild the Database Environment
-      // We await these strictly to ensure the table exists before querying
+      // This works for BOTH static and AI questions, as long as the AI
+      // provides the necessary 'setupSQL' in the JSON response.
       if (activeQ.setupSQL) {
         await pgEngine.exec(`
         DROP SCHEMA IF EXISTS public CASCADE;
@@ -393,103 +523,71 @@ export default function DynamicSQLQuiz() {
       }
 
       // 2. Execute Queries
-      // Use NOT EXISTS in your JSON's correctQuery instead of NOT IN to avoid NULL traps.
       const goldenResult = await pgEngine.query(activeQ.correctQuery);
       const studentResult = await pgEngine.query(userQuery);
 
-      // 3. Normalization: Standardize rows to be order and case-insensitive
-      // const normalize = (rows: any[]) => {
-      //   if (!rows || !Array.isArray(rows)) return [];
-
-      //   return rows.map((row) => {
-      //     const normalizedRow: any = {};
-      //     // Sort keys alphabetically to ignore column selection order
-      //     const sortedKeys = Object.keys(row).sort();
-
-      //     for (const key of sortedKeys) {
-      //       const val = row[key];
-      //       // Standardize types/strings for content-only matching
-      //       if (val === null || val === undefined) {
-      //         normalizedRow[key] = null;
-      //       } else if (typeof val === "string") {
-      //         normalizedRow[key] = val.trim().toLowerCase();
-      //       } else {
-      //         normalizedRow[key] = val;
-      //       }
-      //     }
-      //     return normalizedRow;
-      //   });
-      // };
-
-      console.log("Golden raw:", goldenResult.rows);
-      console.log("Student raw:", studentResult.rows);
-
+      // 3. Normalize Result Sets
       const normalize = (rows: any[]) => {
         if (!rows || !Array.isArray(rows)) return [];
-
         return rows.map((row) => {
           const normalizedRow: any = {};
           const sortedKeys = Object.keys(row).sort();
-
           for (const key of sortedKeys) {
             const val = row[key];
             const normalizedKey = key.toLowerCase();
-
-            // Handle nulls explicitly
             if (val === null || val === undefined) {
               normalizedRow[normalizedKey] = null;
-            }
-            // Convert Dates to ISO string for consistency
-            else if (val instanceof Date) {
+            } else if (val instanceof Date) {
               normalizedRow[normalizedKey] = val.toISOString();
-            }
-            // Standardize strings and numbers
-            else {
-              // String(val) handles both numbers (840) and strings ('840')
-              // .trim() removes accidental spaces
-              // .toLowerCase() keeps case consistency
+            } else {
               normalizedRow[normalizedKey] = String(val).trim().toLowerCase();
             }
           }
           return normalizedRow;
         });
       };
+
       const goldenCleaned = normalize(goldenResult.rows);
       const studentCleaned = normalize(studentResult.rows);
 
-      // 4. Comparison: Sort rows to ignore "ORDER BY" variations
-      const sortFn = (a: any, b: any) =>
-        JSON.stringify(a).localeCompare(JSON.stringify(b));
+      // 4. Comparison logic
+      let isMatch = false;
 
-      const goldenSorted = [...goldenCleaned].sort(sortFn);
-      const studentSorted = [...studentCleaned].sort(sortFn);
-
-      const isMatch =
-        JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
-
-      // Debugging logs for your console
-      console.log("Golden (Normalized):", goldenSorted);
-      console.log("Student (Normalized):", studentSorted);
+      if (activeQ.enforceOrder) {
+        // Strict row-by-row comparison
+        isMatch =
+          JSON.stringify(goldenCleaned) === JSON.stringify(studentCleaned);
+      } else {
+        // Flexible comparison (ignores row order)
+        const sortFn = (a: any, b: any) =>
+          JSON.stringify(a).localeCompare(JSON.stringify(b));
+        const goldenSorted = [...goldenCleaned].sort(sortFn);
+        const studentSorted = [...studentCleaned].sort(sortFn);
+        isMatch =
+          JSON.stringify(goldenSorted) === JSON.stringify(studentSorted);
+      }
 
       // 5. Feedback Dispatcher
       if (isMatch) {
         setFeedback({
           status: "correct",
-          message: "🎉 🏆 Success! Your query produced the correct results! 🐾",
+          message: "🎉 🏆 Success! Your query produced the correct results!",
         });
       } else {
         setFeedback({
           status: "incorrect",
           message:
-            "❌ Output Mismatch. Your query executed, but the data result does not match the solution.",
+            "❌ Output Mismatch. Your query logic does not match the expected dataset.",
         });
       }
     } catch (error: any) {
       console.error("Database Execution Error:", error);
       setFeedback({
         status: "error",
-        message: `💻 Database Error: ${error.message || error}`,
+        message: `💻 SQL Syntax Error: ${error.message || "Invalid Query"}`,
       });
+    } finally {
+      // setIsChecking(false);
     }
   };
 
