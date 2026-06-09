@@ -1,0 +1,15 @@
+{
+  "id": 55,
+  "title": "Policyholder Variance",
+  "difficulty": "Medium",
+  "company": "Unique-Finance",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the difference between the maximum and minimum 'tiv_2016' for each latitude 'lat'. Return 'lat' and 'tiv_range'.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Group by lat and find MAX(tiv_2016) - MIN(tiv_2016).",
+  "correctQuery": "SELECT lat, MAX(tiv_2016) - MIN(tiv_2016) AS tiv_range FROM insurance GROUP BY lat;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 100, 50, 10, 10), (2, 200, 150, 10, 10), (3, 50, 30, 20, 20);",
+  "enforceOrder": false
+}

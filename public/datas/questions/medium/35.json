@@ -1,0 +1,16 @@
+{
+  "id": 35,
+  "title": "Rising Temperature",
+  "difficulty": "Medium",
+  "company": "LeetCode 197",
+  "tags": [
+    "Date Arithmetic",
+    "Self Join"
+  ],
+  "scenario": "Find all dates' 'id' with higher temperatures compared to its previous dates (yesterday). Return the result table as 'id'.",
+  "tableSchema": "weather (id INT, recordDate DATE, temperature INT)",
+  "hint": "Join with a date difference of 1 day.",
+  "correctQuery": "SELECT w1.id FROM weather w1 JOIN weather w2 ON w1.recordDate = DATE(w2.recordDate, '+1 day') WHERE w1.temperature > w2.temperature;",
+  "setupSQL": "CREATE TABLE weather (id INT, recordDate DATE, temperature INT); INSERT INTO weather VALUES (1, '2015-01-01', 10), (2, '2015-01-02', 25), (3, '2015-01-03', 20), (4, '2015-01-04', 30);",
+  "enforceOrder": false
+}

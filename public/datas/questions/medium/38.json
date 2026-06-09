@@ -1,0 +1,16 @@
+{
+  "id": 38,
+  "title": "Confirmation Rate",
+  "difficulty": "Medium",
+  "company": "LeetCode 1934",
+  "tags": [
+    "Aggregation",
+    "LEFT JOIN"
+  ],
+  "scenario": "Find the confirmation rate of each user. Confirmation rate is the number of 'confirmed' messages divided by the total number of requested confirmation messages. Return the result table as 'user_id' and 'confirmation_rate' (rounded to 2 decimal places).",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Use AVG(action='confirmed') to get the rate for each user.",
+  "correctQuery": "SELECT s.user_id, ROUND(IFNULL(AVG(c.action = 'confirmed'), 0), 2) AS confirmation_rate FROM signups s LEFT JOIN confirmations c ON s.user_id = c.user_id GROUP BY s.user_id;",
+  "setupSQL": "CREATE TABLE signups (user_id INT, time_stamp DATETIME); CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO signups VALUES (3, '2020-03-21'), (7, '2020-01-04'); INSERT INTO confirmations VALUES (3, '2021-01-06', 'timeout'), (3, '2021-07-14', 'confirmed'), (7, '2021-06-12', 'confirmed');",
+  "enforceOrder": false
+}

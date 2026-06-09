@@ -1,0 +1,16 @@
+{
+  "id": 30,
+  "title": "Nth Highest Salary",
+  "difficulty": "Medium",
+  "company": "LeetCode 177",
+  "tags": [
+    "Subqueries",
+    "LIMIT"
+  ],
+  "scenario": "Write a query to find the nth highest distinct salary from the Employee table. If there is no nth highest salary, return null. Return the result table as 'NthHighestSalary'.",
+  "tableSchema": "employee (id INT, salary INT)",
+  "hint": "Use LIMIT 1 OFFSET n-1 on the distinct sorted salaries.",
+  "correctQuery": "SELECT (SELECT DISTINCT salary FROM employee ORDER BY salary DESC LIMIT 1 OFFSET 1) AS NthHighestSalary;",
+  "setupSQL": "CREATE TABLE employee (id INT, salary INT); INSERT INTO employee VALUES (1, 100), (2, 200), (3, 300);",
+  "enforceOrder": true
+}

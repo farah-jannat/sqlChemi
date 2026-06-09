@@ -1,0 +1,16 @@
+{
+  "id": 39,
+  "title": "Monthly Retention Rate",
+  "difficulty": "Medium",
+  "company": "Unique-Streaming",
+  "tags": [
+    "Date Arithmetic",
+    "Self Join"
+  ],
+  "scenario": "Find the percentage of users active in the current month who were also active in the previous month. Return the result table containing 'month' and 'retention_rate'.",
+  "tableSchema": "user_activity (user_id INT, activity_month DATE)",
+  "hint": "Join the table with itself where the activity_month is offset by 1 month. Divide the count of joined users by the total count of the current month.",
+  "correctQuery": "SELECT curr.activity_month AS month, ROUND(COUNT(DISTINCT prev.user_id) * 100.0 / COUNT(DISTINCT curr.user_id), 2) AS retention_rate FROM user_activity curr LEFT JOIN user_activity prev ON curr.user_id = prev.user_id AND prev.activity_month = DATE(curr.activity_month, '-1 month') GROUP BY curr.activity_month;",
+  "setupSQL": "CREATE TABLE user_activity (user_id INT, activity_month DATE); INSERT INTO user_activity VALUES (1, '2026-01-01'), (2, '2026-01-01'), (1, '2026-02-01'), (3, '2026-02-01');",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 54,
+  "title": "Total Investment per City",
+  "difficulty": "Medium",
+  "company": "Unique-Urban",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Calculate the total 'tiv_2015' investment value per city location defined by (lat, lon). Return 'lat', 'lon', and 'total_tiv_2015'.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Group by lat and lon, then sum tiv_2015.",
+  "correctQuery": "SELECT lat, lon, SUM(tiv_2015) AS total_tiv_2015 FROM insurance GROUP BY lat, lon;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 100, 50, 10, 10), (2, 200, 20, 10, 10), (3, 50, 30, 20, 20);",
+  "enforceOrder": false
+}

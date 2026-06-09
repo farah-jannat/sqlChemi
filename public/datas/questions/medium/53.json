@@ -1,0 +1,15 @@
+{
+  "id": 53,
+  "title": "Policyholder Value Ranking",
+  "difficulty": "Medium",
+  "company": "Unique-Insurance",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Rank all policyholders by their 'tiv_2015' value in descending order globally. Return the 'pid' and the 'rank_value'.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Use RANK() OVER (ORDER BY tiv_2015 DESC).",
+  "correctQuery": "SELECT pid, RANK() OVER(ORDER BY tiv_2015 DESC) AS rank_value FROM insurance;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 100, 50, 10, 10), (2, 200, 20, 20, 20), (3, 100, 30, 30, 30);",
+  "enforceOrder": true
+}

@@ -1,0 +1,16 @@
+{
+  "id": 50,
+  "title": "High Activity Policyholders",
+  "difficulty": "Medium",
+  "company": "Unique-Insurance",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Find policyholders whose 'tiv_2016' is higher than the average 'tiv_2016' of all policyholders in their city (defined by (lat, lon) pairs). Return the 'pid' of these policyholders.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Use an analytic window function to calculate the average tiv_2016 per location, then filter the main table.",
+  "correctQuery": "SELECT pid FROM (SELECT pid, tiv_2016, AVG(tiv_2016) OVER(PARTITION BY lat, lon) AS avg_loc_tiv FROM insurance) t WHERE tiv_2016 > avg_loc_tiv;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 10, 100, 10, 10), (2, 20, 200, 10, 10), (3, 30, 50, 20, 20);",
+  "enforceOrder": false
+}

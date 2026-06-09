@@ -1,0 +1,16 @@
+{
+  "id": 32,
+  "title": "Consecutive Numbers",
+  "difficulty": "Medium",
+  "company": "LeetCode 180",
+  "tags": [
+    "Window Functions",
+    "Self Join"
+  ],
+  "scenario": "Find all numbers that appear at least three times consecutively in the 'Logs' table. Return the result table as 'ConsecutiveNums'.",
+  "tableSchema": "logs (id INT, num INT)",
+  "hint": "Use the LEAD() window function to look ahead at the next two rows.",
+  "correctQuery": "SELECT DISTINCT num AS ConsecutiveNums FROM (SELECT num, LEAD(num, 1) OVER (ORDER BY id) AS next1, LEAD(num, 2) OVER (ORDER BY id) AS next2 FROM logs) AS t WHERE num = next1 AND next1 = next2;",
+  "setupSQL": "CREATE TABLE logs (id INT, num INT); INSERT INTO logs VALUES (1, 1), (2, 1), (3, 1), (4, 2), (5, 1), (6, 2), (7, 2);",
+  "enforceOrder": false
+}

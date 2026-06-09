@@ -1,0 +1,15 @@
+{
+  "id": 58,
+  "title": "Top Investment Ratio",
+  "difficulty": "Medium",
+  "company": "Unique-Finance",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the policyholder with the highest 'tiv_2016' relative to their 'tiv_2015' value in their respective latitude 'lat'. Return 'pid' and the ratio 'investment_ratio'.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Rank by (tiv_2016/tiv_2015) per lat and pick rank 1.",
+  "correctQuery": "SELECT pid, investment_ratio FROM (SELECT pid, (tiv_2016 * 1.0 / tiv_2015) AS investment_ratio, RANK() OVER(PARTITION BY lat ORDER BY (tiv_2016 * 1.0 / tiv_2015) DESC) AS rnk FROM insurance) t WHERE rnk = 1;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 100, 200, 10, 10), (2, 100, 150, 10, 10), (3, 50, 50, 20, 20);",
+  "enforceOrder": false
+}

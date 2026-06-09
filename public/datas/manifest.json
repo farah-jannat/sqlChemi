@@ -228,5 +228,174 @@
       "String Functions",
       "Data Cleaning"
     ]
+  },
+  {
+    "id": 29,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries",
+      "IFNULL"
+    ]
+  },
+  {
+    "id": 30,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries",
+      "LIMIT"
+    ]
+  },
+  {
+    "id": 31,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "DENSE_RANK"
+    ]
+  },
+  {
+    "id": 32,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Self Join"
+    ]
+  },
+  {
+    "id": 33,
+    "difficulty": "Medium",
+    "tags": [
+      "Joins",
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 34,
+    "difficulty": "Medium",
+    "tags": [
+      "Self Join",
+      "DELETE"
+    ]
+  },
+  {
+    "id": 35,
+    "difficulty": "Medium",
+    "tags": [
+      "Date Arithmetic",
+      "Self Join"
+    ]
+  },
+  {
+    "id": 36,
+    "difficulty": "Medium",
+    "tags": [
+      "CASE Statement"
+    ]
+  },
+  {
+    "id": 37,
+    "difficulty": "Medium",
+    "tags": [
+      "Joins",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 38,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "LEFT JOIN"
+    ]
+  },
+  {
+    "id": 39,
+    "difficulty": "Medium",
+    "tags": [
+      "Date Arithmetic",
+      "Self Join"
+    ]
+  },
+  {
+    "id": 41,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Grouping"
+    ]
+  },
+  {
+    "id": 49,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 50,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 51,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "GROUP BY"
+    ]
+  },
+  {
+    "id": 52,
+    "difficulty": "Medium",
+    "tags": [
+      "Math"
+    ]
+  },
+  {
+    "id": 53,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 54,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 55,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 56,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 57,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "COUNT DISTINCT"
+    ]
+  },
+  {
+    "id": 58,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
   }
 ]

@@ -1,0 +1,15 @@
+{
+  "id": 52,
+  "title": "Investment Growth Rate",
+  "difficulty": "Medium",
+  "company": "Unique-Finance",
+  "tags": [
+    "Math"
+  ],
+  "scenario": "Calculate the growth rate from 'tiv_2015' to 'tiv_2016' for each policyholder. Return the 'pid' and 'growth_rate', where 'growth_rate' is ((tiv_2016 - tiv_2015) / tiv_2015) * 100.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Handle potential division by zero if tiv_2015 is zero.",
+  "correctQuery": "SELECT pid, ((tiv_2016 - tiv_2015) * 100.0 / NULLIF(tiv_2015, 0)) AS growth_rate FROM insurance;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 100, 120, 10, 10), (2, 200, 180, 20, 20);",
+  "enforceOrder": false
+}

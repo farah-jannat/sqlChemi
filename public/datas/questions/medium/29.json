@@ -1,0 +1,16 @@
+{
+  "id": 29,
+  "title": "Second Highest Salary",
+  "difficulty": "Medium",
+  "company": "LeetCode 176",
+  "tags": [
+    "Subqueries",
+    "IFNULL"
+  ],
+  "scenario": "Write a query to find the second highest distinct salary from the Employee table. If there is no second highest salary, return null. Return the result table as 'SecondHighestSalary'.",
+  "tableSchema": "employee (id INT, salary INT)",
+  "hint": "Use a subquery to find the MAX(salary) excluding the overall MAX(salary), or use OFFSET with LIMIT.",
+  "correctQuery": "SELECT (SELECT DISTINCT salary FROM employee ORDER BY salary DESC LIMIT 1 OFFSET 1) AS SecondHighestSalary;",
+  "setupSQL": "CREATE TABLE employee (id INT, salary INT); INSERT INTO employee VALUES (1, 100), (2, 200), (3, 300);",
+  "enforceOrder": true
+}

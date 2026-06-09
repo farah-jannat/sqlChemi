@@ -1,0 +1,16 @@
+{
+  "id": 34,
+  "title": "Delete Duplicate Emails",
+  "difficulty": "Medium",
+  "company": "LeetCode 196",
+  "tags": [
+    "Self Join",
+    "DELETE"
+  ],
+  "scenario": "Write a query to delete all duplicate email entries, keeping only one unique email with the smallest id. The table is 'person'.",
+  "tableSchema": "person (id INT, email VARCHAR)",
+  "hint": "Join the table with itself where email is the same but id is greater.",
+  "correctQuery": "DELETE p1 FROM person p1 JOIN person p2 ON p1.email = p2.email WHERE p1.id > p2.id;",
+  "setupSQL": "CREATE TABLE person (id INT, email VARCHAR); INSERT INTO person VALUES (1, 'john@example.com'), (2, 'bob@example.com'), (3, 'john@example.com');",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 36,
+  "title": "Exchange Seats",
+  "difficulty": "Medium",
+  "company": "LeetCode 626",
+  "tags": [
+    "CASE Statement"
+  ],
+  "scenario": "Swap the seat 'id' of every two consecutive students. If the number of students is odd, the last student remains in the same place. Return the result table as 'id' and 'student', ordered by 'id'.",
+  "tableSchema": "seat (id INT, student VARCHAR)",
+  "hint": "Use a CASE statement to determine if the id is odd or even.",
+  "correctQuery": "SELECT CASE WHEN id % 2 != 0 AND id = (SELECT COUNT(*) FROM seat) THEN id WHEN id % 2 != 0 THEN id + 1 ELSE id - 1 END AS id, student FROM seat ORDER BY id;",
+  "setupSQL": "CREATE TABLE seat (id INT, student VARCHAR); INSERT INTO seat VALUES (1, 'Abbot'), (2, 'Doris'), (3, 'Emerson'), (4, 'Green'), (5, 'Jeames');",
+  "enforceOrder": true
+}

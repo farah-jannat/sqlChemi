@@ -1,0 +1,16 @@
+{
+  "id": 57,
+  "title": "City Diversity Index",
+  "difficulty": "Medium",
+  "company": "Unique-Urban",
+  "tags": [
+    "Aggregation",
+    "COUNT DISTINCT"
+  ],
+  "scenario": "Find how many distinct 'tiv_2015' values exist in each city (lat, lon). Return 'lat', 'lon', and 'tiv_count'.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Use COUNT(DISTINCT tiv_2015) grouped by lat, lon.",
+  "correctQuery": "SELECT lat, lon, COUNT(DISTINCT tiv_2015) AS tiv_count FROM insurance GROUP BY lat, lon;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 100, 10, 10, 10), (2, 100, 20, 10, 10), (3, 200, 30, 10, 10);",
+  "enforceOrder": false
+}

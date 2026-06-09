@@ -1,0 +1,16 @@
+{
+  "id": 49,
+  "title": "Investment Portfolio Analysis",
+  "difficulty": "Medium",
+  "company": "Unique-Finance",
+  "tags": [
+    "Aggregation",
+    "Subqueries"
+  ],
+  "scenario": "Report the sum of 'tiv_2016' for all policyholders who have the same 'tiv_2015' value as one or more other policyholders, and are not located in the same city as any other policyholder (the (lat, lon) pairs must be unique). Round the result 'tiv_2016' to two decimal places.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Filter by tiv_2015 using a GROUP BY HAVING count > 1 subquery, and filter location pairs using a GROUP BY HAVING count = 1 subquery.",
+  "correctQuery": "SELECT ROUND(SUM(tiv_2016), 2) AS tiv_2016 FROM insurance WHERE tiv_2015 IN (SELECT tiv_2015 FROM insurance GROUP BY tiv_2015 HAVING COUNT(*) > 1) AND (lat, lon) IN (SELECT lat, lon FROM insurance GROUP BY lat, lon HAVING COUNT(*) = 1);",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 10, 5, 10, 10), (2, 20, 20, 20, 20), (3, 10, 30, 20, 20), (4, 10, 40, 40, 40);",
+  "enforceOrder": false
+}

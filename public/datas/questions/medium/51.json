@@ -1,0 +1,16 @@
+{
+  "id": 51,
+  "title": "Location Density Report",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Aggregation",
+    "GROUP BY"
+  ],
+  "scenario": "Identify all locations (lat, lon) that have more than 2 policyholders. Return the result table containing 'lat', 'lon', and 'count' of policyholders.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Group by lat and lon, then use HAVING to filter groups with count > 2.",
+  "correctQuery": "SELECT lat, lon, COUNT(pid) AS count FROM insurance GROUP BY lat, lon HAVING COUNT(pid) > 2;",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 10, 5, 10, 10), (2, 20, 20, 10, 10), (3, 30, 30, 10, 10), (4, 40, 40, 50, 50);",
+  "enforceOrder": false
+}

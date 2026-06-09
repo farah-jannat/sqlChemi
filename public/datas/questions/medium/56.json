@@ -1,0 +1,15 @@
+{
+  "id": 56,
+  "title": "Identify Outliers",
+  "difficulty": "Medium",
+  "company": "Unique-Research",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Identify all policyholders whose 'tiv_2016' value is 200% greater than the overall average 'tiv_2016'. Return 'pid'.",
+  "tableSchema": "insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL)",
+  "hint": "Calculate average tiv_2016 in a subquery, then filter the main table.",
+  "correctQuery": "SELECT pid FROM insurance WHERE tiv_2016 > (SELECT AVG(tiv_2016) * 3 FROM insurance);",
+  "setupSQL": "CREATE TABLE insurance (pid INT, tiv_2015 DECIMAL, tiv_2016 DECIMAL, lat DECIMAL, lon DECIMAL); INSERT INTO insurance VALUES (1, 100, 10, 10, 10), (2, 200, 500, 20, 20);",
+  "enforceOrder": false
+}

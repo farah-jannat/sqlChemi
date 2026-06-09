@@ -1,0 +1,16 @@
+{
+  "id": 41,
+  "title": "Consecutive Logins",
+  "difficulty": "Medium",
+  "company": "Unique-Social",
+  "tags": [
+    "Window Functions",
+    "Grouping"
+  ],
+  "scenario": "Find all 'user_id' who have logged in for at least 3 consecutive days. Return the result table containing 'user_id'.",
+  "tableSchema": "logins (user_id INT, login_date DATE)",
+  "hint": "Subtract the row number from the date to create a grouping ID for consecutive days.",
+  "correctQuery": "SELECT DISTINCT user_id FROM (SELECT user_id, login_date, DATE(login_date, '-' || ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY login_date) || ' day') AS grp FROM logins) t GROUP BY user_id, grp HAVING COUNT(*) >= 3;",
+  "setupSQL": "CREATE TABLE logins (user_id INT, login_date DATE); INSERT INTO logins VALUES (1, '2026-01-01'), (1, '2026-01-02'), (1, '2026-01-03'), (2, '2026-01-01');",
+  "enforceOrder": false
+}
