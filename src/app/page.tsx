@@ -31,7 +31,7 @@ export default function DynamicSQLQuiz() {
   const [difficulty, setDifficulty] = useState<"Easy" | "Medium" | "Hard">(
     "Easy",
   );
-  const [numQuestions, setNumQuestions] = useState<number>(2);
+  const [numQuestions, setNumQuestions] = useState<number>(1);
   const [availableTags, setAvailableTags] = useState<string[]>([]);
 
   // 3. Quiz Engine States
