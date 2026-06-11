@@ -1035,7 +1035,7 @@ export default function DynamicSQLQuiz() {
 
             {/* RIGHT AREA PANEL: WORKSPACE EDITOR */}
             <section
-              className={`border   p-5 rounded-3xl shadow-xl space-y-4 transition-all ${panelBg} md:col-span-7`}
+              className={`border h-[calc(100vh-9.8rem)]  p-5 rounded-3xl shadow-xl space-y-4 transition-all ${panelBg} md:col-span-7`}
             >
               <div className="space-y-1.5 ">
                 <div className="flex items-center justify-between">
@@ -1058,7 +1058,7 @@ export default function DynamicSQLQuiz() {
                 >
                   <textarea
                     id="sql-editor"
-                    rows={14}
+                    rows={13}
                     value={userQuery}
                     onChange={(e) => setUserQuery(e.target.value)}
                     placeholder="SELECT&#10;  column_name&#10;FROM&#10;  table_target;&#10;"
