@@ -1035,9 +1035,9 @@ export default function DynamicSQLQuiz() {
 
             {/* RIGHT AREA PANEL: WORKSPACE EDITOR */}
             <section
-              className={`border min-h-[calc(100vh-9.8rem)]  p-5 rounded-3xl shadow-xl space-y-4 transition-all ${panelBg} md:col-span-7`}
+              className={`border h-[calc(100vh-9.8rem)] overflow-y-auto custom-scroll  p-5 rounded-3xl shadow-xl space-y-4 transition-all ${panelBg} md:col-span-7`}
             >
-              <div className="space-y-1.5 ">
+              <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="sql-editor"
@@ -1058,7 +1058,7 @@ export default function DynamicSQLQuiz() {
                 >
                   <textarea
                     id="sql-editor"
-                    rows={13}
+                    rows={12}
                     value={userQuery}
                     onChange={(e) => setUserQuery(e.target.value)}
                     placeholder="SELECT&#10;  column_name&#10;FROM&#10;  table_target;&#10;"
@@ -1068,7 +1068,7 @@ export default function DynamicSQLQuiz() {
               </div>
 
               {/* INTERACTION HUB */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCheckAnswer}
