@@ -837,7 +837,8 @@ export default function DynamicSQLQuiz() {
                   {isViewingSetup ? "Loading... 🐾" : "🧹 Reset"}
                 </button>
 
-                <button
+ {/* ai quizz generateor button  */}
+                {/* <button
                   type="button"
                   onClick={handleLoadAIQuiz}
                   disabled={isGenerating}
@@ -848,7 +849,7 @@ export default function DynamicSQLQuiz() {
                   }`}
                 >
                   {isGenerating ? "Synthesizing... 🐾" : "🤖 Gemini Quiz"}
-                </button>
+                </button> */}
               </div>
             </div>
           </form>
