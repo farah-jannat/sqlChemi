@@ -1,0 +1,16 @@
+{
+  "id": 187,
+  "title": "Bank Transaction Anomaly",
+  "difficulty": "Hard",
+  "company": "SecureBank",
+  "tags": [
+    "Window Functions",
+    "Statistical Z-Score"
+  ],
+  "scenario": "Flag transactions that are more than 3 standard deviations away from the user's average transaction amount.",
+  "tableSchema": "transactions (user_id INT, amount NUMERIC)",
+  "hint": "Use AVG() OVER and STDDEV() OVER to compute the threshold.",
+  "correctQuery": "SELECT * FROM (SELECT *, AVG(amount) OVER(PARTITION BY user_id) as mu, STDDEV(amount) OVER(PARTITION BY user_id) as sigma FROM transactions) t WHERE ABS(amount - mu) > 3 * sigma;",
+  "setupSQL": "CREATE TABLE transactions (user_id INT, amount NUMERIC);",
+  "enforceOrder": false
+}

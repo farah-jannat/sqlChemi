@@ -1,0 +1,16 @@
+{
+  "id": 235,
+  "title": "Sensor Coverage Gaps",
+  "difficulty": "Hard",
+  "company": "Met-Ops",
+  "tags": [
+    "Window Functions",
+    "Gaps"
+  ],
+  "scenario": "Find cities that had at least one day without any sensor reporting data in the last 30 days.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE)",
+  "hint": "Compare actual reading days vs count of days in interval.",
+  "correctQuery": "SELECT city_name FROM weather_data WHERE reading_date >= CURRENT_DATE - INTERVAL '30 days' GROUP BY city_name HAVING COUNT(DISTINCT reading_date) < 30;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 312,
+  "title": "Reviewer Consensus Variance",
+  "difficulty": "Hard",
+  "company": "Quality-Cinema",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "Calculate the consensus variance for every movie that has at least 5 reviews. The consensus variance is defined as the standard deviation of all ratings for that movie. Return the title of the movie and its rating standard deviation, ordered from the most divisive (highest variance) to the most consensus-driven (lowest variance).",
+  "tableSchema": "Movies (movie_id INT, title VARCHAR), MovieRating (movie_id INT, rating INT)",
+  "hint": "Join Movies with MovieRating, group by title, and use the STDDEV() function on the ratings.",
+  "correctQuery": "SELECT m.title, STDDEV(mr.rating) as rating_stddev FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id GROUP BY m.title HAVING COUNT(mr.rating) >= 5 ORDER BY rating_stddev DESC;",
+  "setupSQL": "CREATE TABLE Movies (movie_id INT PRIMARY KEY, title VARCHAR); CREATE TABLE MovieRating (movie_id INT, rating INT);",
+  "enforceOrder": true
+}

@@ -1,0 +1,16 @@
+{
+  "id": 261,
+  "title": "Article Viral Velocity",
+  "difficulty": "Medium",
+  "company": "Content-Pulse",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Identify articles where the page views in a single day exceeded the article's 7-day rolling average by more than 300%.",
+  "tableSchema": "page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Use AVG(views_count) OVER (...) with a range frame.",
+  "correctQuery": "SELECT article_id, view_date FROM (SELECT article_id, view_date, views_count, AVG(views_count) OVER(PARTITION BY article_id ORDER BY view_date ROWS BETWEEN 7 PRECEDING AND 1 PRECEDING) as avg_7d FROM page_views) t WHERE views_count > 3 * avg_7d;",
+  "setupSQL": "CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 295,
+  "title": "Driver Capacity Utilization Trend",
+  "difficulty": "Hard",
+  "company": "RideTech",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Identify drivers who maintained a > 90% completion rate for 5 consecutive days.",
+  "tableSchema": "trips (driver_id INT, status VARCHAR, request_date DATE)",
+  "hint": "Aggregate daily completion rates, then use the difference-of-row-numbers technique to find islands.",
+  "correctQuery": "WITH DailyStats AS (SELECT driver_id, request_date, COUNT(*) as total, SUM(CASE WHEN status='completed' THEN 1 ELSE 0 END) as comp FROM trips GROUP BY 1, 2), CompletionRates AS (SELECT driver_id, request_date, (comp::NUMERIC/total) as rate FROM DailyStats) SELECT driver_id FROM (SELECT driver_id, request_date, (ROW_NUMBER() OVER(PARTITION BY driver_id ORDER BY request_date) - ROW_NUMBER() OVER(PARTITION BY driver_id, CASE WHEN rate > 0.9 THEN 1 ELSE 0 END ORDER BY request_date)) as grp FROM CompletionRates WHERE rate > 0.9) t GROUP BY driver_id, grp HAVING COUNT(*) >= 5;",
+  "setupSQL": "CREATE TABLE trips (driver_id INT, status VARCHAR, request_date DATE);",
+  "enforceOrder": false
+}

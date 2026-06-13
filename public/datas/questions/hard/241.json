@@ -1,0 +1,16 @@
+{
+  "id": 241,
+  "title": "Mean Time to Resolve (MTTR)",
+  "difficulty": "Hard",
+  "company": "DevOps-Metrics",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the average time (in hours) between a bug's creation and its transition to 'Resolved' status.",
+  "tableSchema": "bugs (bug_id INT, created_at TIMESTAMP), status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP)",
+  "hint": "Join bugs with history where status = 'Resolved', then find difference.",
+  "correctQuery": "SELECT AVG(EXTRACT(EPOCH FROM (sh.changed_at - b.created_at))/3600) as avg_mttr FROM bugs b JOIN status_history sh ON b.bug_id = sh.bug_id WHERE sh.status = 'Resolved';",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, created_at TIMESTAMP); CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 165,
+  "title": "Running Percentage of Total",
+  "difficulty": "Hard",
+  "company": "Telecom-Billing",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Calculate the running total percentage of usage for each subscriber.",
+  "tableSchema": "usage (sub_id INT, event_date DATE, bytes INT)",
+  "hint": "Divide SUM(bytes) running total by SUM(bytes) over the entire window.",
+  "correctQuery": "SELECT sub_id, event_date, SUM(bytes) OVER(PARTITION BY sub_id ORDER BY event_date)::NUMERIC / SUM(bytes) OVER(PARTITION BY sub_id) AS running_pct FROM usage;",
+  "setupSQL": "CREATE TABLE usage (sub_id INT, event_date DATE, bytes INT);",
+  "enforceOrder": false
+}

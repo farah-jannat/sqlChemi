@@ -1,0 +1,15 @@
+{
+  "id": 63,
+  "title": "Average Time Between Signups",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Date Arithmetic"
+  ],
+  "scenario": "Calculate the average time (in days) between a user's sign-up and their first confirmation request. Return the result table as 'avg_gap'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Join signups and the minimum time_stamp from confirmations, then calculate the date difference.",
+  "correctQuery": "SELECT AVG(JULIANDAY(c.min_time) - JULIANDAY(s.time_stamp)) AS avg_gap FROM signups s JOIN (SELECT user_id, MIN(time_stamp) AS min_time FROM confirmations GROUP BY user_id) c ON s.user_id = c.user_id;",
+  "setupSQL": "CREATE TABLE signups (user_id INT, time_stamp DATETIME); CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO signups VALUES (3, '2020-03-21 10:16:13'); INSERT INTO confirmations VALUES (3, '2021-01-06 03:30:46', 'timeout');",
+  "enforceOrder": false
+}

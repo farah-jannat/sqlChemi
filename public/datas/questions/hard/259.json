@@ -1,0 +1,16 @@
+{
+  "id": 259,
+  "title": "Peak Workload Distribution",
+  "difficulty": "Hard",
+  "company": "Project-Flow",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Find the peak hour of bug reporting for each team and identify if it aligns with their highest MTTR.",
+  "tableSchema": "developers (dev_id INT, team_id INT), bugs (bug_id INT, reporter_id INT, created_at TIMESTAMP)",
+  "hint": "Aggregate by team/hour, then rank.",
+  "correctQuery": "SELECT team_id, report_hour FROM (SELECT team_id, EXTRACT(HOUR FROM created_at) as report_hour, COUNT(*), RANK() OVER(PARTITION BY team_id ORDER BY COUNT(*) DESC) as rnk FROM developers d JOIN bugs b ON d.dev_id = b.reporter_id GROUP BY team_id, report_hour) t WHERE rnk = 1;",
+  "setupSQL": "CREATE TABLE developers (dev_id INT, team_id INT); CREATE TABLE bugs (bug_id INT, reporter_id INT, created_at TIMESTAMP);",
+  "enforceOrder": false
+}

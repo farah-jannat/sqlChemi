@@ -1,0 +1,16 @@
+{
+  "id": 80,
+  "title": "Running Variance of Amounts",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "Calculate the running variance of 'amount' for each 'country' over time. Return the result table as 'country', 'trans_date', and 'running_variance'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use VAR_SAMP() or standard variance formula: AVG(amount^2) - AVG(amount)^2.",
+  "correctQuery": "SELECT country, trans_date, (AVG(amount*amount) OVER(PARTITION BY country ORDER BY trans_date) - AVG(amount) OVER(PARTITION BY country ORDER BY trans_date) * AVG(amount) OVER(PARTITION BY country ORDER BY trans_date)) AS running_variance FROM transactions;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01'), (2, 'US', 'approved', 200, '2026-01-02');",
+  "enforceOrder": true
+}

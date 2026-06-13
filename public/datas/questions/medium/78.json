@@ -1,0 +1,15 @@
+{
+  "id": 78,
+  "title": "Consecutive Declined Transactions",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find users (represented by country) who had 2 or more 'declined' transactions in a row. Return 'country'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use LAG() to compare the current state with the previous state per country.",
+  "correctQuery": "SELECT DISTINCT country FROM (SELECT country, state, LAG(state) OVER(PARTITION BY country ORDER BY trans_date) AS prev_state FROM transactions) t WHERE state = 'declined' AND prev_state = 'declined';",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'declined', 100, '2019-01-01'), (2, 'US', 'declined', 200, '2019-01-02');",
+  "enforceOrder": false
+}

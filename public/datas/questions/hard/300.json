@@ -1,0 +1,16 @@
+{
+  "id": 300,
+  "title": "Cross-Platform Loyalty",
+  "difficulty": "Hard",
+  "company": "Marketing-Analytics",
+  "tags": [
+    "Window Functions",
+    "CTE"
+  ],
+  "scenario": "Find users whose average trip frequency has increased consistently every quarter for the last two years.",
+  "tableSchema": "trips (rider_id INT, request_date DATE)",
+  "hint": "Aggregate by rider/quarter, then use LAG to compare 8 consecutive periods.",
+  "correctQuery": "WITH QStats AS (SELECT rider_id, DATE_TRUNC('quarter', request_date) as qtr, COUNT(*) as cnt FROM trips GROUP BY 1, 2) SELECT rider_id FROM (SELECT rider_id, cnt, LAG(cnt, 1) OVER(PARTITION BY rider_id ORDER BY qtr) as p1, ... FROM QStats) t WHERE cnt > p1 AND p1 > p2 AND ...;",
+  "setupSQL": "CREATE TABLE trips (rider_id INT, request_date DATE);",
+  "enforceOrder": false
+}

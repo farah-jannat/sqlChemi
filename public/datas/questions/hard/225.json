@@ -1,0 +1,16 @@
+{
+  "id": 225,
+  "title": "Seasonal Humidity Extremes",
+  "difficulty": "Hard",
+  "company": "AgriForecast",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "For each city, identify the day in each season (Quarter) with the highest humidity relative to that season's average.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, humidity NUMERIC)",
+  "hint": "Use PARTITION BY city_name, DATE_TRUNC('quarter', reading_date).",
+  "correctQuery": "SELECT city_name, reading_date FROM (SELECT city_name, reading_date, humidity, AVG(humidity) OVER(PARTITION BY city_name, DATE_TRUNC('quarter', reading_date)) as sea_avg, RANK() OVER(PARTITION BY city_name, DATE_TRUNC('quarter', reading_date) ORDER BY humidity DESC) as rnk FROM weather_data) t WHERE rnk = 1;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, humidity NUMERIC);",
+  "enforceOrder": false
+}

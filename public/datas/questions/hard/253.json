@@ -1,0 +1,16 @@
+{
+  "id": 253,
+  "title": "Critical Bug Lifecycle",
+  "difficulty": "Hard",
+  "company": "Incident-Response",
+  "tags": [
+    "Window Functions",
+    "Offsets"
+  ],
+  "scenario": "Compare the duration of the first status change to the duration of the last status change for 'Critical' bugs.",
+  "tableSchema": "bugs (bug_id INT, severity VARCHAR), status_history (bug_id INT, changed_at TIMESTAMP)",
+  "hint": "Rank history entries per bug.",
+  "correctQuery": "SELECT bug_id, (last_dur - first_dur) FROM (SELECT bug_id, MIN(duration) FILTER (WHERE rnk=1) as first_dur, MAX(duration) FILTER (WHERE rnk_desc=1) as last_dur FROM (SELECT bug_id, changed_at - LAG(changed_at) OVER(PARTITION BY bug_id ORDER BY changed_at) as duration, RANK() OVER(PARTITION BY bug_id ORDER BY changed_at) as rnk, RANK() OVER(PARTITION BY bug_id ORDER BY changed_at DESC) as rnk_desc FROM status_history) t GROUP BY bug_id) t2;",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, severity VARCHAR); CREATE TABLE status_history (bug_id INT, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

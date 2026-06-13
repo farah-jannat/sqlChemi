@@ -1,0 +1,16 @@
+{
+  "id": 166,
+  "title": "First vs Last Transaction Amount",
+  "difficulty": "Hard",
+  "company": "Banking-Ops",
+  "tags": [
+    "Window Functions",
+    "Offsets"
+  ],
+  "scenario": "Compare the amount of the first transaction and the last transaction for every account.",
+  "tableSchema": "transactions (acc_id INT, amount NUMERIC, ts TIMESTAMP)",
+  "hint": "Use FIRST_VALUE() and LAST_VALUE().",
+  "correctQuery": "SELECT DISTINCT acc_id, FIRST_VALUE(amount) OVER(PARTITION BY acc_id ORDER BY ts) AS first_amt, LAST_VALUE(amount) OVER(PARTITION BY acc_id ORDER BY ts ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_amt FROM transactions;",
+  "setupSQL": "CREATE TABLE transactions (acc_id INT, amount NUMERIC, ts TIMESTAMP);",
+  "enforceOrder": false
+}

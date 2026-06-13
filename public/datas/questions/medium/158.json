@@ -1,0 +1,15 @@
+{
+  "id": 158,
+  "title": "Anomalous Price Change Dates",
+  "difficulty": "Medium",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find price changes that occurred on a weekend (Saturday/Sunday).",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Use EXTRACT(ISODOW FROM ...) where 6 is Sat and 7 is Sun.",
+  "correctQuery": "SELECT product_id, change_date FROM products WHERE EXTRACT(ISODOW FROM change_date) IN (6, 7);",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE);",
+  "enforceOrder": false
+}

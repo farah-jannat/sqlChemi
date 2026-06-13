@@ -1,0 +1,16 @@
+{
+  "id": 238,
+  "title": "Model Performance Comparison",
+  "difficulty": "Hard",
+  "company": "IoT-Quality",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find sensor models that have a lower average alert rate than the global model average.",
+  "tableSchema": "sensor_registry (model_name VARCHAR, sensor_id INT), climate_alerts (sensor_id INT)",
+  "hint": "Subquery for global avg, compare with group by.",
+  "correctQuery": "SELECT model_name FROM (SELECT r.model_name, COUNT(a.sensor_id)::NUMERIC / COUNT(DISTINCT r.sensor_id) as alert_rate FROM sensor_registry r LEFT JOIN climate_alerts a ON r.sensor_id = a.sensor_id GROUP BY r.model_name) t WHERE alert_rate < (SELECT AVG(rate) FROM (SELECT COUNT(a2.sensor_id)::NUMERIC / COUNT(DISTINCT r2.sensor_id) as rate FROM sensor_registry r2 LEFT JOIN climate_alerts a2 ON r2.sensor_id = a2.sensor_id GROUP BY r2.model_name) t2);",
+  "setupSQL": "CREATE TABLE sensor_registry (model_name VARCHAR, sensor_id INT); CREATE TABLE climate_alerts (sensor_id INT);",
+  "enforceOrder": false
+}

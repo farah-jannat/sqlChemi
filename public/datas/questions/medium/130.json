@@ -1,0 +1,15 @@
+{
+  "id": 130,
+  "title": "Product Exclusivity Gap",
+  "difficulty": "Medium",
+  "company": "Unique-Ecom",
+  "tags": [
+    "Set Theory"
+  ],
+  "scenario": "Find 'customer_id' who bought some products but never purchased any products where the 'product_key' is greater than 100.",
+  "tableSchema": "customer (customer_id INT, product_key INT)",
+  "hint": "Use NOT IN or EXCEPT to filter out customers who bought products with key > 100.",
+  "correctQuery": "SELECT DISTINCT customer_id FROM customer EXCEPT SELECT DISTINCT customer_id FROM customer WHERE product_key > 100;",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, product_key INT); INSERT INTO customer VALUES (1, 50), (2, 150);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 287,
+  "title": "Music Playlist Engagement Drift",
+  "difficulty": "Hard",
+  "company": "StreamStats",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "Detect 'genre fatigue': find songs whose addition-to-playlist rate has dropped by 50% compared to the genre's rolling 14-day average.",
+  "tableSchema": "songs (song_id INT, genre_id INT), playlists (list_id INT, song_id INT, added_date TIMESTAMP)",
+  "hint": "Aggregate daily, compute rolling average using RANGE intervals.",
+  "correctQuery": "WITH daily_adds AS (SELECT song_id, genre_id, added_date::DATE as d, COUNT(*) as cnt FROM playlists JOIN songs USING (song_id) GROUP BY 1, 2, 3) SELECT song_id FROM (SELECT song_id, cnt, AVG(cnt) OVER(PARTITION BY genre_id ORDER BY d RANGE BETWEEN INTERVAL '14 days' PRECEDING AND INTERVAL '1 day' PRECEDING) as roll_avg FROM daily_adds) t WHERE cnt < 0.5 * roll_avg;",
+  "setupSQL": "CREATE TABLE songs (song_id INT, genre_id INT); CREATE TABLE playlists (list_id INT, song_id INT, added_date TIMESTAMP);",
+  "enforceOrder": false
+}

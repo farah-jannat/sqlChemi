@@ -1,0 +1,16 @@
+{
+  "id": 194,
+  "title": "Regional Sales Rank Stability",
+  "difficulty": "Hard",
+  "company": "TradeGlobe",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find regions that have maintained the same sales rank for 3 consecutive months.",
+  "tableSchema": "monthly_sales (region_id INT, mon INT, rnk INT)",
+  "hint": "Check if rnk = LAG(rnk, 1) and LAG(rnk, 1) = LAG(rnk, 2).",
+  "correctQuery": "SELECT region_id FROM (SELECT region_id, mon, rnk, LAG(rnk) OVER(PARTITION BY region_id ORDER BY mon) as p1, LAG(rnk, 2) OVER(PARTITION BY region_id ORDER BY mon) as p2 FROM monthly_sales) t WHERE rnk = p1 AND p1 = p2;",
+  "setupSQL": "CREATE TABLE monthly_sales (region_id INT, mon INT, rnk INT);",
+  "enforceOrder": false
+}

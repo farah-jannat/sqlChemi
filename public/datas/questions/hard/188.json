@@ -1,0 +1,16 @@
+{
+  "id": 188,
+  "title": "Supply Chain Bottlenecks",
+  "difficulty": "Hard",
+  "company": "GlobalLogistics",
+  "tags": [
+    "Window Functions",
+    "Running Total"
+  ],
+  "scenario": "Identify products where cumulative demand has exceeded total warehouse capacity.",
+  "tableSchema": "inventory (prod_id INT, demand INT, capacity INT, arrival_date DATE)",
+  "hint": "Use SUM(demand) OVER(ORDER BY date).",
+  "correctQuery": "SELECT prod_id, arrival_date FROM (SELECT prod_id, arrival_date, SUM(demand) OVER(PARTITION BY prod_id ORDER BY arrival_date) as cum_demand, capacity FROM inventory) t WHERE cum_demand > capacity;",
+  "setupSQL": "CREATE TABLE inventory (prod_id INT, demand INT, capacity INT, arrival_date DATE);",
+  "enforceOrder": false
+}

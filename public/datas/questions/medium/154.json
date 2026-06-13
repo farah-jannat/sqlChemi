@@ -1,0 +1,16 @@
+{
+  "id": 154,
+  "title": "Price Change Synchronization",
+  "difficulty": "Medium",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Window Functions",
+    "Self-Join"
+  ],
+  "scenario": "Find pairs of products that changed prices on the exact same dates at least 3 times.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Self-join on date and group by product pairs.",
+  "correctQuery": "SELECT a.product_id AS product_1, b.product_id AS product_2 FROM products a JOIN products b ON a.change_date = b.change_date AND a.product_id < b.product_id GROUP BY a.product_id, b.product_id HAVING COUNT(*) >= 3;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 161,
+  "title": "Moving Standard Deviation",
+  "difficulty": "Hard",
+  "company": "Crypto-Exchange",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "Calculate a 7-day trailing standard deviation of asset prices.",
+  "tableSchema": "prices (asset_id INT, trade_date DATE, price NUMERIC)",
+  "hint": "Use the ROWS BETWEEN frame clause.",
+  "correctQuery": "SELECT asset_id, trade_date, STDDEV_SAMP(price) OVER(PARTITION BY asset_id ORDER BY trade_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS volatility FROM prices;",
+  "setupSQL": "CREATE TABLE prices (asset_id INT, trade_date DATE, price NUMERIC);",
+  "enforceOrder": false
+}

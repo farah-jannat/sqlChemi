@@ -1,0 +1,16 @@
+{
+  "id": 215,
+  "title": "Platform Genre Diversification",
+  "difficulty": "Hard",
+  "company": "Platform-Analysis",
+  "tags": [
+    "Window Functions",
+    "Subqueries"
+  ],
+  "scenario": "Calculate the 'genre diversity score' for each platform, defined as the number of distinct genres released per year.",
+  "tableSchema": "games (game_id INT, genre VARCHAR, release_year INT), ratings (game_id INT, platform VARCHAR)",
+  "hint": "Group by platform, release_year, then count distinct genre.",
+  "correctQuery": "SELECT platform, release_year, COUNT(DISTINCT genre) as diversity_score FROM games g JOIN ratings r ON g.game_id = r.game_id GROUP BY platform, release_year;",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR, release_year INT); CREATE TABLE ratings (game_id INT, platform VARCHAR);",
+  "enforceOrder": false
+}

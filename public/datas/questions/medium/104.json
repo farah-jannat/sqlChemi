@@ -1,0 +1,15 @@
+{
+  "id": 104,
+  "title": "Monthly Order Volume",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Date Arithmetic"
+  ],
+  "scenario": "Count the number of orders made in each month. Return the result as 'month' and 'order_count'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Format order_date to 'YYYY-MM' and group by it.",
+  "correctQuery": "SELECT TO_CHAR(order_date, 'YYYY-MM') AS month, COUNT(delivery_id) AS order_count FROM delivery GROUP BY month;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02');",
+  "enforceOrder": false
+}

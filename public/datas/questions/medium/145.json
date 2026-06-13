@@ -1,0 +1,15 @@
+{
+  "id": 145,
+  "title": "Total Streak Duration",
+  "difficulty": "Medium",
+  "company": "Unique-Data",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "For each number, find the sum of all 'streak' lengths where streak length is > 1. Return 'num', 'total_streak_duration'.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Sum the sizes of islands where island size > 1.",
+  "correctQuery": "SELECT num, SUM(streak) AS total_streak_duration FROM (SELECT num, COUNT(*) AS streak FROM (SELECT id, num, id - ROW_NUMBER() OVER(PARTITION BY num ORDER BY id)::INT AS grp FROM logs) t GROUP BY num, grp HAVING COUNT(*) > 1) t2 GROUP BY num;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (2, '1'), (4, '1'), (5, '1');",
+  "enforceOrder": false
+}

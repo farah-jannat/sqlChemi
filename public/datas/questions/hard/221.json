@@ -1,0 +1,16 @@
+{
+  "id": 221,
+  "title": "Extended Heatwave Identification",
+  "difficulty": "Hard",
+  "company": "ClimateWatch-Global",
+  "tags": [
+    "Window Functions",
+    "Gaps and Islands"
+  ],
+  "scenario": "Identify cities that experienced a heatwave (temp > 35°C) for 5 or more consecutive days.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC)",
+  "hint": "Use date subtraction from a row number to create islands of consecutive dates.",
+  "correctQuery": "SELECT city_name FROM (SELECT city_name, COUNT(*) as streak FROM (SELECT city_name, reading_date, (reading_date - ROW_NUMBER() OVER(PARTITION BY city_name ORDER BY reading_date)::INT) as grp FROM weather_data WHERE temp_c > 35) t GROUP BY city_name, grp) t2 WHERE streak >= 5;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

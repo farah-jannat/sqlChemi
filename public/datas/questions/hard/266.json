@@ -1,0 +1,16 @@
+{
+  "id": 266,
+  "title": "High-Dwell Content",
+  "difficulty": "Hard",
+  "company": "Deep-Read",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "Find articles where the dwell time is 2 standard deviations above the category average.",
+  "tableSchema": "articles (article_id INT, category_id INT), page_views (article_id INT, duration_seconds INT)",
+  "hint": "Use AVG() OVER(PARTITION BY category_id) and STDDEV().",
+  "correctQuery": "SELECT article_id FROM (SELECT article_id, duration_seconds, AVG(duration_seconds) OVER(PARTITION BY category_id) as avg_d, STDDEV(duration_seconds) OVER(PARTITION BY category_id) as std_d FROM articles JOIN page_views USING (article_id)) t WHERE duration_seconds > avg_d + 2 * std_d;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, category_id INT); CREATE TABLE page_views (article_id INT, duration_seconds INT);",
+  "enforceOrder": false
+}

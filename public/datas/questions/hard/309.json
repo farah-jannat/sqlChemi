@@ -1,0 +1,17 @@
+{
+  "id": 309,
+  "title": "Prolific Reviewer & High-Engagement Temporal Analysis",
+  "difficulty": "Hard",
+  "company": "Cinematic-Insights",
+  "tags": [
+    "Aggregation",
+    "Ranking",
+    "Time-Series"
+  ],
+  "scenario": "You are a lead architect for a film analytics platform. Perform two specific tasks: 1) Identify the user who has contributed the most reviews; if a tie occurs, select the name that appears first alphabetically. 2) Identify the movie that received the highest average rating specifically during the 'February 2020' window. If multiple movies share the same highest average, select the one with the lexicographically smallest title. Combine these results into a single output column named 'results'.",
+  "tableSchema": "Movies (movie_id INT, title VARCHAR), Users (user_id INT, name VARCHAR), MovieRating (movie_id INT, user_id INT, rating INT, created_at DATE)",
+  "hint": "Use two separate UNION ALL subqueries. For the first part, join Users with MovieRating and order by count descending and name ascending. For the second, filter by date range, join with Movies, group by title, and order by avg(rating) descending and title ascending.",
+  "correctQuery": "(SELECT u.name AS results FROM Users u JOIN MovieRating mr ON u.user_id = mr.user_id GROUP BY u.name ORDER BY COUNT(*) DESC, u.name ASC LIMIT 1) UNION ALL (SELECT m.title AS results FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id WHERE mr.created_at >= '2020-02-01' AND mr.created_at <= '2020-02-29' GROUP BY m.title ORDER BY AVG(mr.rating) DESC, m.title ASC LIMIT 1);",
+  "setupSQL": "CREATE TABLE Movies (movie_id INT PRIMARY KEY, title VARCHAR); CREATE TABLE Users (user_id INT PRIMARY KEY, name VARCHAR); CREATE TABLE MovieRating (movie_id INT, user_id INT, rating INT, created_at DATE);",
+  "enforceOrder": true
+}

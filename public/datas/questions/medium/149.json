@@ -1,0 +1,16 @@
+{
+  "id": 149,
+  "title": "Median Price Duration",
+  "difficulty": "Medium",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Temporal Analysis",
+    "Window Functions"
+  ],
+  "scenario": "Calculate the median price of each product over its entire lifespan. The 'price' at any time is the last 'new_price' recorded before or on that date.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Create a daily timeline for each product, join with the latest price, then find the median of that daily price list.",
+  "correctQuery": "WITH RECURSIVE timeline AS (SELECT MIN(change_date) AS d FROM products UNION SELECT d + INTERVAL '1 day' FROM timeline WHERE d < (SELECT MAX(change_date) FROM products)) SELECT product_id, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price) AS median_price FROM (SELECT p.product_id, t.d, (SELECT new_price FROM products p2 WHERE p2.product_id = p.product_id AND p2.change_date <= t.d ORDER BY p2.change_date DESC LIMIT 1) AS price FROM (SELECT DISTINCT product_id FROM products) p CROSS JOIN timeline t) t2 GROUP BY product_id;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE); INSERT INTO products VALUES (1, 20, '2019-08-14'), (1, 30, '2019-08-15');",
+  "enforceOrder": false
+}

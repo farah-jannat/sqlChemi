@@ -1,7 +1,7 @@
 {
   "id": 3,
   "title": "Product Price at a Given Date",
-  "difficulty": "None",
+  "difficulty": "Medium",
   "company": "LeetCode 1164",
   "tags": [
     "Subqueries",

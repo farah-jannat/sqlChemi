@@ -1,0 +1,16 @@
+{
+  "id": 173,
+  "title": "Price Volatility Spike",
+  "difficulty": "Hard",
+  "company": "Market-Trader",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "Flag days where the price moved more than 2 standard deviations from the 30-day moving average.",
+  "tableSchema": "stocks (tick_id INT, trade_date DATE, price NUMERIC)",
+  "hint": "Calculate rolling mean and rolling stddev in one window.",
+  "correctQuery": "SELECT tick_id, trade_date FROM (SELECT tick_id, trade_date, price, AVG(price) OVER(PARTITION BY tick_id ORDER BY trade_date ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) as mu, STDDEV_SAMP(price) OVER(PARTITION BY tick_id ORDER BY trade_date ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) as sigma FROM stocks) t WHERE ABS(price - mu) > 2 * sigma;",
+  "setupSQL": "CREATE TABLE stocks (tick_id INT, trade_date DATE, price NUMERIC);",
+  "enforceOrder": false
+}

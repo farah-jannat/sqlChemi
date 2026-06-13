@@ -1,0 +1,16 @@
+{
+  "id": 172,
+  "title": "Customer Value Segments",
+  "difficulty": "Hard",
+  "company": "Retail-Loyalty",
+  "tags": [
+    "Window Functions",
+    "Ntile"
+  ],
+  "scenario": "Segment customers into 4 tiers (Quartiles) based on their lifetime spend.",
+  "tableSchema": "spenders (cust_id INT, total_spend NUMERIC)",
+  "hint": "Use NTILE(4).",
+  "correctQuery": "SELECT cust_id, NTILE(4) OVER(ORDER BY total_spend DESC) AS quartile FROM spenders;",
+  "setupSQL": "CREATE TABLE spenders (cust_id INT, total_spend NUMERIC);",
+  "enforceOrder": false
+}

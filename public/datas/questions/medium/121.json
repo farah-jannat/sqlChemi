@@ -1,0 +1,16 @@
+{
+  "id": 121,
+  "title": "Consecutive Project Overlaps",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Window Functions",
+    "Date Arithmetic"
+  ],
+  "scenario": "Identify if a project starts before the previous project (ordered by start_date) ends. Return 'project_id' and 'is_overlapping'.",
+  "tableSchema": "projects (project_id INT, start_date DATE, end_date DATE, budget INT)",
+  "hint": "Use LAG() to compare the current start_date with the previous end_date.",
+  "correctQuery": "SELECT project_id, CASE WHEN start_date < LAG(end_date) OVER(ORDER BY start_date) THEN 1 ELSE 0 END AS is_overlapping FROM projects;",
+  "setupSQL": "CREATE TABLE projects (project_id INT, start_date DATE, end_date DATE, budget INT); INSERT INTO projects VALUES (1, '2026-01-01', '2026-03-01', 1000), (2, '2026-02-01', '2026-04-01', 1000);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 299,
+  "title": "Peak Hour Congestion Detection",
+  "difficulty": "Hard",
+  "company": "Urban-Planner",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Identify the top 3 hours of the day (by request count) for each city that contribute to > 40% of the city's daily demand.",
+  "tableSchema": "trips (city_id INT, request_date DATE, request_hour INT)",
+  "hint": "Calculate hourly count vs total daily count per city.",
+  "correctQuery": "WITH HourlyCnt AS (SELECT city_id, request_date, request_hour, COUNT(*) as cnt FROM trips GROUP BY 1,2,3), Stats AS (SELECT *, SUM(cnt) OVER(PARTITION BY city_id, request_date) as daily_tot FROM HourlyCnt) SELECT city_id, request_hour FROM Stats WHERE cnt::NUMERIC / daily_tot > 0.4 ORDER BY city_id, cnt DESC;",
+  "setupSQL": "CREATE TABLE trips (city_id INT, request_date DATE, request_hour INT);",
+  "enforceOrder": false
+}

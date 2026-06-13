@@ -1,0 +1,16 @@
+{
+  "id": 280,
+  "title": "Article Comment Velocity",
+  "difficulty": "Hard",
+  "company": "Engagement-Metrics",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the moving 3-day average of comment volume per article.",
+  "tableSchema": "comments (article_id INT, comment_date TIMESTAMP)",
+  "hint": "Use ROWS BETWEEN 2 PRECEDING AND CURRENT ROW.",
+  "correctQuery": "SELECT article_id, day, AVG(cnt) OVER(PARTITION BY article_id ORDER BY day ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) FROM (SELECT article_id, comment_date::DATE as day, COUNT(*) as cnt FROM comments GROUP BY article_id, day) t;",
+  "setupSQL": "CREATE TABLE comments (article_id INT, comment_date TIMESTAMP);",
+  "enforceOrder": false
+}

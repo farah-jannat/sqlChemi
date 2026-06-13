@@ -1,0 +1,16 @@
+{
+  "id": 262,
+  "title": "Author Content Consistency",
+  "difficulty": "Medium",
+  "company": "Writer-Metrics",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "For each author, find the longest consecutive streak of days they published at least one article.",
+  "tableSchema": "articles (author_id INT, publish_date DATE)",
+  "hint": "Create groups by subtracting row number from date.",
+  "correctQuery": "SELECT author_id, MAX(streak) FROM (SELECT author_id, COUNT(*) as streak FROM (SELECT author_id, publish_date, (publish_date - ROW_NUMBER() OVER(PARTITION BY author_id ORDER BY publish_date)::INT) as grp FROM (SELECT DISTINCT author_id, publish_date FROM articles) t) t2 GROUP BY author_id, grp) t3 GROUP BY author_id;",
+  "setupSQL": "CREATE TABLE articles (author_id INT, publish_date DATE);",
+  "enforceOrder": false
+}

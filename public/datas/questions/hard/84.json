@@ -1,0 +1,15 @@
+{
+  "id": 84,
+  "title": "Median Amount by State",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the exact median amount for each 'state'. Return 'state' and 'median_amount'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use PERCENT_RANK() to find the 0.5 percentile.",
+  "correctQuery": "SELECT state, AVG(amount) AS median_amount FROM (SELECT state, amount, PERCENT_RANK() OVER(PARTITION BY state ORDER BY amount) AS pr FROM transactions) t WHERE pr BETWEEN 0.45 AND 0.55 GROUP BY state;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01'), (2, 'US', 'approved', 200, '2026-01-02'), (3, 'US', 'approved', 300, '2026-01-03');",
+  "enforceOrder": false
+}

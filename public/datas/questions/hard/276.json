@@ -1,0 +1,16 @@
+{
+  "id": 276,
+  "title": "Commenter Network Expansion",
+  "difficulty": "Hard",
+  "company": "User-Base",
+  "tags": [
+    "Window Functions",
+    "Running Total"
+  ],
+  "scenario": "Find users who have commented on at least 10 different categories.",
+  "tableSchema": "articles (article_id INT, category_id INT), comments (comment_id INT, article_id INT, user_id INT)",
+  "hint": "Count distinct categories per user.",
+  "correctQuery": "SELECT user_id FROM comments c JOIN articles a USING (article_id) GROUP BY user_id HAVING COUNT(DISTINCT a.category_id) >= 10;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, category_id INT); CREATE TABLE comments (comment_id INT, article_id INT, user_id INT);",
+  "enforceOrder": false
+}

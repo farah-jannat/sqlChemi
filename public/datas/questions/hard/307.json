@@ -1,0 +1,17 @@
+{
+  "id": 307,
+  "title": "Network Node Traffic Redirection",
+  "difficulty": "Hard",
+  "company": "Telecom-Infrastructure",
+  "tags": [
+    "Aggregation",
+    "Window Functions",
+    "Sequence Logic"
+  ],
+  "scenario": "In a distributed network, traffic flows through nodes assigned sequential IDs. Due to a load-balancing maintenance event, you are required to rotate the traffic routing of every pair of consecutive nodes. If the node sequence ends with an odd count, the final node in the sequence must maintain its original routing assignment. Produce a list of nodes with their adjusted routing IDs, maintaining ascending order of the new node ID.",
+  "tableSchema": "NetworkNodes (node_id INT, traffic_type VARCHAR)",
+  "hint": "Calculate the parity of the node_id. If a node is at an odd position and is not the tail of the sequence, increment its ID. If it is at an even position, decrement its ID.",
+  "correctQuery": "SELECT CASE WHEN node_id % 2 != 0 AND node_id = (SELECT MAX(node_id) FROM NetworkNodes) THEN node_id WHEN node_id % 2 != 0 THEN node_id + 1 ELSE node_id - 1 END AS node_id, traffic_type FROM NetworkNodes ORDER BY node_id ASC;",
+  "setupSQL": "CREATE TABLE NetworkNodes (node_id INT PRIMARY KEY, traffic_type VARCHAR); INSERT INTO NetworkNodes VALUES (1, 'Voice'), (2, 'Data'), (3, 'Video'), (4, 'SMS'), (5, 'IoT');",
+  "enforceOrder": true
+}

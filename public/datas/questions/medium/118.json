@@ -1,0 +1,15 @@
+{
+  "id": 118,
+  "title": "Product Sales Velocity",
+  "difficulty": "Medium",
+  "company": "Unique-Retail",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Calculate the average quantity sold per year for each product, excluding their first year of sales. Return 'product_id' and 'avg_quantity_after_first'.",
+  "tableSchema": "sales (sale_id INT, product_id INT, year INT, quantity INT, price INT)",
+  "hint": "Filter out min(year) per product using a subquery.",
+  "correctQuery": "SELECT product_id, AVG(quantity::NUMERIC) AS avg_quantity_after_first FROM sales s1 WHERE year > (SELECT MIN(year) FROM sales s2 WHERE s2.product_id = s1.product_id) GROUP BY product_id;",
+  "setupSQL": "CREATE TABLE sales (sale_id INT, product_id INT, year INT, quantity INT, price INT); INSERT INTO sales VALUES (1, 100, 2008, 5, 100), (2, 100, 2009, 10, 100), (3, 100, 2010, 15, 100);",
+  "enforceOrder": false
+}

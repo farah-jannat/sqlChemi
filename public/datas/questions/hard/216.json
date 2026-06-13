@@ -1,0 +1,16 @@
+{
+  "id": 216,
+  "title": "Studio Portfolio Concentration",
+  "difficulty": "Hard",
+  "company": "Acquisition-Firm",
+  "tags": [
+    "Window Functions",
+    "Percentage"
+  ],
+  "scenario": "For each studio, determine if they focus on one genre (e.g., > 70% of games are in a single genre).",
+  "tableSchema": "developers (studio_name VARCHAR, game_id INT), games (game_id INT, genre VARCHAR)",
+  "hint": "Count games per studio/genre, then divide by total count per studio.",
+  "correctQuery": "SELECT studio_name, genre FROM (SELECT studio_name, genre, COUNT(*)*1.0 / SUM(COUNT(*)) OVER(PARTITION BY studio_name) as pct FROM developers d JOIN games g ON d.game_id = g.game_id GROUP BY studio_name, genre) t WHERE pct > 0.7;",
+  "setupSQL": "CREATE TABLE developers (studio_name VARCHAR, game_id INT); CREATE TABLE games (game_id INT, genre VARCHAR);",
+  "enforceOrder": false
+}

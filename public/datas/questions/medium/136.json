@@ -1,0 +1,15 @@
+{
+  "id": 136,
+  "title": "Exclusively Niche Buyers",
+  "difficulty": "Medium",
+  "company": "Unique-Ecom",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Find 'customer_id' who only bought products that nobody else bought.",
+  "tableSchema": "customer (customer_id INT, product_key INT)",
+  "hint": "Find products with count(customer_id) = 1, then find customers who only bought these.",
+  "correctQuery": "SELECT customer_id FROM customer GROUP BY customer_id HAVING SUM(CASE WHEN product_key IN (SELECT product_key FROM customer GROUP BY product_key HAVING COUNT(DISTINCT customer_id) = 1) THEN 0 ELSE 1 END) = 0;",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, product_key INT); INSERT INTO customer VALUES (1, 1), (2, 2);",
+  "enforceOrder": false
+}

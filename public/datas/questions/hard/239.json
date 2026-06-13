@@ -1,0 +1,16 @@
+{
+  "id": 239,
+  "title": "Diverging Weather Patterns",
+  "difficulty": "Hard",
+  "company": "Global-Stats",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "Find cities whose temperature deviation from the annual mean has tripled in the last year compared to the historical average.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC)",
+  "hint": "Compare last-year-stddev vs historical-stddev.",
+  "correctQuery": "SELECT city_name FROM (SELECT city_name, STDDEV(temp_c) FILTER (WHERE reading_date >= CURRENT_DATE - INTERVAL '1 year') as last_year_sd, STDDEV(temp_c) FILTER (WHERE reading_date < CURRENT_DATE - INTERVAL '1 year') as hist_sd FROM weather_data GROUP BY city_name) t WHERE last_year_sd > 3 * hist_sd;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

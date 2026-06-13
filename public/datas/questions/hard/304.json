@@ -1,0 +1,17 @@
+{
+  "id": 304,
+  "title": "Social Network Connectivity Analysis",
+  "difficulty": "Hard",
+  "company": "Connect-Global",
+  "tags": [
+    "Aggregation",
+    "Union",
+    "Ranking"
+  ],
+  "scenario": "You are managing a professional networking platform. Analyze the 'RequestAccepted' logs to identify the user who holds the highest number of unique connections. A connection is established when either a request is sent by an requester or received by an accepter. Determine the user ID with the maximum total connections and the corresponding count of those connections.",
+  "tableSchema": "RequestAccepted (requester_id INT, accepter_id INT, accept_date DATE)",
+  "hint": "Since connections are bidirectional, combine requester_id and accepter_id into a single stream using UNION ALL, then aggregate the counts per ID and select the record with the maximum total.",
+  "correctQuery": "WITH AllConnections AS (SELECT requester_id AS id FROM RequestAccepted UNION ALL SELECT accepter_id AS id FROM RequestAccepted), ConnectionCounts AS (SELECT id, COUNT(*) AS num FROM AllConnections GROUP BY id) SELECT id, num FROM ConnectionCounts ORDER BY num DESC LIMIT 1;",
+  "setupSQL": "CREATE TABLE RequestAccepted (requester_id INT, accepter_id INT, accept_date DATE); INSERT INTO RequestAccepted VALUES (1, 2, '2016-06-03'), (1, 3, '2016-06-08'), (2, 3, '2016-06-08'), (3, 4, '2016-06-09');",
+  "enforceOrder": true
+}

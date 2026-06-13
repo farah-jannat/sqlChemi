@@ -1,0 +1,16 @@
+{
+  "id": 164,
+  "title": "Rolling 30-Day Patient Visits",
+  "difficulty": "Hard",
+  "company": "Health-Tech",
+  "tags": [
+    "Window Functions",
+    "Range Frame"
+  ],
+  "scenario": "Calculate the total sum of patient visits in a 30-day rolling window per clinic.",
+  "tableSchema": "visits (clinic_id INT, visit_date DATE, patient_count INT)",
+  "hint": "Use RANGE BETWEEN with an INTERVAL.",
+  "correctQuery": "SELECT clinic_id, visit_date, SUM(patient_count) OVER(PARTITION BY clinic_id ORDER BY visit_date RANGE BETWEEN INTERVAL '29 days' PRECEDING AND CURRENT ROW) AS rolling_30d_visits FROM visits;",
+  "setupSQL": "CREATE TABLE visits (clinic_id INT, visit_date DATE, patient_count INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 70,
+  "title": "High Value Countries",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Aggregation",
+    "HAVING"
+  ],
+  "scenario": "Find all countries where the total 'amount' of approved transactions exceeds 5000. Return the result table as 'country'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Filter by state = 'approved', group by country, and use HAVING to check the total sum.",
+  "correctQuery": "SELECT country FROM transactions WHERE state = 'approved' GROUP BY country HAVING SUM(amount) > 5000;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 6000, '2019-01-01'), (2, 'DE', 'approved', 2000, '2019-01-01');",
+  "enforceOrder": false
+}

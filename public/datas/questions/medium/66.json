@@ -1,0 +1,16 @@
+{
+  "id": 66,
+  "title": "Confirmed Action Ratio",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Aggregation",
+    "CASE Statement"
+  ],
+  "scenario": "Find the ratio of 'confirmed' to 'timeout' actions globally. Return the result table as 'action_ratio'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Use CASE statements within a SUM to get counts for both actions.",
+  "correctQuery": "SELECT SUM(CASE WHEN action = 'confirmed' THEN 1 ELSE 0 END) * 1.0 / SUM(CASE WHEN action = 'timeout' THEN 1 ELSE 0 END) AS action_ratio FROM confirmations;",
+  "setupSQL": "CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO confirmations VALUES (3, '2021-01-06 03:30:46', 'timeout'), (7, '2021-06-12 11:57:29', 'confirmed');",
+  "enforceOrder": false
+}

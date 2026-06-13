@@ -1,0 +1,15 @@
+{
+  "id": 94,
+  "title": "High Engagement Player Fraction",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the fraction of players who have played more than the average number of total games across all players. Return 'fraction'.",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Calculate total games per player first, then compute the ratio against the global average.",
+  "correctQuery": "SELECT COUNT(CASE WHEN total_games > avg_games THEN 1 END)::NUMERIC / COUNT(*) AS fraction FROM (SELECT player_id, SUM(games_played) AS total_games FROM activity GROUP BY player_id) t1, (SELECT AVG(total_games) AS avg_games FROM (SELECT SUM(games_played) AS total_games FROM activity GROUP BY player_id) t2) t3;",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 10), (2, 1, '2026-01-01', 2);",
+  "enforceOrder": false
+}

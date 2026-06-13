@@ -1,0 +1,15 @@
+{
+  "id": 329,
+  "title": "Count Products",
+  "difficulty": "Easy",
+  "company": "Inventory",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Get the total number of products available.",
+  "tableSchema": "Products (id INT)",
+  "hint": "Use COUNT().",
+  "correctQuery": "SELECT COUNT(*) FROM Products;",
+  "setupSQL": "CREATE TABLE Products (id INT);",
+  "enforceOrder": false
+}

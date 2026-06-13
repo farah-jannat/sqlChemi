@@ -1,0 +1,15 @@
+{
+  "id": 95,
+  "title": "Player Loyalty Index",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Calculate the 'loyalty_index' defined as (Total games played by player) / (Total distinct days player logged in). Return 'player_id' and 'loyalty_index'.",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Group by player_id and calculate the sum and count.",
+  "correctQuery": "SELECT player_id, SUM(games_played)::NUMERIC / COUNT(DISTINCT event_date) AS loyalty_index FROM activity GROUP BY player_id;",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 10), (1, 1, '2026-01-02', 5);",
+  "enforceOrder": false
+}

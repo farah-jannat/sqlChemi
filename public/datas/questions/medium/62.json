@@ -1,0 +1,15 @@
+{
+  "id": 62,
+  "title": "Most Recent Action",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the most recent 'action' performed by each user. Return the result table as 'user_id' and 'action'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Use ROW_NUMBER() partitioned by user_id ordered by time_stamp DESC to pick the latest action.",
+  "correctQuery": "SELECT user_id, action FROM (SELECT user_id, action, ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY time_stamp DESC) as rn FROM confirmations) t WHERE rn = 1;",
+  "setupSQL": "CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO confirmations VALUES (3, '2021-01-06 03:30:46', 'timeout'), (3, '2021-07-14 14:00:00', 'confirmed'), (2, '2021-01-22 00:00:00', 'confirmed');",
+  "enforceOrder": false
+}

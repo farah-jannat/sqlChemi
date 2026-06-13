@@ -1,0 +1,16 @@
+{
+  "id": 122,
+  "title": "Role Salary Contribution Ratio",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Calculate the ratio of a specific role's total salary to the total project budget. Return 'project_id', 'role', and 'contribution_ratio'.",
+  "tableSchema": "projects (project_id INT, start_date DATE, end_date DATE, budget INT), employees (employee_id INT, project_id INT, role VARCHAR, salary INT)",
+  "hint": "SUM(salary) per role per project divided by project budget.",
+  "correctQuery": "SELECT e.project_id, e.role, SUM(e.salary)::NUMERIC / p.budget AS contribution_ratio FROM employees e JOIN projects p ON e.project_id = p.project_id GROUP BY e.project_id, e.role, p.budget;",
+  "setupSQL": "CREATE TABLE projects (project_id INT, start_date DATE, end_date DATE, budget INT); CREATE TABLE employees (employee_id INT, project_id INT, role VARCHAR, salary INT); INSERT INTO projects VALUES (1, '2026-01-01', '2026-12-31', 10000); INSERT INTO employees VALUES (101, 1, 'Dev', 2000);",
+  "enforceOrder": false
+}

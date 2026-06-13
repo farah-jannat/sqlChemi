@@ -1,0 +1,15 @@
+{
+  "id": 146,
+  "title": "Interrupted Sequences",
+  "difficulty": "Medium",
+  "company": "Unique-Data",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find numbers where a streak of 3 was 'interrupted' by a single different number, then resumed. Return 'num'.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Compare rows with LEAD/LAG offset 2.",
+  "correctQuery": "SELECT DISTINCT l1.num FROM logs l1 JOIN logs l3 ON l1.id = l3.id - 2 JOIN logs l5 ON l1.id = l5.id - 4 WHERE l1.num = l3.num AND l3.num = l5.num;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (2, '2'), (3, '1'), (4, '2'), (5, '1');",
+  "enforceOrder": false
+}

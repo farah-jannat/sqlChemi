@@ -1,0 +1,16 @@
+{
+  "id": 296,
+  "title": "Geographic Demand Surge",
+  "difficulty": "Hard",
+  "company": "GeoFlow",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find cities that experienced a 'Demand Surge' (views > 150% of the 30-day moving average) for more than 3 non-consecutive days in a month.",
+  "tableSchema": "trips (city_id INT, request_date DATE)",
+  "hint": "Use RANGE frames for moving averages.",
+  "correctQuery": "WITH DailyDemand AS (SELECT city_id, request_date, COUNT(*) as cnt FROM trips GROUP BY 1, 2), MovingAvg AS (SELECT city_id, request_date, cnt, AVG(cnt) OVER(PARTITION BY city_id ORDER BY request_date RANGE BETWEEN INTERVAL '30 days' PRECEDING AND INTERVAL '1 day' PRECEDING) as avg_30 FROM DailyDemand) SELECT city_id FROM MovingAvg WHERE cnt > 1.5 * avg_30 GROUP BY city_id HAVING COUNT(*) > 3;",
+  "setupSQL": "CREATE TABLE trips (city_id INT, request_date DATE);",
+  "enforceOrder": false
+}

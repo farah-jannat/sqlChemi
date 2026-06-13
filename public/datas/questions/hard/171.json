@@ -1,0 +1,16 @@
+{
+  "id": 171,
+  "title": "Revenue Contribution Shift",
+  "difficulty": "Hard",
+  "company": "Marketing-Agency",
+  "tags": [
+    "Window Functions",
+    "Rank"
+  ],
+  "scenario": "Determine if a campaign's rank improved or worsened compared to the previous week.",
+  "tableSchema": "perf (camp_id INT, week INT, rev NUMERIC)",
+  "hint": "Calculate rank per week, then use LAG() to compare.",
+  "correctQuery": "SELECT camp_id, week, (prev_rank - curr_rank) AS rank_change FROM (SELECT camp_id, week, RANK() OVER(PARTITION BY week ORDER BY rev DESC) AS curr_rank, LAG(RANK() OVER(PARTITION BY week ORDER BY rev DESC)) OVER(PARTITION BY camp_id ORDER BY week) AS prev_rank FROM perf) t;",
+  "setupSQL": "CREATE TABLE perf (camp_id INT, week INT, rev NUMERIC);",
+  "enforceOrder": false
+}

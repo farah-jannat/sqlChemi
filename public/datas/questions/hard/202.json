@@ -1,0 +1,16 @@
+{
+  "id": 202,
+  "title": "Budget Efficiency Ratios",
+  "difficulty": "Hard",
+  "company": "Budget-Games",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "For each genre, find games that have a higher critic_score per million of budget than the genre average.",
+  "tableSchema": "games (game_id INT, genre VARCHAR), developers (game_id INT, budget NUMERIC), ratings (game_id INT, critic_score NUMERIC)",
+  "hint": "Calculate efficiency (critic_score / (budget/1e6)), then use AVG() OVER(PARTITION BY genre).",
+  "correctQuery": "SELECT game_id FROM (SELECT g.game_id, (r.critic_score / (d.budget / 1000000.0)) as efficiency, AVG(r.critic_score / (d.budget / 1000000.0)) OVER(PARTITION BY g.genre) as avg_eff FROM games g JOIN developers d ON g.game_id = d.game_id JOIN ratings r ON g.game_id = r.game_id) t WHERE efficiency > avg_eff;",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR); CREATE TABLE developers (game_id INT, budget NUMERIC); CREATE TABLE ratings (game_id INT, critic_score NUMERIC);",
+  "enforceOrder": false
+}

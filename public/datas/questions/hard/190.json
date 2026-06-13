@@ -1,0 +1,16 @@
+{
+  "id": 190,
+  "title": "Manufacturing Yield Rate",
+  "difficulty": "Hard",
+  "company": "PrecisionBuild",
+  "tags": [
+    "Window Functions",
+    "Partitioning"
+  ],
+  "scenario": "Calculate the moving yield (ratio of passed to total parts) for the last 100 parts produced.",
+  "tableSchema": "assembly (part_id INT, is_passed BOOLEAN, assembly_date TIMESTAMP)",
+  "hint": "Use ROWS BETWEEN 99 PRECEDING AND CURRENT ROW.",
+  "correctQuery": "SELECT part_id, AVG(CASE WHEN is_passed THEN 1.0 ELSE 0.0 END) OVER(ORDER BY assembly_date ROWS BETWEEN 99 PRECEDING AND CURRENT ROW) AS moving_yield FROM assembly;",
+  "setupSQL": "CREATE TABLE assembly (part_id INT, is_passed BOOLEAN, assembly_date TIMESTAMP);",
+  "enforceOrder": false
+}

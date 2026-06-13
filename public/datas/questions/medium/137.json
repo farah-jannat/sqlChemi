@@ -1,0 +1,15 @@
+{
+  "id": 137,
+  "title": "Cross-Product Diversity Score",
+  "difficulty": "Medium",
+  "company": "Unique-Ecom",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Calculate the diversity score: (Number of distinct products bought) / (Total number of items bought). Return 'customer_id' and 'diversity_score'.",
+  "tableSchema": "customer (customer_id INT, product_key INT)",
+  "hint": "Count(DISTINCT product_key) divided by Count(*).",
+  "correctQuery": "SELECT customer_id, COUNT(DISTINCT product_key)::NUMERIC / NULLIF(COUNT(*), 0) AS diversity_score FROM customer GROUP BY customer_id;",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, product_key INT); INSERT INTO customer VALUES (1, 5), (1, 5), (1, 6);",
+  "enforceOrder": false
+}

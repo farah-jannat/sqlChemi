@@ -1,0 +1,16 @@
+{
+  "id": 185,
+  "title": "Hotel Room Turnover",
+  "difficulty": "Hard",
+  "company": "GrandStay",
+  "tags": [
+    "Window Functions",
+    "Date Arithmetic"
+  ],
+  "scenario": "Calculate the number of vacant days between consecutive bookings for each room.",
+  "tableSchema": "bookings (room_id INT, check_in DATE, check_out DATE)",
+  "hint": "Subtract previous check_out from current check_in.",
+  "correctQuery": "SELECT room_id, check_in, (check_in - LAG(check_out) OVER(PARTITION BY room_id ORDER BY check_in)) AS vacant_days FROM bookings;",
+  "setupSQL": "CREATE TABLE bookings (room_id INT, check_in DATE, check_out DATE);",
+  "enforceOrder": false
+}

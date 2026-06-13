@@ -1,0 +1,16 @@
+{
+  "id": 271,
+  "title": "Category Diversity per Author",
+  "difficulty": "Hard",
+  "company": "Multi-Media",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Find authors who have published in at least 5 different categories and have an average of > 100 views per article.",
+  "tableSchema": "articles (article_id INT, author_id INT, category_id INT), page_views (article_id INT, views_count INT)",
+  "hint": "Group by author, count categories, then average views.",
+  "correctQuery": "SELECT author_id FROM (SELECT author_id, COUNT(DISTINCT category_id) as cat_count, AVG(total_views) as avg_views FROM (SELECT author_id, category_id, article_id, SUM(views_count) as total_views FROM articles JOIN page_views USING (article_id) GROUP BY author_id, category_id, article_id) t GROUP BY author_id) t2 WHERE cat_count >= 5 AND avg_views > 100;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, author_id INT, category_id INT); CREATE TABLE page_views (article_id INT, views_count INT);",
+  "enforceOrder": false
+}

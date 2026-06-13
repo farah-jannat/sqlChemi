@@ -1,0 +1,16 @@
+{
+  "id": 195,
+  "title": "Healthcare Wait Time Distribution",
+  "difficulty": "Hard",
+  "company": "CarePath",
+  "tags": [
+    "Window Functions",
+    "Percentile"
+  ],
+  "scenario": "Find the 90th percentile wait time for each clinic.",
+  "tableSchema": "wait_times (clinic_id INT, minutes INT)",
+  "hint": "Use PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY minutes).",
+  "correctQuery": "SELECT clinic_id, PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY minutes) OVER(PARTITION BY clinic_id) as p90_wait FROM wait_times;",
+  "setupSQL": "CREATE TABLE wait_times (clinic_id INT, minutes INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 269,
+  "title": "Comment Frequency Spike",
+  "difficulty": "Hard",
+  "company": "Social-Engage",
+  "tags": [
+    "Window Functions",
+    "Moving Average"
+  ],
+  "scenario": "Identify articles that received a comment burst (3x their rolling 30-day average) on any given day.",
+  "tableSchema": "comments (article_id INT, comment_date TIMESTAMP)",
+  "hint": "Aggregate daily, compute 30-day moving average.",
+  "correctQuery": "SELECT article_id FROM (SELECT article_id, day, daily_cnt, AVG(daily_cnt) OVER(PARTITION BY article_id ORDER BY day RANGE BETWEEN INTERVAL '30 days' PRECEDING AND INTERVAL '1 day' PRECEDING) as roll_avg FROM (SELECT article_id, comment_date::DATE as day, COUNT(*) as daily_cnt FROM comments GROUP BY article_id, day) t) t2 WHERE daily_cnt > 3 * roll_avg;",
+  "setupSQL": "CREATE TABLE comments (article_id INT, comment_date TIMESTAMP);",
+  "enforceOrder": false
+}

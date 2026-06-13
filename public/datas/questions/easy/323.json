@@ -1,0 +1,15 @@
+{
+  "id": 323,
+  "title": "Find Recent Sales",
+  "difficulty": "Easy",
+  "company": "Logistics",
+  "tags": [
+    "Filtering"
+  ],
+  "scenario": "Retrieve all sales made after '2025-01-01'.",
+  "tableSchema": "Sales (id INT, sale_date DATE)",
+  "hint": "Use a WHERE clause with a date comparison.",
+  "correctQuery": "SELECT * FROM Sales WHERE sale_date > '2025-01-01';",
+  "setupSQL": "CREATE TABLE Sales (id INT, sale_date DATE);",
+  "enforceOrder": false
+}

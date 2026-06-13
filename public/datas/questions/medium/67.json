@@ -1,0 +1,15 @@
+{
+  "id": 67,
+  "title": "Inactive Signups",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Find all 'user_id' who signed up but have not performed any action (confirmed or timeout). Return the result table as 'user_id'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Use NOT IN with a subquery of user_ids found in the confirmations table.",
+  "correctQuery": "SELECT user_id FROM signups WHERE user_id NOT IN (SELECT user_id FROM confirmations);",
+  "setupSQL": "CREATE TABLE signups (user_id INT, time_stamp DATETIME); CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO signups VALUES (6, '2020-12-09 10:39:37');",
+  "enforceOrder": false
+}

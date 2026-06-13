@@ -1,0 +1,16 @@
+{
+  "id": 236,
+  "title": "Temperature Trend Persistence",
+  "difficulty": "Hard",
+  "company": "Trend-Watch",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Identify cities where the daily average temperature has been increasing for 5 consecutive days.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC)",
+  "hint": "LAG(temp) vs temp, create groups, count streak.",
+  "correctQuery": "SELECT city_name FROM (SELECT city_name, COUNT(*) as streak FROM (SELECT city_name, reading_date, (reading_date - ROW_NUMBER() OVER(PARTITION BY city_name ORDER BY reading_date)::INT) as grp FROM (SELECT city_name, reading_date, temp_c, LAG(temp_c) OVER(PARTITION BY city_name ORDER BY reading_date) as prev_temp FROM weather_data) t WHERE temp_c > prev_temp) t2 GROUP BY city_name, grp) t3 WHERE streak >= 5;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

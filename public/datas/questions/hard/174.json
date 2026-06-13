@@ -1,0 +1,16 @@
+{
+  "id": 174,
+  "title": "Top-Ranked Product Change",
+  "difficulty": "Hard",
+  "company": "Search-Engine",
+  "tags": [
+    "Window Functions",
+    "Rank"
+  ],
+  "scenario": "Identify products that moved from #1 to outside the Top 3 in subsequent weeks.",
+  "tableSchema": "ranking (prod_id INT, week INT, rnk INT)",
+  "hint": "Use LAG() to check rank from previous week.",
+  "correctQuery": "SELECT prod_id FROM (SELECT prod_id, week, rnk, LAG(rnk) OVER(PARTITION BY prod_id ORDER BY week) as prev_rnk FROM ranking) t WHERE prev_rnk = 1 AND rnk > 3;",
+  "setupSQL": "CREATE TABLE ranking (prod_id INT, week INT, rnk INT);",
+  "enforceOrder": false
+}

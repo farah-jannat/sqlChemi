@@ -1,0 +1,15 @@
+{
+  "id": 101,
+  "title": "Delivery Delay Duration",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Date Arithmetic"
+  ],
+  "scenario": "Calculate the average delay (customer_pref_delivery_date - order_date) for scheduled orders. Return the result as 'avg_delay_days'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Filter for scheduled orders where date difference is > 0.",
+  "correctQuery": "SELECT AVG(customer_pref_delivery_date - order_date) AS avg_delay_days FROM delivery WHERE customer_pref_delivery_date > order_date;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02');",
+  "enforceOrder": false
+}

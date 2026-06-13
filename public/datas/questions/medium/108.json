@@ -1,0 +1,15 @@
+{
+  "id": 108,
+  "title": "Immediate vs Scheduled Proportion",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Calculate the ratio of immediate orders to scheduled orders for each customer. Return 'customer_id' and 'ratio'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Use CASE statements to sum immediate vs scheduled orders.",
+  "correctQuery": "SELECT customer_id, SUM(CASE WHEN order_date = customer_pref_delivery_date THEN 1 ELSE 0 END)::NUMERIC / NULLIF(SUM(CASE WHEN order_date < customer_pref_delivery_date THEN 1 ELSE 0 END), 0) AS ratio FROM delivery GROUP BY customer_id HAVING SUM(CASE WHEN order_date < customer_pref_delivery_date THEN 1 ELSE 0 END) > 0;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02'), (2, 1, '2019-08-02', '2019-08-02');",
+  "enforceOrder": false
+}

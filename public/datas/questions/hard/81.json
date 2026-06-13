@@ -1,0 +1,16 @@
+{
+  "id": 81,
+  "title": "Gaps and Islands in Transactions",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions",
+    "Grouping"
+  ],
+  "scenario": "Identify islands of consecutive days where transactions were 'approved'. Return the 'start_date' and 'end_date' of these islands for each 'country'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Subtract a row number from the date to create a grouping key.",
+  "correctQuery": "SELECT country, MIN(trans_date) AS start_date, MAX(trans_date) AS end_date FROM (SELECT country, trans_date, DATE(trans_date, '-' || ROW_NUMBER() OVER(PARTITION BY country ORDER BY trans_date) || ' day') AS grp FROM transactions WHERE state = 'approved') t GROUP BY country, grp;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01'), (2, 'US', 'approved', 200, '2026-01-02'), (3, 'US', 'declined', 300, '2026-01-03'), (4, 'US', 'approved', 400, '2026-01-04');",
+  "enforceOrder": false
+}

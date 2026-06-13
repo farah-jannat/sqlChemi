@@ -1,0 +1,15 @@
+{
+  "id": 328,
+  "title": "Employees with Null Dept",
+  "difficulty": "Easy",
+  "company": "HR-Data",
+  "tags": [
+    "Null Handling"
+  ],
+  "scenario": "Find employees who have not been assigned to any department (dept_id is NULL).",
+  "tableSchema": "Employees (id INT, name VARCHAR, dept_id INT)",
+  "hint": "Use IS NULL.",
+  "correctQuery": "SELECT name FROM Employees WHERE dept_id IS NULL;",
+  "setupSQL": "CREATE TABLE Employees (id INT, name VARCHAR, dept_id INT);",
+  "enforceOrder": false
+}

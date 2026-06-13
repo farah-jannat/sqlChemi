@@ -1,0 +1,16 @@
+{
+  "id": 278,
+  "title": "Author Productivity Quartiles",
+  "difficulty": "Hard",
+  "company": "Ops-Team",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Assign authors to productivity quartiles based on their total articles published.",
+  "tableSchema": "articles (author_id INT, article_id INT)",
+  "hint": "Use NTILE(4).",
+  "correctQuery": "SELECT author_id, NTILE(4) OVER(ORDER BY COUNT(*) DESC) as quartile FROM articles GROUP BY author_id;",
+  "setupSQL": "CREATE TABLE articles (author_id INT, article_id INT);",
+  "enforceOrder": false
+}

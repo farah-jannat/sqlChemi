@@ -1,0 +1,16 @@
+{
+  "id": 277,
+  "title": "Category View Concentration",
+  "difficulty": "Hard",
+  "company": "Strategy-Group",
+  "tags": [
+    "Window Functions",
+    "Percentage"
+  ],
+  "scenario": "Find articles that account for > 50% of their category's total monthly views.",
+  "tableSchema": "articles (article_id INT, category_id INT), page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Calculate total views per category/month, then partition.",
+  "correctQuery": "SELECT article_id FROM (SELECT article_id, SUM(views_count)::NUMERIC / SUM(SUM(views_count)) OVER(PARTITION BY category_id, DATE_TRUNC('month', view_date)) as pct FROM articles JOIN page_views USING (article_id) GROUP BY article_id, category_id, DATE_TRUNC('month', view_date)) t WHERE pct > 0.5;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, category_id INT); CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

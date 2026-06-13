@@ -1,0 +1,16 @@
+{
+  "id": 243,
+  "title": "Sprint Velocity Stability",
+  "difficulty": "Hard",
+  "company": "Agile-Metrics",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Find developers who have a lower than average bug-fix count compared to their team for three consecutive sprints.",
+  "tableSchema": "developers (dev_id INT, team_id INT), status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP), sprints (sprint_id INT, start_date DATE, end_date DATE)",
+  "hint": "Calculate fix counts per dev per sprint, then use window avg.",
+  "correctQuery": "SELECT dev_id FROM (SELECT dev_id, sprint_id, fix_count, AVG(fix_count) OVER(PARTITION BY team_id, sprint_id) as team_avg, LAG(fix_count) OVER(PARTITION BY dev_id ORDER BY sprint_id) as prev_fix FROM (SELECT d.dev_id, d.team_id, s.sprint_id, COUNT(*) as fix_count FROM developers d JOIN status_history sh ON d.dev_id = sh.bug_id JOIN sprints s ON sh.changed_at::DATE BETWEEN s.start_date AND s.end_date WHERE sh.status = 'Resolved' GROUP BY d.dev_id, d.team_id, s.sprint_id) t) t2 WHERE fix_count < team_avg AND prev_fix < team_avg;",
+  "setupSQL": "CREATE TABLE developers (dev_id INT, team_id INT); CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP); CREATE TABLE sprints (sprint_id INT, start_date DATE, end_date DATE);",
+  "enforceOrder": false
+}

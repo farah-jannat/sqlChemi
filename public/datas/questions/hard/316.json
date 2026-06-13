@@ -1,0 +1,16 @@
+{
+  "id": 316,
+  "title": "User Discrepancy Flagging",
+  "difficulty": "Hard",
+  "company": "Review-Compliance",
+  "tags": [
+    "Window Functions",
+    "Filtering"
+  ],
+  "scenario": "Identify users whose individual rating for a specific movie deviates from that movie's overall average rating by more than 2 points. Output the 'user_name', 'movie_title', and the 'deviation_score'.",
+  "tableSchema": "Users (user_id INT, name VARCHAR), Movies (movie_id INT, title VARCHAR), MovieRating (user_id INT, movie_id INT, rating INT)",
+  "hint": "Use a CTE to calculate the average rating per movie, then join it back to the main MovieRating table to calculate the absolute difference.",
+  "correctQuery": "WITH MovieAverages AS (SELECT movie_id, AVG(rating) as avg_rating FROM MovieRating GROUP BY movie_id) SELECT u.name AS user_name, m.title AS movie_title, ABS(mr.rating - ma.avg_rating) AS deviation_score FROM MovieRating mr JOIN Users u ON mr.user_id = u.user_id JOIN Movies m ON mr.movie_id = m.movie_id JOIN MovieAverages ma ON mr.movie_id = ma.movie_id WHERE ABS(mr.rating - ma.avg_rating) > 2 ORDER BY deviation_score DESC;",
+  "setupSQL": "CREATE TABLE Users (user_id INT PRIMARY KEY, name VARCHAR); CREATE TABLE Movies (movie_id INT PRIMARY KEY, title VARCHAR); CREATE TABLE MovieRating (user_id INT, movie_id INT, rating INT);",
+  "enforceOrder": true
+}

@@ -1,0 +1,15 @@
+{
+  "id": 134,
+  "title": "Market Saturation Ratio",
+  "difficulty": "Medium",
+  "company": "Unique-Ecom",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Calculate the percentage of customers who have bought at least 50% of the available products. Return 'saturation_percentage'.",
+  "tableSchema": "customer (customer_id INT, product_key INT), product (product_key INT)",
+  "hint": "Divide count of distinct products per customer by total products in Product table.",
+  "correctQuery": "SELECT ROUND(100.0 * COUNT(DISTINCT CASE WHEN dist_p >= 0.5 * total_p THEN customer_id END) / NULLIF(COUNT(DISTINCT customer_id), 0), 2) AS saturation_percentage FROM (SELECT customer_id, COUNT(DISTINCT product_key) AS dist_p FROM customer GROUP BY customer_id) t1, (SELECT COUNT(*) AS total_p FROM product) t2;",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, product_key INT); CREATE TABLE product (product_key INT); INSERT INTO customer VALUES (1, 1), (1, 2); INSERT INTO product VALUES (1), (2), (3);",
+  "enforceOrder": false
+}

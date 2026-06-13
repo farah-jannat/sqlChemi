@@ -1,0 +1,15 @@
+{
+  "id": 74,
+  "title": "Single-Transaction Users",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Find countries where there is only one unique 'id' that has ever been processed. Return the result table as 'country'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Group by country and use HAVING count(id) = 1.",
+  "correctQuery": "SELECT country FROM transactions GROUP BY country HAVING COUNT(id) = 1;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 1000, '2019-01-01'), (2, 'DE', 'approved', 2000, '2019-01-01');",
+  "enforceOrder": false
+}

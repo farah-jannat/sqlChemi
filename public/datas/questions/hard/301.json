@@ -1,0 +1,16 @@
+{
+  "id": 301,
+  "title": "Driver Idle Time Estimation",
+  "difficulty": "Hard",
+  "company": "Fleet-Optimization",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the average 'gap' between a driver's completed trip and their next pickup time.",
+  "tableSchema": "trips (driver_id INT, pickup_time TIMESTAMP, dropoff_time TIMESTAMP)",
+  "hint": "Use LEAD() on pickup_time and compare with current dropoff_time.",
+  "correctQuery": "SELECT driver_id, AVG(pickup_time - dropoff_time) FROM (SELECT driver_id, pickup_time, dropoff_time, LEAD(pickup_time) OVER(PARTITION BY driver_id ORDER BY dropoff_time) as next_pickup FROM trips) t WHERE next_pickup IS NOT NULL GROUP BY driver_id;",
+  "setupSQL": "CREATE TABLE trips (driver_id INT, pickup_time TIMESTAMP, dropoff_time TIMESTAMP);",
+  "enforceOrder": false
+}

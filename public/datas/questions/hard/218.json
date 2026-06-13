@@ -1,0 +1,16 @@
+{
+  "id": 218,
+  "title": "Genre Trend Persistence",
+  "difficulty": "Hard",
+  "company": "Trend-Watch",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Identify genres that have stayed in the Top 5 most-released genres for at least 3 consecutive years.",
+  "tableSchema": "games (game_id INT, genre VARCHAR, release_year INT)",
+  "hint": "Rank genres by release count per year, then identify consecutive years.",
+  "correctQuery": "SELECT genre FROM (SELECT genre, release_year, (release_year::INT - DENSE_RANK() OVER(PARTITION BY genre ORDER BY release_year)) as grp FROM (SELECT genre, release_year, RANK() OVER(PARTITION BY release_year ORDER BY COUNT(*) DESC) as rnk FROM games GROUP BY genre, release_year) t WHERE rnk <= 5) t2 GROUP BY genre, grp HAVING COUNT(*) >= 3;",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR, release_year INT);",
+  "enforceOrder": false
+}

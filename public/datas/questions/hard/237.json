@@ -1,0 +1,16 @@
+{
+  "id": 237,
+  "title": "Peak Alert Duration",
+  "difficulty": "Hard",
+  "company": "Crisis-Mgmt",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "For cities with repeated alerts, calculate the average time between the end of one alert and the start of the next.",
+  "tableSchema": "climate_alerts (city_name VARCHAR, alert_time TIMESTAMP)",
+  "hint": "Use LEAD() to find next alert time.",
+  "correctQuery": "SELECT city_name, AVG(next_time - alert_time) FROM (SELECT city_name, alert_time, LEAD(alert_time) OVER(PARTITION BY city_name ORDER BY alert_time) as next_time FROM climate_alerts) t GROUP BY city_name;",
+  "setupSQL": "CREATE TABLE climate_alerts (city_name VARCHAR, alert_time TIMESTAMP);",
+  "enforceOrder": false
+}

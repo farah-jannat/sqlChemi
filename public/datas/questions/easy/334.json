@@ -1,0 +1,15 @@
+{
+  "id": 334,
+  "title": "Sort Employees by Name",
+  "difficulty": "Easy",
+  "company": "HR-Team",
+  "tags": [
+    "Sorting"
+  ],
+  "scenario": "Return all employee names in alphabetical order.",
+  "tableSchema": "Employees (name VARCHAR)",
+  "hint": "Use ORDER BY.",
+  "correctQuery": "SELECT name FROM Employees ORDER BY name ASC;",
+  "setupSQL": "CREATE TABLE Employees (name VARCHAR);",
+  "enforceOrder": false
+}

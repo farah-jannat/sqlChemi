@@ -1,0 +1,17 @@
+{
+  "id": 306,
+  "title": "Inventory Supply Chain Rebalancing",
+  "difficulty": "Medium",
+  "company": "Global-Warehousing",
+  "tags": [
+    "Window Functions",
+    "Conditional Logic",
+    "Data Transformation"
+  ],
+  "scenario": "You are the supply chain manager for a warehouse where items are stored in numbered storage bins (ID 1 through N). To optimize retrieval paths, you must swap the item assignments between every adjacent pair of storage bins. If there is an odd number of bins, the item in the highest-numbered bin must remain in its original position. Generate a report mapping each item to its newly assigned bin ID, ensuring the output is ordered by bin ID in ascending order.",
+  "tableSchema": "Inventory (bin_id INT, item_name VARCHAR)",
+  "hint": "Use a CASE statement combined with a subquery to find the total number of bins. Map odd bin IDs to ID+1 (unless it is the final bin) and even bin IDs to ID-1.",
+  "correctQuery": "SELECT CASE WHEN bin_id % 2 != 0 AND bin_id = (SELECT MAX(bin_id) FROM Inventory) THEN bin_id WHEN bin_id % 2 != 0 THEN bin_id + 1 ELSE bin_id - 1 END AS bin_id, item_name FROM Inventory ORDER BY bin_id ASC;",
+  "setupSQL": "CREATE TABLE Inventory (bin_id INT PRIMARY KEY, item_name VARCHAR); INSERT INTO Inventory VALUES (1, 'Widget_A'), (2, 'Widget_B'), (3, 'Widget_C'), (4, 'Widget_D'), (5, 'Widget_E');",
+  "enforceOrder": true
+}

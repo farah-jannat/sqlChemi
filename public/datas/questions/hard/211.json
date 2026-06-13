@@ -1,0 +1,16 @@
+{
+  "id": 211,
+  "title": "Yearly Release Frequency Delta",
+  "difficulty": "Hard",
+  "company": "Dev-Trends",
+  "tags": [
+    "Window Functions",
+    "Offsets"
+  ],
+  "scenario": "Calculate the difference in number of games released by a studio between the current year and the previous year.",
+  "tableSchema": "developers (studio_name VARCHAR, game_id INT), games (game_id INT, release_year INT)",
+  "hint": "Count games per studio/year, then use LAG().",
+  "correctQuery": "SELECT studio_name, release_year, cnt - LAG(cnt) OVER(PARTITION BY studio_name ORDER BY release_year) as delta FROM (SELECT d.studio_name, g.release_year, COUNT(*) as cnt FROM developers d JOIN games g ON d.game_id = g.game_id GROUP BY d.studio_name, g.release_year) t;",
+  "setupSQL": "CREATE TABLE developers (studio_name VARCHAR, game_id INT); CREATE TABLE games (game_id INT, release_year INT);",
+  "enforceOrder": false
+}

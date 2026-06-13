@@ -1,0 +1,16 @@
+{
+  "id": 192,
+  "title": "Customer Churn Prediction Signal",
+  "difficulty": "Hard",
+  "company": "SubscriptionKey",
+  "tags": [
+    "Window Functions",
+    "Offsets"
+  ],
+  "scenario": "Find users who decreased their subscription tier twice in a row.",
+  "tableSchema": "sub_tier (user_id INT, tier INT, change_date DATE)",
+  "hint": "Compare current tier with previous and before-previous tier using LAG(tier, 2).",
+  "correctQuery": "SELECT user_id FROM (SELECT user_id, tier, LAG(tier) OVER(PARTITION BY user_id ORDER BY change_date) as prev1, LAG(tier, 2) OVER(PARTITION BY user_id ORDER BY change_date) as prev2 FROM sub_tier) t WHERE tier < prev1 AND prev1 < prev2;",
+  "setupSQL": "CREATE TABLE sub_tier (user_id INT, tier INT, change_date DATE);",
+  "enforceOrder": false
+}

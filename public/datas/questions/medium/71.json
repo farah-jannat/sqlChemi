@@ -1,0 +1,16 @@
+{
+  "id": 71,
+  "title": "Monthly Decline Rate",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Aggregation",
+    "Percentage"
+  ],
+  "scenario": "Calculate the decline rate (declined transactions / total transactions) for each month. Return the result table as 'month' and 'decline_rate' (rounded to 2 decimal places).",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use AVG(state = 'declined') to calculate the percentage.",
+  "correctQuery": "SELECT STRFTIME('%Y-%m', trans_date) AS month, ROUND(AVG(state = 'declined'), 2) AS decline_rate FROM transactions GROUP BY month;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 1000, '2019-01-01'), (2, 'US', 'declined', 500, '2019-01-05');",
+  "enforceOrder": false
+}

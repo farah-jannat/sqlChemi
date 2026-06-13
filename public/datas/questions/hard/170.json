@@ -1,0 +1,16 @@
+{
+  "id": 170,
+  "title": "Consecutive Out-of-Stock Days",
+  "difficulty": "Hard",
+  "company": "Warehouse-Global",
+  "tags": [
+    "Window Functions",
+    "Gaps and Islands"
+  ],
+  "scenario": "Find items that have been out of stock for 5 or more consecutive days.",
+  "tableSchema": "inventory (item_id INT, stock_date DATE, qty INT)",
+  "hint": "Create groups using date minus row number.",
+  "correctQuery": "SELECT item_id FROM (SELECT item_id, COUNT(*) AS outage_len FROM (SELECT item_id, (stock_date - ROW_NUMBER() OVER(PARTITION BY item_id ORDER BY stock_date)::INT) AS grp FROM inventory WHERE qty = 0) t GROUP BY item_id, grp) t2 WHERE outage_len >= 5;",
+  "setupSQL": "CREATE TABLE inventory (item_id INT, stock_date DATE, qty INT);",
+  "enforceOrder": false
+}

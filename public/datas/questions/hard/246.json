@@ -1,0 +1,16 @@
+{
+  "id": 246,
+  "title": "Developer Burnout Prediction",
+  "difficulty": "Hard",
+  "company": "Human-Resources",
+  "tags": [
+    "Window Functions",
+    "Running Total"
+  ],
+  "scenario": "Identify developers who handled more than 50% of the team's bug load in any single sprint.",
+  "tableSchema": "developers (dev_id INT, team_id INT), status_history (bug_id INT, changed_at TIMESTAMP), sprints (sprint_id INT, start_date DATE, end_date DATE)",
+  "hint": "Window partition by sprint and team.",
+  "correctQuery": "SELECT dev_id FROM (SELECT dev_id, sprint_id, COUNT(*) as dev_load, SUM(COUNT(*)) OVER(PARTITION BY team_id, sprint_id) as team_load FROM developers d JOIN status_history sh ON d.dev_id = sh.bug_id JOIN sprints s ON sh.changed_at::DATE BETWEEN s.start_date AND s.end_date GROUP BY dev_id, team_id, sprint_id) t WHERE dev_load::NUMERIC / team_load > 0.5;",
+  "setupSQL": "CREATE TABLE developers (dev_id INT, team_id INT); CREATE TABLE status_history (bug_id INT, changed_at TIMESTAMP); CREATE TABLE sprints (sprint_id INT, start_date DATE, end_date DATE);",
+  "enforceOrder": false
+}

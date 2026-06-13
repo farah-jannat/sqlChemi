@@ -1,0 +1,16 @@
+{
+  "id": 162,
+  "title": "Top 3 Revenue Drivers",
+  "difficulty": "Hard",
+  "company": "Inventory-Sys",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Retrieve the top 3 products by revenue within each category.",
+  "tableSchema": "inventory (prod_id INT, cat_id INT, revenue NUMERIC)",
+  "hint": "Use DENSE_RANK() to account for ties.",
+  "correctQuery": "SELECT cat_id, prod_id, revenue FROM (SELECT cat_id, prod_id, revenue, DENSE_RANK() OVER(PARTITION BY cat_id ORDER BY revenue DESC) as rnk FROM inventory) t WHERE rnk <= 3;",
+  "setupSQL": "CREATE TABLE inventory (prod_id INT, cat_id INT, revenue NUMERIC);",
+  "enforceOrder": false
+}

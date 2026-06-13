@@ -1,0 +1,16 @@
+{
+  "id": 310,
+  "title": "Super-User Contribution Velocity",
+  "difficulty": "Hard",
+  "company": "DataStream-Movies",
+  "tags": [
+    "Window Functions",
+    "CTE"
+  ],
+  "scenario": "Identify 'super-reviewers'—those who have submitted at least 3 reviews in a single calendar month. For these users, calculate their average rating provided during that specific month. Return the user name and the month (in YYYY-MM format) where they achieved this engagement level, ordered by their average rating in descending order.",
+  "tableSchema": "Users (user_id INT, name VARCHAR), MovieRating (user_id INT, rating INT, created_at DATE)",
+  "hint": "Group by user_id and month, filter for count >= 3, then calculate average rating.",
+  "correctQuery": "SELECT u.name, TO_CHAR(mr.created_at, 'YYYY-MM') as review_month, AVG(mr.rating) as avg_rating FROM Users u JOIN MovieRating mr ON u.user_id = mr.user_id GROUP BY u.name, review_month HAVING COUNT(*) >= 3 ORDER BY avg_rating DESC;",
+  "setupSQL": "CREATE TABLE Users (user_id INT PRIMARY KEY, name VARCHAR); CREATE TABLE MovieRating (user_id INT, rating INT, created_at DATE);",
+  "enforceOrder": true
+}

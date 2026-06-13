@@ -1,0 +1,16 @@
+{
+  "id": 247,
+  "title": "Sprint Overlap Issues",
+  "difficulty": "Hard",
+  "company": "Project-Mgmt",
+  "tags": [
+    "Window Functions",
+    "Interval"
+  ],
+  "scenario": "Find bugs that were reported in one sprint but not resolved until three sprints later.",
+  "tableSchema": "bugs (bug_id INT, created_at TIMESTAMP), status_history (bug_id INT, changed_at TIMESTAMP), sprints (sprint_id INT, start_date DATE, end_date DATE)",
+  "hint": "Join bugs and resolved status with sprint start/end dates.",
+  "correctQuery": "SELECT b.bug_id FROM bugs b JOIN status_history sh ON b.bug_id = sh.bug_id JOIN sprints s1 ON b.created_at::DATE BETWEEN s1.start_date AND s1.end_date JOIN sprints s2 ON sh.changed_at::DATE BETWEEN s2.start_date AND s2.end_date WHERE sh.status = 'Resolved' AND s2.sprint_id >= s1.sprint_id + 3;",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, created_at TIMESTAMP); CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP); CREATE TABLE sprints (sprint_id INT, start_date DATE, end_date DATE);",
+  "enforceOrder": false
+}

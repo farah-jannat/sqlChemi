@@ -1,0 +1,15 @@
+{
+  "id": 97,
+  "title": "Global Daily Trend Deviation",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find days where the total games played deviate more than 2 standard deviations from the daily mean. Return 'event_date'.",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Calculate daily total games, then find the global mean and stddev.",
+  "correctQuery": "WITH daily AS (SELECT event_date, SUM(games_played) AS total_games FROM activity GROUP BY event_date) SELECT event_date FROM daily, (SELECT AVG(total_games) AS m, STDDEV_SAMP(total_games) AS s FROM daily) stats WHERE ABS(total_games - m) > 2 * s;",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 10), (2, 1, '2026-01-02', 100);",
+  "enforceOrder": false
+}

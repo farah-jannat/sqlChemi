@@ -1,0 +1,16 @@
+{
+  "id": 285,
+  "title": "Multi-Factor Engagement Score",
+  "difficulty": "Hard",
+  "company": "Engage-Labs",
+  "tags": [
+    "Window Functions",
+    "Normalization"
+  ],
+  "scenario": "Create a normalized 'Engagement Score' for articles where (Views * 0.7 + Comments * 0.3) is z-scored across the entire platform.",
+  "tableSchema": "articles (article_id INT), page_views (article_id INT, views_count INT), comments (article_id INT, comment_id INT)",
+  "hint": "Calculate aggregate per article, then apply (val - avg) / stddev.",
+  "correctQuery": "WITH article_stats AS (SELECT article_id, (SUM(v.views_count) * 0.7 + COUNT(c.comment_id) * 0.3) as raw_score FROM articles a LEFT JOIN page_views v USING (article_id) LEFT JOIN comments c USING (article_id) GROUP BY article_id) SELECT article_id, (raw_score - AVG(raw_score) OVER()) / NULLIF(STDDEV(raw_score) OVER(), 0) as z_score FROM article_stats;",
+  "setupSQL": "CREATE TABLE articles (article_id INT); CREATE TABLE page_views (article_id INT, views_count INT); CREATE TABLE comments (article_id INT, comment_id INT);",
+  "enforceOrder": false
+}

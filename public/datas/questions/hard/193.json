@@ -1,0 +1,16 @@
+{
+  "id": 193,
+  "title": "Average Session Duration per Platform",
+  "difficulty": "Hard",
+  "company": "GamingHub",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Calculate the average length of sessions for each platform across all users.",
+  "tableSchema": "sessions (platform VARCHAR, user_id INT, start_t TIMESTAMP, end_t TIMESTAMP)",
+  "hint": "AVG((end_t - start_t)) partitioned by platform.",
+  "correctQuery": "SELECT platform, AVG(end_t - start_t) OVER(PARTITION BY platform) as avg_duration FROM sessions;",
+  "setupSQL": "CREATE TABLE sessions (platform VARCHAR, user_id INT, start_t TIMESTAMP, end_t TIMESTAMP);",
+  "enforceOrder": false
+}

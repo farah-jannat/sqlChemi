@@ -1,0 +1,16 @@
+{
+  "id": 311,
+  "title": "Genre Sentiment Decay",
+  "difficulty": "Hard",
+  "company": "Film-Trend-Analytics",
+  "tags": [
+    "Date Arithmetic",
+    "Aggregation"
+  ],
+  "scenario": "Analyze the 'sentiment decay' of movies by comparing the average rating of a movie in the first 30 days after its release versus the average rating received after 90 days post-release. Return the movie title and the difference in average ratings (First_30_Days_Avg - After_90_Days_Avg), sorted by the highest rating drop.",
+  "tableSchema": "Movies (movie_id INT, title VARCHAR), MovieRating (movie_id INT, rating INT, created_at DATE)",
+  "hint": "Use conditional aggregation (FILTER) to calculate two separate averages for each movie based on the date range.",
+  "correctQuery": "SELECT m.title, AVG(mr.rating) FILTER (WHERE mr.created_at <= '2020-01-30') - AVG(mr.rating) FILTER (WHERE mr.created_at > '2020-03-31') as rating_delta FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id GROUP BY m.title HAVING COUNT(*) > 5 ORDER BY rating_delta DESC;",
+  "setupSQL": "CREATE TABLE Movies (movie_id INT PRIMARY KEY, title VARCHAR); CREATE TABLE MovieRating (movie_id INT, rating INT, created_at DATE);",
+  "enforceOrder": true
+}

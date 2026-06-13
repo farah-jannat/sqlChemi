@@ -1,0 +1,15 @@
+{
+  "id": 111,
+  "title": "Average Price Trends",
+  "difficulty": "Medium",
+  "company": "Unique-Retail",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the average price for each product, but only for years where the product's total sales quantity exceeded 20 units. Return 'product_id', 'year', and 'avg_price'.",
+  "tableSchema": "sales (sale_id INT, product_id INT, year INT, quantity INT, price INT)",
+  "hint": "Group by product_id and year, filter by SUM(quantity) > 20.",
+  "correctQuery": "SELECT product_id, year, AVG(price) AS avg_price FROM sales GROUP BY product_id, year HAVING SUM(quantity) > 20;",
+  "setupSQL": "CREATE TABLE sales (sale_id INT, product_id INT, year INT, quantity INT, price INT); INSERT INTO sales VALUES (1, 100, 2008, 25, 5000), (2, 100, 2008, 5, 5000);",
+  "enforceOrder": false
+}

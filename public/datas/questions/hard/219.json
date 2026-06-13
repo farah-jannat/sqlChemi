@@ -1,0 +1,16 @@
+{
+  "id": 219,
+  "title": "Average Time to Portfolio Peak",
+  "difficulty": "Hard",
+  "company": "Studio-Growth",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Calculate the average time (in years) between a studio's first release and their highest-rated game release.",
+  "tableSchema": "developers (studio_name VARCHAR, game_id INT), games (game_id INT, release_year INT), ratings (game_id INT, user_score NUMERIC)",
+  "hint": "Find first release year and year of max score.",
+  "correctQuery": "SELECT studio_name, AVG(max_score_year - first_year) FROM (SELECT studio_name, MIN(release_year) as first_year, MAX(release_year) FILTER (WHERE user_score = (SELECT MAX(user_score) FROM ratings r2 JOIN developers d2 ON r2.game_id = d2.game_id WHERE d2.studio_name = d.studio_name)) as max_score_year FROM developers d JOIN games g ON d.game_id = g.game_id JOIN ratings r ON d.game_id = r.game_id GROUP BY studio_name) t GROUP BY studio_name;",
+  "setupSQL": "CREATE TABLE developers (studio_name VARCHAR, game_id INT); CREATE TABLE games (game_id INT, release_year INT); CREATE TABLE ratings (game_id INT, user_score NUMERIC);",
+  "enforceOrder": false
+}

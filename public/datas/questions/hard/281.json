@@ -1,0 +1,16 @@
+{
+  "id": 281,
+  "title": "Recursive Content Virality Chains",
+  "difficulty": "Hard",
+  "company": "Viral-Metrics",
+  "tags": [
+    "Recursive CTE",
+    "Time-Series"
+  ],
+  "scenario": "Identify 'viral chains' where an article has at least 5 consecutive hours where the hourly view count is higher than the previous hour, recursively traversing the chain.",
+  "tableSchema": "page_views (article_id INT, view_date DATE, hour_val INT, views_count INT)",
+  "hint": "Use a Recursive CTE to build paths of hourly growth.",
+  "correctQuery": "WITH RECURSIVE growth_chain AS (SELECT article_id, view_date, hour_val, 1 as chain_len FROM page_views p1 WHERE views_count > (SELECT views_count FROM page_views p2 WHERE p2.article_id = p1.article_id AND p2.hour_val = p1.hour_val - 1) UNION ALL SELECT pv.article_id, pv.view_date, pv.hour_val, gc.chain_len + 1 FROM page_views pv JOIN growth_chain gc ON pv.article_id = gc.article_id AND pv.hour_val = gc.hour_val + 1 WHERE pv.views_count > (SELECT views_count FROM page_views WHERE article_id = pv.article_id AND hour_val = pv.hour_val - 1)) SELECT article_id FROM growth_chain WHERE chain_len >= 5;",
+  "setupSQL": "CREATE TABLE page_views (article_id INT, view_date DATE, hour_val INT, views_count INT);",
+  "enforceOrder": false
+}

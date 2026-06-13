@@ -1,0 +1,16 @@
+{
+  "id": 264,
+  "title": "Comment Sentiment Lag",
+  "difficulty": "Hard",
+  "company": "Feedback-Flow",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Find articles where the average time between consecutive comments has decreased by 50% compared to the previous week.",
+  "tableSchema": "comments (article_id INT, comment_date TIMESTAMP)",
+  "hint": "Calculate comment intervals using LAG(), then aggregate by week.",
+  "correctQuery": "SELECT article_id FROM (SELECT article_id, week, avg_int, LAG(avg_int) OVER(PARTITION BY article_id ORDER BY week) as prev_avg FROM (SELECT article_id, DATE_TRUNC('week', comment_date) as week, AVG(EXTRACT(EPOCH FROM (comment_date - LAG(comment_date) OVER(PARTITION BY article_id ORDER BY comment_date)))) as avg_int FROM comments GROUP BY article_id, week) t) t2 WHERE avg_int < 0.5 * prev_avg;",
+  "setupSQL": "CREATE TABLE comments (article_id INT, comment_date TIMESTAMP);",
+  "enforceOrder": false
+}

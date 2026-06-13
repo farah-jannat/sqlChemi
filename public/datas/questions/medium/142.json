@@ -1,0 +1,15 @@
+{
+  "id": 142,
+  "title": "Non-Consecutive Occurrences",
+  "difficulty": "Medium",
+  "company": "Unique-Data",
+  "tags": [
+    "Set Theory"
+  ],
+  "scenario": "Find numbers that appear at least 3 times total in the table, but NEVER appear consecutively.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Find all numbers appearing 3+ times, then subtract those that appear consecutively.",
+  "correctQuery": "SELECT num FROM logs GROUP BY num HAVING COUNT(*) >= 3 EXCEPT SELECT DISTINCT num FROM logs l1 JOIN logs l2 ON l1.id = l2.id - 1 AND l1.num = l2.num;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (3, '1'), (5, '1');",
+  "enforceOrder": false
+}

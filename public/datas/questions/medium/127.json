@@ -1,0 +1,15 @@
+{
+  "id": 127,
+  "title": "Recursive Resource Dependency",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Recursive CTE"
+  ],
+  "scenario": "If employees can be assigned to sub-projects, find the full chain of project IDs for a given 'root_project_id'. Return 'project_id' and 'depth'.",
+  "tableSchema": "projects (project_id INT, parent_id INT, start_date DATE, end_date DATE, budget INT)",
+  "hint": "Use a Recursive CTE to traverse parent_id.",
+  "correctQuery": "WITH RECURSIVE hierarchy AS (SELECT project_id, parent_id, 1 AS depth FROM projects WHERE parent_id IS NULL UNION ALL SELECT p.project_id, p.parent_id, h.depth + 1 FROM projects p JOIN hierarchy h ON p.parent_id = h.project_id) SELECT project_id, depth FROM hierarchy;",
+  "setupSQL": "CREATE TABLE projects (project_id INT, parent_id INT, start_date DATE, end_date DATE, budget INT); INSERT INTO projects VALUES (1, NULL, '2026-01-01', '2026-12-31', 1000), (2, 1, '2026-02-01', '2026-11-01', 500);",
+  "enforceOrder": false
+}

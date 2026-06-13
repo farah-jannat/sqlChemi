@@ -1,0 +1,16 @@
+{
+  "id": 256,
+  "title": "Sprint Overload Threshold",
+  "difficulty": "Hard",
+  "company": "Agile-Ops",
+  "tags": [
+    "Window Functions",
+    "Running Total"
+  ],
+  "scenario": "Find sprints where the cumulative severity score of bugs exceeded 100 before the midpoint of the sprint.",
+  "tableSchema": "bugs (bug_id INT, severity VARCHAR), status_history (bug_id INT, changed_at TIMESTAMP), sprints (sprint_id INT, start_date DATE, end_date DATE)",
+  "hint": "Map severity to numeric (10, 50, 100), then running total.",
+  "correctQuery": "SELECT sprint_id FROM (SELECT sprint_id, changed_at, SUM(CASE severity WHEN 'High' THEN 100 WHEN 'Medium' THEN 50 ELSE 10 END) OVER(PARTITION BY sprint_id ORDER BY changed_at) as cum_sev FROM bugs b JOIN status_history sh ON b.bug_id = sh.bug_id JOIN sprints s ON sh.changed_at::DATE BETWEEN s.start_date AND s.end_date) t WHERE cum_sev > 100 AND changed_at < (SELECT start_date + (end_date - start_date)/2 FROM sprints);",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, severity VARCHAR); CREATE TABLE status_history (bug_id INT, changed_at TIMESTAMP); CREATE TABLE sprints (sprint_id INT, start_date DATE, end_date DATE);",
+  "enforceOrder": false
+}

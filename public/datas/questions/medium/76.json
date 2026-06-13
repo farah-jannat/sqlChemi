@@ -1,0 +1,15 @@
+{
+  "id": 76,
+  "title": "Most Recent Transaction Date",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the most recent 'trans_date' for each 'country'. Return the result table as 'country' and 'last_date'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Group by country and use MAX(trans_date).",
+  "correctQuery": "SELECT country, MAX(trans_date) AS last_date FROM transactions GROUP BY country;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2019-01-01'), (2, 'US', 'approved', 200, '2019-01-05');",
+  "enforceOrder": false
+}

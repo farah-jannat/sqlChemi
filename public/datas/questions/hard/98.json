@@ -1,0 +1,15 @@
+{
+  "id": 98,
+  "title": "Player Path Analysis",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Recursive CTE"
+  ],
+  "scenario": "Construct the path of 'device_id' usage for each player, ordered by 'event_date'. Return 'player_id' and 'device_path' (e.g., '1->2->1').",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Use GROUP_CONCAT or Recursive CTE to build a string path.",
+  "correctQuery": "SELECT player_id, STRING_AGG(device_id::TEXT, '->' ORDER BY event_date) AS device_path FROM activity GROUP BY player_id;",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 1), (1, 2, '2026-01-02', 1);",
+  "enforceOrder": false
+}

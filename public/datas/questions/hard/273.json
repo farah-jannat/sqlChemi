@@ -1,0 +1,16 @@
+{
+  "id": 273,
+  "title": "Category Virality Trend",
+  "difficulty": "Hard",
+  "company": "Trend-Watch",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find categories where the total views have consistently increased for 4 consecutive months.",
+  "tableSchema": "categories (category_id INT), articles (article_id INT, category_id INT), page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Aggregate by month, compare using LAG().",
+  "correctQuery": "SELECT category_id FROM (SELECT category_id, mon, v, LAG(v) OVER(PARTITION BY category_id ORDER BY mon) as l1, LAG(v, 2) OVER(PARTITION BY category_id ORDER BY mon) as l2, LAG(v, 3) OVER(PARTITION BY category_id ORDER BY mon) as l3 FROM (SELECT c.category_id, DATE_TRUNC('month', p.view_date) as mon, SUM(p.views_count) as v FROM categories c JOIN articles a USING (category_id) JOIN page_views p USING (article_id) GROUP BY c.category_id, mon) t) t2 WHERE v > l1 AND l1 > l2 AND l2 > l3;",
+  "setupSQL": "CREATE TABLE categories (category_id INT); CREATE TABLE articles (article_id INT, category_id INT); CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

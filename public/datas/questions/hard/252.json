@@ -1,0 +1,16 @@
+{
+  "id": 252,
+  "title": "Team Workload Skew",
+  "difficulty": "Hard",
+  "company": "Engineering-Ops",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "Identify teams where the standard deviation of bug-fix counts across developers is higher than the company-wide average.",
+  "tableSchema": "developers (dev_id INT, team_id INT), status_history (bug_id INT, status VARCHAR)",
+  "hint": "Calculate dev-counts, group by team for SD, compare to global average.",
+  "correctQuery": "SELECT team_id FROM (SELECT team_id, STDDEV(fix_count) as team_sd FROM (SELECT team_id, dev_id, COUNT(*) as fix_count FROM developers JOIN status_history ON dev_id = bug_id GROUP BY team_id, dev_id) t GROUP BY team_id) t2 WHERE team_sd > (SELECT AVG(sd) FROM (SELECT team_id, STDDEV(fix_count) as sd FROM ... GROUP BY team_id) t3);",
+  "setupSQL": "CREATE TABLE developers (dev_id INT, team_id INT); CREATE TABLE status_history (bug_id INT, status VARCHAR);",
+  "enforceOrder": false
+}

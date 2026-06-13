@@ -1,0 +1,16 @@
+{
+  "id": 181,
+  "title": "Library Overdue Penalty Calculation",
+  "difficulty": "Hard",
+  "company": "Academic Archives",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find the top 3 most frequently overdue books per genre. Use DENSE_RANK to handle ties.",
+  "tableSchema": "loans (loan_id INT, book_id INT, genre VARCHAR, overdue_days INT)",
+  "hint": "Group by genre and book, count overdues, then rank.",
+  "correctQuery": "SELECT genre, book_id, overdue_count FROM (SELECT genre, book_id, COUNT(*) AS overdue_count, DENSE_RANK() OVER(PARTITION BY genre ORDER BY COUNT(*) DESC) as rnk FROM loans WHERE overdue_days > 0 GROUP BY genre, book_id) t WHERE rnk <= 3;",
+  "setupSQL": "CREATE TABLE loans (loan_id INT, book_id INT, genre VARCHAR, overdue_days INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 275,
+  "title": "Author Response Latency",
+  "difficulty": "Hard",
+  "company": "CMS-Pro",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the average time authors take to comment on their own articles.",
+  "tableSchema": "articles (article_id INT, author_id INT), comments (article_id INT, user_id INT, comment_date TIMESTAMP)",
+  "hint": "Join comments with articles where user_id = author_id.",
+  "correctQuery": "SELECT author_id, AVG(comment_date - publish_date) FROM articles a JOIN comments c ON a.article_id = c.article_id AND a.author_id = c.user_id GROUP BY author_id;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, author_id INT); CREATE TABLE comments (article_id INT, user_id INT, comment_date TIMESTAMP);",
+  "enforceOrder": false
+}

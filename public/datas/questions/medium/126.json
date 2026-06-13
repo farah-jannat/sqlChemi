@@ -1,0 +1,15 @@
+{
+  "id": 126,
+  "title": "Departmental Load Balancing",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the projects where the number of employees is higher than the company-wide average per project. Return 'project_id'.",
+  "tableSchema": "projects (project_id INT, start_date DATE, end_date DATE, budget INT), employees (employee_id INT, project_id INT, role VARCHAR, salary INT)",
+  "hint": "Calculate count per project, then compare with AVG(count).",
+  "correctQuery": "SELECT project_id FROM employees GROUP BY project_id HAVING COUNT(employee_id) > (SELECT COUNT(employee_id)::NUMERIC / COUNT(DISTINCT project_id) FROM employees);",
+  "setupSQL": "CREATE TABLE employees (employee_id INT, project_id INT, role VARCHAR, salary INT); INSERT INTO employees VALUES (101, 1, 'Dev', 100), (102, 1, 'Dev', 100), (103, 2, 'Dev', 100);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 279,
+  "title": "Page View Seasonality",
+  "difficulty": "Hard",
+  "company": "Trends-Forecasting",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Identify categories where views in the last quarter were significantly different (>= 50%) from the previous quarter.",
+  "tableSchema": "categories (category_id INT), articles (article_id INT, category_id INT), page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Compare sums per quarter using LAG().",
+  "correctQuery": "SELECT category_id FROM (SELECT category_id, qtr, sum_v, LAG(sum_v) OVER(PARTITION BY category_id ORDER BY qtr) as prev_q FROM (SELECT category_id, DATE_TRUNC('quarter', view_date) as qtr, SUM(views_count) as sum_v FROM articles JOIN page_views USING (article_id) GROUP BY category_id, qtr) t) t2 WHERE ABS(sum_v - prev_q) / prev_q >= 0.5;",
+  "setupSQL": "CREATE TABLE categories (category_id INT); CREATE TABLE articles (article_id INT, category_id INT); CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

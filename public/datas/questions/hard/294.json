@@ -1,0 +1,17 @@
+{
+  "id": 294,
+  "title": "Logistics Reliability Metric",
+  "difficulty": "Hard",
+  "company": "Global-Logistics",
+  "tags": [
+    "Aggregation",
+    "Filtering",
+    "Conditional Logic"
+  ],
+  "scenario": "Calculate the daily service disruption rate for a ride-hailing network. The metric is defined as the ratio of failed requests (driver or rider initiated) to total requests, specifically excluding participants currently flagged as 'banned' in our system. Focus on the date range '2013-10-01' to '2013-10-03'.",
+  "tableSchema": "trips (trip_id INT, rider_id INT, driver_id INT, status VARCHAR, request_date DATE), users (user_id INT, is_banned BOOLEAN)",
+  "hint": "Filter the trips table using a join or subquery on the users table to exclude banned accounts, then aggregate by request_date using conditional sum.",
+  "correctQuery": "SELECT request_date as Day, ROUND(SUM(CASE WHEN status != 'completed' THEN 1 ELSE 0 END)::NUMERIC / COUNT(*), 2) as \"Cancellation Rate\" FROM trips t JOIN users u1 ON t.rider_id = u1.user_id JOIN users u2 ON t.driver_id = u2.user_id WHERE u1.is_banned = FALSE AND u2.is_banned = FALSE AND request_date BETWEEN '2013-10-01' AND '2013-10-03' GROUP BY request_date;",
+  "setupSQL": "CREATE TABLE trips (trip_id INT, rider_id INT, driver_id INT, status VARCHAR, request_date DATE); CREATE TABLE users (user_id INT, is_banned BOOLEAN);",
+  "enforceOrder": false
+}

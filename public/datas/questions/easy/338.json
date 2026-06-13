@@ -1,0 +1,15 @@
+{
+  "id": 338,
+  "title": "Recent 5 Sales",
+  "difficulty": "Easy",
+  "company": "Retail-Analytics",
+  "tags": [
+    "Sorting"
+  ],
+  "scenario": "Get the details of the 5 most recent sales based on sale_date.",
+  "tableSchema": "Sales (id INT, sale_date DATE)",
+  "hint": "ORDER BY sale_date DESC LIMIT 5.",
+  "correctQuery": "SELECT * FROM Sales ORDER BY sale_date DESC LIMIT 5;",
+  "setupSQL": "CREATE TABLE Sales (id INT, sale_date DATE);",
+  "enforceOrder": false
+}

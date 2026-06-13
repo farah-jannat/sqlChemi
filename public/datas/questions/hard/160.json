@@ -1,0 +1,16 @@
+{
+  "id": 160,
+  "title": "Longest Increasing Streak",
+  "difficulty": "Hard",
+  "company": "Retail-Analytics",
+  "tags": [
+    "Window Functions",
+    "Gaps and Islands"
+  ],
+  "scenario": "Find the length of the longest streak of days where sales volume strictly increased for each product.",
+  "tableSchema": "sales (product_id INT, sale_date DATE, volume INT)",
+  "hint": "Subtract row number from the partitioned rank to create islands.",
+  "correctQuery": "SELECT product_id, MAX(streak) AS max_streak FROM (SELECT product_id, COUNT(*) AS streak FROM (SELECT product_id, sale_date, (ROW_NUMBER() OVER(PARTITION BY product_id ORDER BY sale_date) - ROW_NUMBER() OVER(PARTITION BY product_id, vol_increase ORDER BY sale_date)) AS grp FROM (SELECT product_id, sale_date, CASE WHEN volume > LAG(volume) OVER(PARTITION BY product_id ORDER BY sale_date) THEN 0 ELSE 1 END AS vol_increase FROM sales) t) t2 GROUP BY product_id, grp) t3 GROUP BY product_id;",
+  "setupSQL": "CREATE TABLE sales (product_id INT, sale_date DATE, volume INT);",
+  "enforceOrder": false
+}

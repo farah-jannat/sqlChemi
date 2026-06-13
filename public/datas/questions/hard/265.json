@@ -1,0 +1,16 @@
+{
+  "id": 265,
+  "title": "Author Burnout Signal",
+  "difficulty": "Hard",
+  "company": "Editor-Ops",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Flag authors whose article output has decreased for 3 consecutive months.",
+  "tableSchema": "articles (author_id INT, publish_date DATE)",
+  "hint": "Use LAG() to compare counts.",
+  "correctQuery": "SELECT author_id FROM (SELECT author_id, mon, cnt, LAG(cnt) OVER(PARTITION BY author_id ORDER BY mon) as p1, LAG(cnt, 2) OVER(PARTITION BY author_id ORDER BY mon) as p2 FROM (SELECT author_id, DATE_TRUNC('month', publish_date) as mon, COUNT(*) as cnt FROM articles GROUP BY author_id, mon) t) t2 WHERE cnt < p1 AND p1 < p2;",
+  "setupSQL": "CREATE TABLE articles (author_id INT, publish_date DATE);",
+  "enforceOrder": false
+}

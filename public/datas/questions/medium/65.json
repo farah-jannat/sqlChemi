@@ -1,0 +1,15 @@
+{
+  "id": 65,
+  "title": "First User Action",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Find the 'user_id' of the user who performed their first 'confirmed' action earliest across all users. Return the result table as 'user_id'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Filter for 'confirmed' actions, group by user_id to find their first time, then order by that time.",
+  "correctQuery": "SELECT user_id FROM confirmations WHERE action = 'confirmed' ORDER BY time_stamp ASC LIMIT 1;",
+  "setupSQL": "CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO confirmations VALUES (2, '2021-01-22 00:00:00', 'confirmed'), (7, '2021-06-12 11:57:29', 'confirmed');",
+  "enforceOrder": true
+}

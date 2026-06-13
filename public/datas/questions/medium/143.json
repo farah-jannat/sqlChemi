@@ -1,0 +1,15 @@
+{
+  "id": 143,
+  "title": "Consecutive Value Changes",
+  "difficulty": "Medium",
+  "company": "Unique-Data",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Identify IDs where the number changed to a value that had appeared consecutively at least twice before the change. Return 'id'.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Use LAG() to compare current value to previous value and count streaks.",
+  "correctQuery": "SELECT id FROM (SELECT id, num, LAG(num) OVER(ORDER BY id) AS prev, LAG(num, 2) OVER(ORDER BY id) AS prev2 FROM logs) t WHERE num != prev AND prev = prev2;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (2, '1'), (3, '2');",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 255,
+  "title": "Developer Specialization",
+  "difficulty": "Hard",
+  "company": "Technical-Lead",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Find developers who resolve 80% of their bugs in a single specific severity category.",
+  "tableSchema": "developers (dev_id INT), bugs (bug_id INT, severity VARCHAR), status_history (bug_id INT, status VARCHAR)",
+  "hint": "Group by dev and severity, use count over partition.",
+  "correctQuery": "SELECT dev_id FROM (SELECT dev_id, severity, COUNT(*)::NUMERIC / SUM(COUNT(*)) OVER(PARTITION BY dev_id) as pct FROM developers JOIN bugs ON dev_id = reporter_id JOIN status_history ON bugs.bug_id = status_history.bug_id WHERE status = 'Resolved' GROUP BY dev_id, severity) t WHERE pct > 0.8;",
+  "setupSQL": "CREATE TABLE developers (dev_id INT); CREATE TABLE bugs (bug_id INT, severity VARCHAR, reporter_id INT); CREATE TABLE status_history (bug_id INT, status VARCHAR);",
+  "enforceOrder": false
+}

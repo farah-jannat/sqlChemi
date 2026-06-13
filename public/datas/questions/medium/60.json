@@ -1,0 +1,16 @@
+{
+  "id": 60,
+  "title": "Users with No Confirmations",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "LEFT JOIN",
+    "Filtering"
+  ],
+  "scenario": "Find all users from the 'signups' table who have never requested a confirmation message. Return the result table as 'user_id'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Use a LEFT JOIN and filter where the confirmations.user_id is NULL.",
+  "correctQuery": "SELECT s.user_id FROM signups s LEFT JOIN confirmations c ON s.user_id = c.user_id WHERE c.user_id IS NULL;",
+  "setupSQL": "CREATE TABLE signups (user_id INT, time_stamp DATETIME); CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO signups VALUES (6, '2020-12-09 10:39:37'), (2, '2020-07-29 23:09:44'); INSERT INTO confirmations VALUES (2, '2021-01-22 00:00:00', 'confirmed');",
+  "enforceOrder": false
+}

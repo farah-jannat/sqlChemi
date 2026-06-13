@@ -1,0 +1,16 @@
+{
+  "id": 178,
+  "title": "Dynamic Market Share",
+  "difficulty": "Hard",
+  "company": "Fintech-App",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Calculate the daily market share of each company based on volume relative to the total daily volume.",
+  "tableSchema": "trades (comp_id INT, trade_date DATE, vol NUMERIC)",
+  "hint": "Divide daily vol by SUM(vol) OVER(PARTITION BY date).",
+  "correctQuery": "SELECT comp_id, trade_date, vol::NUMERIC / SUM(vol) OVER(PARTITION BY trade_date) AS market_share FROM trades;",
+  "setupSQL": "CREATE TABLE trades (comp_id INT, trade_date DATE, vol NUMERIC);",
+  "enforceOrder": false
+}

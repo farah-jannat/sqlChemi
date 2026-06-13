@@ -1,0 +1,16 @@
+{
+  "id": 284,
+  "title": "Category Cannibalization",
+  "difficulty": "Hard",
+  "company": "Strategic-Media",
+  "tags": [
+    "Window Functions",
+    "Self-Join"
+  ],
+  "scenario": "Detect when a new article release in a category causes a > 40% drop in views for existing articles in that same category within 48 hours.",
+  "tableSchema": "articles (article_id INT, category_id INT, publish_date DATE), page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Use a lateral join to find the release event, then compare view aggregates.",
+  "correctQuery": "SELECT a1.category_id, a1.article_id FROM articles a1 JOIN articles a2 ON a1.category_id = a2.category_id AND a2.publish_date BETWEEN a1.publish_date AND a1.publish_date + INTERVAL '2 days' WHERE a1.article_id != a2.article_id GROUP BY a1.category_id, a1.article_id HAVING SUM(a2.views_count) < 0.6 * SUM(a1.views_count);",
+  "setupSQL": "CREATE TABLE articles (article_id INT, category_id INT, publish_date DATE); CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

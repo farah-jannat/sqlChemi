@@ -1,0 +1,15 @@
+{
+  "id": 138,
+  "title": "Repeat Product Loyalty",
+  "difficulty": "Medium",
+  "company": "Unique-Ecom",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find 'customer_id' who bought the exact same set of products at least twice (requires normalization/string aggregation).",
+  "tableSchema": "customer (customer_id INT, product_key INT)",
+  "hint": "Use GROUP_CONCAT to create a product signature for each transaction event if timestamps existed; here, check count vs distinct.",
+  "correctQuery": "SELECT customer_id FROM customer GROUP BY customer_id HAVING COUNT(*) > COUNT(DISTINCT product_key);",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, product_key INT); INSERT INTO customer VALUES (1, 5), (1, 5);",
+  "enforceOrder": false
+}

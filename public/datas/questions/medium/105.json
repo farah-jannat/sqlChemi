@@ -1,0 +1,15 @@
+{
+  "id": 105,
+  "title": "Longest Gap Between Orders",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the maximum gap (in days) between consecutive orders for each customer. Return the result as 'customer_id' and 'max_gap'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Use LAG() to get the previous order_date for each customer.",
+  "correctQuery": "SELECT customer_id, MAX(order_date - prev_date) AS max_gap FROM (SELECT customer_id, order_date, LAG(order_date) OVER(PARTITION BY customer_id ORDER BY order_date) AS prev_date FROM delivery) t GROUP BY customer_id;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02'), (3, 1, '2019-08-11', '2019-08-12');",
+  "enforceOrder": false
+}

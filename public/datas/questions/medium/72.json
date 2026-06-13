@@ -1,0 +1,15 @@
+{
+  "id": 72,
+  "title": "Daily Transaction Volume",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the average daily 'amount' of transactions for each 'country'. Return the result table as 'country' and 'avg_daily_amount'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "First aggregate by country and trans_date, then take the average of that result.",
+  "correctQuery": "SELECT country, AVG(daily_sum) AS avg_daily_amount FROM (SELECT country, trans_date, SUM(amount) AS daily_sum FROM transactions GROUP BY country, trans_date) t GROUP BY country;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2019-01-01'), (2, 'US', 'approved', 200, '2019-01-01');",
+  "enforceOrder": false
+}

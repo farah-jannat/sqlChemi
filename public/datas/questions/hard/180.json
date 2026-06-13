@@ -1,0 +1,16 @@
+{
+  "id": 180,
+  "title": "Streaming Service User Retention",
+  "difficulty": "Hard",
+  "company": "StreamFlow",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Identify users who have watched at least 3 consecutive days of content. Return 'user_id' and the 'start_date' of these streaks.",
+  "tableSchema": "watch_history (user_id INT, watch_date DATE)",
+  "hint": "Compare current date with LEAD(date, 2) to identify 3-day windows.",
+  "correctQuery": "SELECT DISTINCT user_id, watch_date AS start_date FROM (SELECT user_id, watch_date, LEAD(watch_date, 2) OVER(PARTITION BY user_id ORDER BY watch_date) AS lead_date FROM watch_history) t WHERE lead_date = watch_date + INTERVAL '2 days';",
+  "setupSQL": "CREATE TABLE watch_history (user_id INT, watch_date DATE);",
+  "enforceOrder": false
+}

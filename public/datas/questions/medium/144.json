@@ -1,0 +1,15 @@
+{
+  "id": 144,
+  "title": "Streak Start and End",
+  "difficulty": "Medium",
+  "company": "Unique-Data",
+  "tags": [
+    "Gaps and Islands"
+  ],
+  "scenario": "Find the start_id and end_id for all streaks of consecutive numbers of length 3 or more. Return 'num', 'start_id', 'end_id'.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Identify islands and filter by MIN/MAX ID.",
+  "correctQuery": "SELECT num, MIN(id) AS start_id, MAX(id) AS end_id FROM (SELECT id, num, id - ROW_NUMBER() OVER(PARTITION BY num ORDER BY id)::INT AS grp FROM logs) t GROUP BY num, grp HAVING COUNT(*) >= 3;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (2, '1'), (3, '1'), (4, '1');",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 115,
+  "title": "First Year Revenue Impact",
+  "difficulty": "Medium",
+  "company": "Unique-Retail",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Compare the total revenue of a product in its first year vs its total lifetime revenue. Return 'product_id', 'first_year_revenue', and 'total_revenue'.",
+  "tableSchema": "sales (sale_id INT, product_id INT, year INT, quantity INT, price INT)",
+  "hint": "Join total yearly revenue with lifetime total revenue.",
+  "correctQuery": "SELECT t1.product_id, t1.rev AS first_year_revenue, t2.rev AS total_revenue FROM (SELECT product_id, SUM(quantity * price) AS rev FROM sales WHERE (product_id, year) IN (SELECT product_id, MIN(year) FROM sales GROUP BY product_id) GROUP BY product_id) t1 JOIN (SELECT product_id, SUM(quantity * price) AS rev FROM sales GROUP BY product_id) t2 ON t1.product_id = t2.product_id;",
+  "setupSQL": "CREATE TABLE sales (sale_id INT, product_id INT, year INT, quantity INT, price INT); INSERT INTO sales VALUES (1, 100, 2008, 10, 100), (2, 100, 2009, 10, 100);",
+  "enforceOrder": false
+}

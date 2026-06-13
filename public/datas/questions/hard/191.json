@@ -1,0 +1,16 @@
+{
+  "id": 191,
+  "title": "Investment Portfolio Concentration",
+  "difficulty": "Hard",
+  "company": "AlphaInvest",
+  "tags": [
+    "Window Functions",
+    "Percentages"
+  ],
+  "scenario": "For each investor, find assets that account for more than 20% of their total portfolio value.",
+  "tableSchema": "assets (inv_id INT, asset_id INT, value NUMERIC)",
+  "hint": "Use SUM(value) OVER(PARTITION BY inv_id).",
+  "correctQuery": "SELECT inv_id, asset_id FROM (SELECT inv_id, asset_id, value::NUMERIC / SUM(value) OVER(PARTITION BY inv_id) as pct FROM assets) t WHERE pct > 0.20;",
+  "setupSQL": "CREATE TABLE assets (inv_id INT, asset_id INT, value NUMERIC);",
+  "enforceOrder": false
+}

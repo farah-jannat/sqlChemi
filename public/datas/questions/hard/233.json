@@ -1,0 +1,16 @@
+{
+  "id": 233,
+  "title": "Precipitation Accumulation Peaks",
+  "difficulty": "Hard",
+  "company": "Water-Mgmt",
+  "tags": [
+    "Window Functions",
+    "Running Total"
+  ],
+  "scenario": "Find the date when cumulative precipitation for the year exceeded 500mm.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, precip_mm NUMERIC)",
+  "hint": "Running total partitioned by city and year.",
+  "correctQuery": "SELECT city_name, reading_date FROM (SELECT city_name, reading_date, SUM(precip_mm) OVER(PARTITION BY city_name, EXTRACT(YEAR FROM reading_date) ORDER BY reading_date) as cum_precip FROM weather_data) t WHERE cum_precip > 500;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, precip_mm NUMERIC);",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 152,
+  "title": "Price Reversion Frequency",
+  "difficulty": "Hard",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Set Theory"
+  ],
+  "scenario": "Find products that returned to a price they had previously held, after changing to at least two other distinct prices in between.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Join the table with itself on product_id and price, then count distinct intermediate prices.",
+  "correctQuery": "SELECT DISTINCT p1.product_id FROM products p1 JOIN products p2 ON p1.product_id = p2.product_id AND p1.new_price = p2.new_price WHERE p2.change_date > p1.change_date AND (SELECT COUNT(DISTINCT new_price) FROM products p3 WHERE p3.product_id = p1.product_id AND p3.change_date > p1.change_date AND p3.change_date < p2.change_date) >= 2;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE);",
+  "enforceOrder": false
+}

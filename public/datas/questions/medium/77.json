@@ -1,0 +1,15 @@
+{
+  "id": 77,
+  "title": "Approved Amount Percentage",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "For each 'country', calculate the percentage of total 'amount' that comes from 'approved' transactions. Return 'country' and 'approved_ratio'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Sum approved amounts and divide by the sum of all amounts per country.",
+  "correctQuery": "SELECT country, SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END) * 1.0 / SUM(amount) AS approved_ratio FROM transactions GROUP BY country;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 1000, '2019-01-01'), (2, 'US', 'declined', 500, '2019-01-02');",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 258,
+  "title": "Bug Resolution Velocity",
+  "difficulty": "Hard",
+  "company": "Dev-Speed",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "Find developers whose monthly resolution count has increased every month for the last 6 months.",
+  "tableSchema": "developers (dev_id INT), status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP)",
+  "hint": "Count resolved bugs per month, compare using LAGs or window frame.",
+  "correctQuery": "SELECT dev_id FROM (SELECT dev_id, mon, cnt, LAG(cnt, 1) OVER(PARTITION BY dev_id ORDER BY mon) as p1, ... FROM (SELECT dev_id, DATE_TRUNC('month', changed_at) as mon, COUNT(*) as cnt FROM developers JOIN status_history ON dev_id = bug_id WHERE status = 'Resolved' GROUP BY dev_id, mon) t) t2 WHERE cnt > p1 AND p1 > p2 AND p2 > p3 AND p3 > p4 AND p4 > p5;",
+  "setupSQL": "CREATE TABLE developers (dev_id INT); CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

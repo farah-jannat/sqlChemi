@@ -1,0 +1,16 @@
+{
+  "id": 208,
+  "title": "Genre Saturation Thresholds",
+  "difficulty": "Hard",
+  "company": "Market-Pulse",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Identify the genre in which each platform has released the most games, and return that platform/genre pair.",
+  "tableSchema": "games (game_id INT, genre VARCHAR), ratings (game_id INT, platform VARCHAR)",
+  "hint": "Rank counts by genre within each platform.",
+  "correctQuery": "SELECT platform, genre FROM (SELECT platform, genre, COUNT(*), RANK() OVER(PARTITION BY platform ORDER BY COUNT(*) DESC) as rnk FROM games g JOIN ratings r ON g.game_id = r.game_id GROUP BY platform, genre) t WHERE rnk = 1;",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR); CREATE TABLE ratings (game_id INT, platform VARCHAR);",
+  "enforceOrder": false
+}

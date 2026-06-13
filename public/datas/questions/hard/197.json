@@ -1,0 +1,16 @@
+{
+  "id": 197,
+  "title": "Streaming Revenue Attribution",
+  "difficulty": "Hard",
+  "company": "TuneCloud",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Attribute revenue to artists by splitting total subscription revenue across all songs played by a user in a given month.",
+  "tableSchema": "listens (user_id INT, song_id INT, mon INT), revenue (user_id INT, mon INT, sub_fee NUMERIC)",
+  "hint": "Divide sub_fee by COUNT(songs) per user per month.",
+  "correctQuery": "SELECT song_id, SUM(sub_fee::NUMERIC / COUNT(*) OVER(PARTITION BY user_id, mon)) as attributed_rev FROM listens JOIN revenue USING (user_id, mon) GROUP BY song_id;",
+  "setupSQL": "CREATE TABLE listens (user_id INT, song_id INT, mon INT); CREATE TABLE revenue (user_id INT, mon INT, sub_fee NUMERIC);",
+  "enforceOrder": false
+}

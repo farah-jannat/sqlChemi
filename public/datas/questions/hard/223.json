@@ -1,0 +1,16 @@
+{
+  "id": 223,
+  "title": "Sensor Calibration Drift",
+  "difficulty": "Hard",
+  "company": "MetData-Systems",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Find sensors that have shown a monotonic increase in temperature readings for 7 consecutive measurements.",
+  "tableSchema": "weather_data (sensor_id INT, reading_date DATE, temp_c NUMERIC)",
+  "hint": "Use LAG() to compare current with previous 6 readings.",
+  "correctQuery": "SELECT DISTINCT sensor_id FROM (SELECT sensor_id, temp_c, LAG(temp_c, 1) OVER(PARTITION BY sensor_id ORDER BY reading_date) as l1, LAG(temp_c, 2) OVER(PARTITION BY sensor_id ORDER BY reading_date) as l2, LAG(temp_c, 3) OVER(PARTITION BY sensor_id ORDER BY reading_date) as l3, LAG(temp_c, 4) OVER(PARTITION BY sensor_id ORDER BY reading_date) as l4, LAG(temp_c, 5) OVER(PARTITION BY sensor_id ORDER BY reading_date) as l5, LAG(temp_c, 6) OVER(PARTITION BY sensor_id ORDER BY reading_date) as l6 FROM weather_data) t WHERE temp_c > l1 AND l1 > l2 AND l2 > l3 AND l3 > l4 AND l4 > l5 AND l5 > l6;",
+  "setupSQL": "CREATE TABLE weather_data (sensor_id INT, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

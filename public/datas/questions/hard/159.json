@@ -1,0 +1,16 @@
+{
+  "id": 159,
+  "title": "Median Salary per Department",
+  "difficulty": "Hard",
+  "company": "Finance-Core",
+  "tags": [
+    "Window Functions",
+    "Median"
+  ],
+  "scenario": "Calculate the median salary for each department. Return 'dept_id' and 'median_salary'.",
+  "tableSchema": "employees (emp_id INT, dept_id INT, salary INT)",
+  "hint": "Use PERCENT_RANK() to identify the middle row.",
+  "correctQuery": "SELECT dept_id, AVG(salary)::NUMERIC AS median_salary FROM (SELECT dept_id, salary, PERCENT_RANK() OVER(PARTITION BY dept_id ORDER BY salary) as pr FROM employees) t WHERE pr BETWEEN 0.45 AND 0.55 GROUP BY dept_id;",
+  "setupSQL": "CREATE TABLE employees (emp_id INT, dept_id INT, salary INT);",
+  "enforceOrder": false
+}

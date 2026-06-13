@@ -1,0 +1,15 @@
+{
+  "id": 102,
+  "title": "Repeat Customer Rate",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Calculate the percentage of customers who have made more than one order. Return the result as 'repeat_rate'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Count customers with > 1 order and divide by total customers.",
+  "correctQuery": "SELECT ROUND(100.0 * COUNT(CASE WHEN cnt > 1 THEN 1 END) / NULLIF(COUNT(*), 0), 2) AS repeat_rate FROM (SELECT customer_id, COUNT(delivery_id) AS cnt FROM delivery GROUP BY customer_id) t;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02'), (3, 1, '2019-08-11', '2019-08-12'), (2, 2, '2019-08-02', '2019-08-02');",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 103,
+  "title": "Most Active Customer",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the 'customer_id' who has made the highest number of orders. Return the result as 'customer_id'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Group by customer_id, count orders, order by count descending, and limit to 1.",
+  "correctQuery": "SELECT customer_id FROM delivery GROUP BY customer_id ORDER BY COUNT(delivery_id) DESC LIMIT 1;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02'), (3, 1, '2019-08-11', '2019-08-12'), (2, 2, '2019-08-02', '2019-08-02');",
+  "enforceOrder": true
+}

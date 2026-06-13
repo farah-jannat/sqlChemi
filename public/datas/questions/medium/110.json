@@ -1,0 +1,16 @@
+{
+  "id": 110,
+  "title": "Year-Over-Year Sales Growth",
+  "difficulty": "Medium",
+  "company": "Unique-Retail",
+  "tags": [
+    "Window Functions",
+    "LAG"
+  ],
+  "scenario": "Calculate the growth rate of total revenue (quantity * price) for each product year-over-year. Return 'product_id', 'year', and 'growth_rate'.",
+  "tableSchema": "sales (sale_id INT, product_id INT, year INT, quantity INT, price INT)",
+  "hint": "Use LAG() to get the previous year's revenue per product.",
+  "correctQuery": "SELECT product_id, year, (current_revenue - prev_revenue) * 100.0 / NULLIF(prev_revenue, 0) AS growth_rate FROM (SELECT product_id, year, SUM(quantity * price) AS current_revenue, LAG(SUM(quantity * price)) OVER(PARTITION BY product_id ORDER BY year) AS prev_revenue FROM sales GROUP BY product_id, year) t;",
+  "setupSQL": "CREATE TABLE sales (sale_id INT, product_id INT, year INT, quantity INT, price INT); INSERT INTO sales VALUES (1, 100, 2008, 10, 5000), (2, 100, 2009, 15, 6000);",
+  "enforceOrder": false
+}

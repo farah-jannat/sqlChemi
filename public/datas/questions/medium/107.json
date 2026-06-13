@@ -1,0 +1,15 @@
+{
+  "id": 107,
+  "title": "Customer Retention by Month",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Identify customers who placed orders in both August and September 2019. Return the result as 'customer_id'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Group by customer_id and use HAVING to check for distinct months.",
+  "correctQuery": "SELECT customer_id FROM delivery WHERE TO_CHAR(order_date, 'YYYY-MM') IN ('2019-08', '2019-09') GROUP BY customer_id HAVING COUNT(DISTINCT TO_CHAR(order_date, 'YYYY-MM')) = 2;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02'), (2, 1, '2019-09-01', '2019-09-02');",
+  "enforceOrder": false
+}

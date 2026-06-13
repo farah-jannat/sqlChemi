@@ -1,0 +1,16 @@
+{
+  "id": 263,
+  "title": "Category Engagement Saturation",
+  "difficulty": "Medium",
+  "company": "Insight-CMS",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Identify the top 3 categories by comment density (comments per article) for each month.",
+  "tableSchema": "articles (article_id INT, category_id INT, publish_date DATE), comments (comment_id INT, article_id INT, comment_date TIMESTAMP)",
+  "hint": "Join and partition by month.",
+  "correctQuery": "SELECT mon, category_id FROM (SELECT DATE_TRUNC('month', c.comment_date) as mon, a.category_id, COUNT(c.comment_id)::NUMERIC / COUNT(DISTINCT a.article_id) as density, RANK() OVER(PARTITION BY DATE_TRUNC('month', c.comment_date) ORDER BY COUNT(c.comment_id)::NUMERIC / COUNT(DISTINCT a.article_id) DESC) as rnk FROM articles a JOIN comments c ON a.article_id = c.article_id GROUP BY mon, a.category_id) t WHERE rnk <= 3;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, category_id INT, publish_date DATE); CREATE TABLE comments (comment_id INT, article_id INT, comment_date TIMESTAMP);",
+  "enforceOrder": false
+}

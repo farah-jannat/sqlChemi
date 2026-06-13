@@ -1,0 +1,16 @@
+{
+  "id": 267,
+  "title": "Category Lifecycle Tracking",
+  "difficulty": "Hard",
+  "company": "Trends-CMS",
+  "tags": [
+    "Window Functions",
+    "Recursive CTE"
+  ],
+  "scenario": "Track the evolution of category popularity by finding consecutive months where view counts increased.",
+  "tableSchema": "page_views (article_id INT, view_date DATE, views_count INT), articles (article_id INT, category_id INT)",
+  "hint": "Group views by category/month, then use LAG().",
+  "correctQuery": "SELECT category_id, mon FROM (SELECT category_id, mon, views, LAG(views) OVER(PARTITION BY category_id ORDER BY mon) as prev FROM (SELECT a.category_id, DATE_TRUNC('month', p.view_date) as mon, SUM(p.views_count) as views FROM articles a JOIN page_views p USING (article_id) GROUP BY a.category_id, mon) t) t2 WHERE views > prev;",
+  "setupSQL": "CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT); CREATE TABLE articles (article_id INT, category_id INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 133,
+  "title": "Redundant Buyer Identification",
+  "difficulty": "Easy",
+  "company": "Unique-Ecom",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find 'customer_id' who purchased the same 'product_key' more than once. Return 'customer_id'.",
+  "tableSchema": "customer (customer_id INT, product_key INT)",
+  "hint": "Group by customer_id and product_key, filter where count > 1.",
+  "correctQuery": "SELECT DISTINCT customer_id FROM customer GROUP BY customer_id, product_key HAVING COUNT(*) > 1;",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, product_key INT); INSERT INTO customer VALUES (1, 5), (1, 5);",
+  "enforceOrder": false
+}

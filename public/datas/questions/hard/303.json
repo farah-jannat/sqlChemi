@@ -1,0 +1,16 @@
+{
+  "id": 303,
+  "title": "Ride-Hailing Fraud Detection",
+  "difficulty": "Hard",
+  "company": "Risk-Compliance",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Detect 'Rapid Cycling' fraud: Find drivers who completed more than 5 trips in under 1 hour in a single day.",
+  "tableSchema": "trips (driver_id INT, pickup_time TIMESTAMP, dropoff_time TIMESTAMP)",
+  "hint": "Self-join or use window frame range to count trips in 1-hour window.",
+  "correctQuery": "SELECT driver_id, pickup_time::DATE FROM (SELECT driver_id, pickup_time, COUNT(*) OVER(PARTITION BY driver_id ORDER BY pickup_time RANGE BETWEEN CURRENT ROW AND INTERVAL '1 hour' FOLLOWING) as trip_count FROM trips) t WHERE trip_count > 5;",
+  "setupSQL": "CREATE TABLE trips (driver_id INT, pickup_time TIMESTAMP, dropoff_time TIMESTAMP);",
+  "enforceOrder": false
+}

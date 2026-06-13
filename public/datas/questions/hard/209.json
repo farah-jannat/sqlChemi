@@ -1,0 +1,16 @@
+{
+  "id": 209,
+  "title": "Platform Cross-Over Analysis",
+  "difficulty": "Hard",
+  "company": "Gaming-Hub",
+  "tags": [
+    "Window Functions",
+    "Joins"
+  ],
+  "scenario": "Find games that appear on at least 3 different platforms, and for those games, find the average critic score across all platforms.",
+  "tableSchema": "ratings (game_id INT, platform VARCHAR, critic_score NUMERIC)",
+  "hint": "Filter games having count(distinct platform) >= 3.",
+  "correctQuery": "SELECT game_id, AVG(critic_score) FROM ratings GROUP BY game_id HAVING COUNT(DISTINCT platform) >= 3;",
+  "setupSQL": "CREATE TABLE ratings (game_id INT, platform VARCHAR, critic_score NUMERIC);",
+  "enforceOrder": false
+}

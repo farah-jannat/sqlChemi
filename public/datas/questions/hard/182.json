@@ -1,0 +1,16 @@
+{
+  "id": 182,
+  "title": "Flight Path Delays",
+  "difficulty": "Hard",
+  "company": "AeroMetric",
+  "tags": [
+    "Window Functions",
+    "Offsets"
+  ],
+  "scenario": "Calculate the difference in delay between the current flight and the immediately preceding flight for the same aircraft, but only if the preceding flight arrived at the same airport.",
+  "tableSchema": "flights (flight_id INT, aircraft_id INT, arr_airport VARCHAR, delay_mins INT)",
+  "hint": "Use LAG partitioned by aircraft_id.",
+  "correctQuery": "SELECT flight_id, delay_mins - prev_delay AS diff FROM (SELECT flight_id, delay_mins, LAG(delay_mins) OVER(PARTITION BY aircraft_id ORDER BY flight_id) AS prev_delay, LAG(arr_airport) OVER(PARTITION BY aircraft_id ORDER BY flight_id) AS prev_airport FROM flights) t WHERE arr_airport = prev_airport;",
+  "setupSQL": "CREATE TABLE flights (flight_id INT, aircraft_id INT, arr_airport VARCHAR, delay_mins INT);",
+  "enforceOrder": false
+}

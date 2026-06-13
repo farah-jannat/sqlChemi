@@ -1,0 +1,17 @@
+{
+  "id": 314,
+  "title": "Monthly Revenue Attribution and Growth",
+  "difficulty": "Hard",
+  "company": "Finance-Analytics",
+  "tags": [
+    "Aggregation",
+    "Window Functions",
+    "Date Arithmetic"
+  ],
+  "scenario": "As a data analyst, you are tasked with identifying the 'Top Performer' for each month. A performer is defined as the user with the highest total rating sum in a given month. Output the result in a table with two columns: 'month' (in YYYY-MM format) and 'top_user_name'. If there is a tie in the total rating sum, select the user name that is lexicographically smaller.",
+  "tableSchema": "Users (user_id INT, name VARCHAR), MovieRating (user_id INT, rating INT, created_at DATE)",
+  "hint": "Use TO_CHAR() to extract the month, group by month and user, calculate the SUM(rating), and use RANK() or a subquery with ORDER BY to find the top user per month.",
+  "correctQuery": "WITH MonthlyScores AS (SELECT TO_CHAR(created_at, 'YYYY-MM') as month, u.name, SUM(rating) as total_score FROM Users u JOIN MovieRating mr ON u.user_id = mr.user_id GROUP BY 1, 2), RankedScores AS (SELECT month, name, RANK() OVER(PARTITION BY month ORDER BY total_score DESC, name ASC) as rnk FROM MonthlyScores) SELECT month, name AS top_user_name FROM RankedScores WHERE rnk = 1 ORDER BY month ASC;",
+  "setupSQL": "CREATE TABLE Users (user_id INT PRIMARY KEY, name VARCHAR); CREATE TABLE MovieRating (user_id INT, rating INT, created_at DATE);",
+  "enforceOrder": true
+}

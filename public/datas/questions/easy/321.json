@@ -1,0 +1,15 @@
+{
+  "id": 321,
+  "title": "Total Sales per Product",
+  "difficulty": "Easy",
+  "company": "RetailMart",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Calculate the total quantity sold for each product. Output 'product_name' and the sum of 'quantity'.",
+  "tableSchema": "Sales (product_id INT, quantity INT), Products (id INT, product_name VARCHAR)",
+  "hint": "Join tables and group by the product name.",
+  "correctQuery": "SELECT p.product_name, SUM(s.quantity) FROM Sales s JOIN Products p ON s.product_id = p.id GROUP BY p.product_name;",
+  "setupSQL": "CREATE TABLE Sales (product_id INT, quantity INT); CREATE TABLE Products (id INT, product_name VARCHAR);",
+  "enforceOrder": false
+}

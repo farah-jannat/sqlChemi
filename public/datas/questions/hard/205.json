@@ -1,0 +1,16 @@
+{
+  "id": 205,
+  "title": "Studio Success Momentum",
+  "difficulty": "Hard",
+  "company": "Growth-Games",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Flag studios where the average critic_score of their games has increased for 4 consecutive releases.",
+  "tableSchema": "developers (studio_name VARCHAR, game_id INT), ratings (game_id INT, critic_score NUMERIC), games (game_id INT, release_year INT)",
+  "hint": "Use LAG(avg_score, 1) and LAG(avg_score, 2) etc., or a series of comparisons.",
+  "correctQuery": "SELECT studio_name FROM (SELECT studio_name, avg_score, LAG(avg_score, 1) OVER(PARTITION BY studio_name ORDER BY release_year) as l1, LAG(avg_score, 2) OVER(PARTITION BY studio_name ORDER BY release_year) as l2, LAG(avg_score, 3) OVER(PARTITION BY studio_name ORDER BY release_year) as l3 FROM (SELECT d.studio_name, g.release_year, AVG(r.critic_score) as avg_score FROM developers d JOIN ratings r ON d.game_id = r.game_id JOIN games g ON d.game_id = g.game_id GROUP BY d.studio_name, g.release_year) t) t2 WHERE avg_score > l1 AND l1 > l2 AND l2 > l3;",
+  "setupSQL": "CREATE TABLE developers (studio_name VARCHAR, game_id INT); CREATE TABLE ratings (game_id INT, critic_score NUMERIC); CREATE TABLE games (game_id INT, release_year INT);",
+  "enforceOrder": false
+}

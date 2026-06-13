@@ -1,0 +1,15 @@
+{
+  "id": 139,
+  "title": "N-Length Consecutive Numbers",
+  "difficulty": "Medium",
+  "company": "Unique-Data",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find all numbers that appear at least 5 times consecutively. Return 'ConsecutiveNums'.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Use LEAD/LAG or ROW_NUMBER to compare current with previous 4 rows.",
+  "correctQuery": "SELECT DISTINCT l1.num AS \"ConsecutiveNums\" FROM logs l1 JOIN logs l2 ON l1.id = l2.id - 1 JOIN logs l3 ON l1.id = l3.id - 2 JOIN logs l4 ON l1.id = l4.id - 3 JOIN logs l5 ON l1.id = l5.id - 4 WHERE l1.num = l2.num AND l2.num = l3.num AND l3.num = l4.num AND l4.num = l5.num;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (2, '1'), (3, '1'), (4, '1'), (5, '1');",
+  "enforceOrder": false
+}

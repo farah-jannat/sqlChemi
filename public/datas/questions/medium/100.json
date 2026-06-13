@@ -1,0 +1,15 @@
+{
+  "id": 100,
+  "title": "Customer Order Frequency",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the average number of orders per customer. Return the result as 'avg_order_count'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Count orders per customer, then take the average of those counts.",
+  "correctQuery": "SELECT AVG(cnt)::NUMERIC AS avg_order_count FROM (SELECT COUNT(delivery_id) AS cnt FROM delivery GROUP BY customer_id) t;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02'), (3, 1, '2019-08-11', '2019-08-12');",
+  "enforceOrder": false
+}

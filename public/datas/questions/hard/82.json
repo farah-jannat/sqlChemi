@@ -1,0 +1,15 @@
+{
+  "id": 82,
+  "title": "Time-Weighted Average Amount",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Calculate the time-weighted average amount for each country, where the weight is the interval between transactions. Return 'country' and 'tw_avg_amount'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use LEAD() to find the next date and compute the duration weights.",
+  "correctQuery": "SELECT country, SUM(amount * duration) * 1.0 / SUM(duration) AS tw_avg_amount FROM (SELECT country, amount, JULIANDAY(LEAD(trans_date) OVER(PARTITION BY country ORDER BY trans_date)) - JULIANDAY(trans_date) AS duration FROM transactions) t WHERE duration IS NOT NULL GROUP BY country;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01'), (2, 'US', 'approved', 200, '2026-01-05');",
+  "enforceOrder": false
+}

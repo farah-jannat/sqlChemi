@@ -1,0 +1,16 @@
+{
+  "id": 224,
+  "title": "Cross-City Alert Synchronicity",
+  "difficulty": "Hard",
+  "company": "Global-Safety",
+  "tags": [
+    "Recursive CTE",
+    "Time-Series"
+  ],
+  "scenario": "Find pairs of cities that triggered alerts within 1 hour of each other.",
+  "tableSchema": "climate_alerts (city_name VARCHAR, alert_time TIMESTAMP)",
+  "hint": "Self-join on time difference within interval.",
+  "correctQuery": "SELECT a1.city_name, a2.city_name FROM climate_alerts a1 JOIN climate_alerts a2 ON a1.city_name < a2.city_name WHERE ABS(EXTRACT(EPOCH FROM (a1.alert_time - a2.alert_time))) <= 3600;",
+  "setupSQL": "CREATE TABLE climate_alerts (city_name VARCHAR, alert_time TIMESTAMP);",
+  "enforceOrder": false
+}

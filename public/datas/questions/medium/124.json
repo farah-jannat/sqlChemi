@@ -1,0 +1,15 @@
+{
+  "id": 124,
+  "title": "Top Heavy Projects",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Identify projects where the highest-paid employee earns more than 40% of the entire project budget. Return 'project_id'.",
+  "tableSchema": "projects (project_id INT, start_date DATE, end_date DATE, budget INT), employees (employee_id INT, project_id INT, role VARCHAR, salary INT)",
+  "hint": "Use MAX(salary) OVER(PARTITION BY project_id) and compare with budget.",
+  "correctQuery": "SELECT DISTINCT project_id FROM (SELECT p.project_id, MAX(e.salary) OVER(PARTITION BY p.project_id) AS max_sal, p.budget FROM projects p JOIN employees e ON p.project_id = e.project_id) t WHERE max_sal > 0.4 * budget;",
+  "setupSQL": "CREATE TABLE projects (project_id INT, start_date DATE, end_date DATE, budget INT); CREATE TABLE employees (employee_id INT, project_id INT, role VARCHAR, salary INT); INSERT INTO projects VALUES (1, '2026-01-01', '2026-12-31', 10000); INSERT INTO employees VALUES (101, 1, 'Dev', 5000);",
+  "enforceOrder": false
+}

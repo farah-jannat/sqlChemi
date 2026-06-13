@@ -1,0 +1,16 @@
+{
+  "id": 220,
+  "title": "Platform Rating Convergence",
+  "difficulty": "Hard",
+  "company": "Global-Stats",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Find games where the difference between user_score and critic_score has narrowed to less than 1.0 points over a 3-game sequence.",
+  "tableSchema": "ratings (game_id INT, platform VARCHAR, user_score NUMERIC, critic_score NUMERIC, release_date TIMESTAMP)",
+  "hint": "Calculate rolling diff and compare with LAG().",
+  "correctQuery": "SELECT game_id FROM (SELECT game_id, ABS(user_score - critic_score) as diff, AVG(ABS(user_score - critic_score)) OVER(PARTITION BY platform ORDER BY release_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as rolling_diff FROM ratings) t WHERE rolling_diff < 1.0;",
+  "setupSQL": "CREATE TABLE ratings (game_id INT, platform VARCHAR, user_score NUMERIC, critic_score NUMERIC, release_date TIMESTAMP);",
+  "enforceOrder": false
+}

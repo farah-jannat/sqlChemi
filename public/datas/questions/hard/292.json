@@ -1,0 +1,16 @@
+{
+  "id": 292,
+  "title": "Cloud Server Load Stability Anomaly",
+  "difficulty": "Hard",
+  "company": "Cloud-Ops",
+  "tags": [
+    "Window Functions",
+    "Gaps and Islands"
+  ],
+  "scenario": "A 'Stability Anomaly' is defined as any server reporting CPU load > 85% for four or more consecutive reporting cycles, ignoring timestamp gaps. Retrieve the server_id, cycle_id, and cpu_load for all cycles participating in such an anomaly, ordered by cycle_id.",
+  "tableSchema": "server_logs (server_id INT, cycle_id INT, cpu_load NUMERIC)",
+  "hint": "Use PARTITION BY server_id with the difference-of-row-numbers technique to isolate streaks for each specific server.",
+  "correctQuery": "WITH AnomalyIslands AS (SELECT server_id, cycle_id, cpu_load, (cycle_id - ROW_NUMBER() OVER (PARTITION BY server_id ORDER BY cycle_id)) as island_id FROM server_logs WHERE cpu_load > 85) SELECT server_id, cycle_id, cpu_load FROM AnomalyIslands WHERE (server_id, island_id) IN (SELECT server_id, island_id FROM AnomalyIslands GROUP BY server_id, island_id HAVING COUNT(*) >= 4) ORDER BY server_id, cycle_id;",
+  "setupSQL": "CREATE TABLE server_logs (server_id INT, cycle_id INT, cpu_load NUMERIC);",
+  "enforceOrder": true
+}

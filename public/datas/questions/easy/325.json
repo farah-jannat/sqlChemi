@@ -1,0 +1,15 @@
+{
+  "id": 325,
+  "title": "Average Salary",
+  "difficulty": "Easy",
+  "company": "HR-Metrics",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the average salary across the entire company.",
+  "tableSchema": "Employees (id INT, salary INT)",
+  "hint": "Use the AVG() aggregate function.",
+  "correctQuery": "SELECT AVG(salary) FROM Employees;",
+  "setupSQL": "CREATE TABLE Employees (id INT, salary INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 286,
+  "title": "LMS Course Completion Momentum",
+  "difficulty": "Hard",
+  "company": "EduMetrics",
+  "tags": [
+    "Window Functions",
+    "Date Arithmetic"
+  ],
+  "scenario": "Identify students who finished a certificate faster than the rolling 3-certificate average of their peers, specifically within a 30-day window.",
+  "tableSchema": "progress (stu_id INT, lesson_id INT, completion_date DATE), certificates (stu_id INT, issue_date DATE)",
+  "hint": "Use a CTE to calculate individual duration and a windowed AVG() to determine peer benchmark.",
+  "correctQuery": "WITH cert_times AS (SELECT stu_id, issue_date, (issue_date - MIN(completion_date) OVER(PARTITION BY stu_id)) as duration FROM certificates JOIN progress USING (stu_id)) SELECT stu_id FROM (SELECT stu_id, duration, AVG(duration) OVER(ORDER BY issue_date ROWS BETWEEN 3 PRECEDING AND 1 PRECEDING) as peer_avg FROM cert_times) t WHERE duration < peer_avg;",
+  "setupSQL": "CREATE TABLE progress (stu_id INT, lesson_id INT, completion_date DATE); CREATE TABLE certificates (cert_id INT, stu_id INT, issue_date DATE);",
+  "enforceOrder": false
+}

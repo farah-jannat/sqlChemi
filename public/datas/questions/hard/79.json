@@ -1,0 +1,16 @@
+{
+  "id": 79,
+  "title": "Recursive Transaction Chain",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Recursive CTE",
+    "Graph"
+  ],
+  "scenario": "Transactions are linked if an 'amount' from one transaction is moved to another. Find the full chain of transactions for a specific starting ID. Return the result table as 'id', 'amount', and 'depth'.",
+  "tableSchema": "transactions (id INT, parent_id INT, amount INT, trans_date DATE)",
+  "hint": "Use a Recursive CTE to traverse the parent_id to id link.",
+  "correctQuery": "WITH RECURSIVE chain AS (SELECT id, parent_id, amount, 1 AS depth FROM transactions WHERE parent_id IS NULL UNION ALL SELECT t.id, t.parent_id, t.amount, c.depth + 1 FROM transactions t JOIN chain c ON t.parent_id = c.id) SELECT id, amount, depth FROM chain;",
+  "setupSQL": "CREATE TABLE transactions (id INT, parent_id INT, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, NULL, 1000, '2026-01-01'), (2, 1, 500, '2026-01-02'), (3, 2, 250, '2026-01-03');",
+  "enforceOrder": false
+}

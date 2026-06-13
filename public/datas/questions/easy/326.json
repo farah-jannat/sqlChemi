@@ -1,0 +1,15 @@
+{
+  "id": 326,
+  "title": "Top Earner",
+  "difficulty": "Easy",
+  "company": "ExecutiveSearch",
+  "tags": [
+    "Sorting"
+  ],
+  "scenario": "Find the employee with the highest salary. Output the name and salary, ordered by salary descending.",
+  "tableSchema": "Employees (name VARCHAR, salary INT)",
+  "hint": "Use ORDER BY salary DESC LIMIT 1.",
+  "correctQuery": "SELECT name, salary FROM Employees ORDER BY salary DESC LIMIT 1;",
+  "setupSQL": "CREATE TABLE Employees (name VARCHAR, salary INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 251,
+  "title": "Stale Bug Detection",
+  "difficulty": "Hard",
+  "company": "System-Maintenance",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Find bugs that have been in 'In Progress' status for longer than the 90th percentile of all 'In Progress' durations.",
+  "tableSchema": "status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP)",
+  "hint": "Use PERCENTILE_CONT(0.9) to set threshold.",
+  "correctQuery": "SELECT bug_id FROM (SELECT bug_id, status, changed_at, LEAD(changed_at) OVER(PARTITION BY bug_id ORDER BY changed_at) - changed_at as duration FROM status_history WHERE status = 'In_Progress') t WHERE duration > (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY LEAD(changed_at) OVER(PARTITION BY bug_id ORDER BY changed_at) - changed_at) FROM status_history WHERE status = 'In_Progress');",
+  "setupSQL": "CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

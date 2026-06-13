@@ -1,0 +1,15 @@
+{
+  "id": 319,
+  "title": "Employee Department Check",
+  "difficulty": "Easy",
+  "company": "TechCorp",
+  "tags": [
+    "Joins"
+  ],
+  "scenario": "Return all employees who have a department assigned. Output 'name' and 'dept_name'.",
+  "tableSchema": "Employees (id INT, name VARCHAR, dept_id INT), Departments (id INT, dept_name VARCHAR)",
+  "hint": "Use an INNER JOIN on the department ID.",
+  "correctQuery": "SELECT e.name, d.dept_name FROM Employees e JOIN Departments d ON e.dept_id = d.id;",
+  "setupSQL": "CREATE TABLE Employees (id INT, name VARCHAR, dept_id INT); CREATE TABLE Departments (id INT, dept_name VARCHAR);",
+  "enforceOrder": false
+}

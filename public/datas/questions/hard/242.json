@@ -1,0 +1,16 @@
+{
+  "id": 242,
+  "title": "Bug Reopen Frequency",
+  "difficulty": "Hard",
+  "company": "Quality-Assurance",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Identify bugs that transitioned from 'Resolved' back to 'Open' more than twice.",
+  "tableSchema": "status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP)",
+  "hint": "Use LEAD() to check if status transitions match the 'Resolved' -> 'Open' pattern.",
+  "correctQuery": "SELECT bug_id FROM (SELECT bug_id, status, LEAD(status) OVER(PARTITION BY bug_id ORDER BY changed_at) as next_status FROM status_history) t WHERE status = 'Resolved' AND next_status = 'Open' GROUP BY bug_id HAVING COUNT(*) > 2;",
+  "setupSQL": "CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

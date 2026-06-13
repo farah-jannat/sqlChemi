@@ -1,0 +1,16 @@
+{
+  "id": 64,
+  "title": "Monthly Request Volume",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Aggregation",
+    "Date Formatting"
+  ],
+  "scenario": "Count how many confirmation requests were made each month. Return the result table as 'month' and 'request_count'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Format the time_stamp to 'YYYY-MM' and group by it.",
+  "correctQuery": "SELECT STRFTIME('%Y-%m', time_stamp) AS month, COUNT(*) AS request_count FROM confirmations GROUP BY month;",
+  "setupSQL": "CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO confirmations VALUES (3, '2021-01-06 03:30:46', 'timeout'), (3, '2021-07-14 14:00:00', 'confirmed'), (7, '2021-06-12 11:57:29', 'confirmed');",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 214,
+  "title": "Top-Rated Yearly Successions",
+  "difficulty": "Hard",
+  "company": "Industry-Report",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "List the title of the game that had the highest critic_score for every year between 2020 and 2026.",
+  "tableSchema": "games (game_id INT, title VARCHAR, release_year INT), ratings (game_id INT, critic_score NUMERIC)",
+  "hint": "Rank critic_score per year, select rank 1.",
+  "correctQuery": "SELECT title, release_year FROM (SELECT g.title, g.release_year, RANK() OVER(PARTITION BY g.release_year ORDER BY r.critic_score DESC) as rnk FROM games g JOIN ratings r ON g.game_id = r.game_id WHERE g.release_year BETWEEN 2020 AND 2026) t WHERE rnk = 1;",
+  "setupSQL": "CREATE TABLE games (game_id INT, title VARCHAR, release_year INT); CREATE TABLE ratings (game_id INT, critic_score NUMERIC);",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 92,
+  "title": "Churned Player Identification",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "A player is considered 'churned' if they have not played any games in the last 30 days relative to their last login date. Return the 'player_id' of all churned players.",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Compare MAX(event_date) for each player against the global MAX(event_date).",
+  "correctQuery": "SELECT player_id FROM activity GROUP BY player_id HAVING MAX(event_date) < (SELECT MAX(event_date) - INTERVAL '30 days' FROM activity);",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 5), (2, 1, '2026-05-01', 5);",
+  "enforceOrder": false
+}

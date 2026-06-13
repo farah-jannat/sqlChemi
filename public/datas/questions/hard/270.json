@@ -1,0 +1,16 @@
+{
+  "id": 270,
+  "title": "Content Decay Analysis",
+  "difficulty": "Hard",
+  "company": "Archive-Metrics",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the half-life of an article (days until views drop to 50% of the maximum daily views observed).",
+  "tableSchema": "page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Find max views, then locate the first day after peak where views <= max/2.",
+  "correctQuery": "SELECT article_id, MIN(view_date) - peak_date as half_life_days FROM (SELECT article_id, view_date, views_count, MAX(views_count) OVER(PARTITION BY article_id) as max_v, MAX(view_date) FILTER (WHERE views_count = MAX(views_count) OVER(PARTITION BY article_id)) OVER(PARTITION BY article_id) as peak_date FROM page_views) t WHERE views_count <= max_v * 0.5 AND view_date > peak_date GROUP BY article_id, peak_date;",
+  "setupSQL": "CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 315,
+  "title": "Movie Rating Velocity Trend",
+  "difficulty": "Hard",
+  "company": "Studio-Metrics",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Analyze the 'rating velocity' for each movie. Output a table with three columns: 'movie_title', 'review_date', and 'cumulative_avg_rating'. The cumulative average should be calculated for each movie ordered by date. Ensure the output is sorted by movie_title then review_date.",
+  "tableSchema": "Movies (movie_id INT, title VARCHAR), MovieRating (movie_id INT, rating INT, created_at DATE)",
+  "hint": "Join the tables and use the AVG() window function partitioned by movie_id, ordered by created_at, to compute the rolling mean.",
+  "correctQuery": "SELECT m.title AS movie_title, mr.created_at AS review_date, AVG(mr.rating) OVER(PARTITION BY m.movie_id ORDER BY mr.created_at) AS cumulative_avg_rating FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id ORDER BY movie_title, review_date;",
+  "setupSQL": "CREATE TABLE Movies (movie_id INT PRIMARY KEY, title VARCHAR); CREATE TABLE MovieRating (movie_id INT, rating INT, created_at DATE);",
+  "enforceOrder": true
+}

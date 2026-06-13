@@ -1,0 +1,15 @@
+{
+  "id": 88,
+  "title": "Transaction Velocity Deviation",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Calculate the Z-Score of the transaction amounts for each country to identify anomalies. Return 'id', 'country', and 'z_score'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Z-score = (value - mean) / standard_deviation.",
+  "correctQuery": "SELECT id, country, (amount - AVG(amount) OVER(PARTITION BY country)) / STDEV(amount) OVER(PARTITION BY country) AS z_score FROM transactions;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01'), (2, 'US', 'approved', 200, '2026-01-02'), (3, 'US', 'approved', 300, '2026-01-03');",
+  "enforceOrder": false
+}

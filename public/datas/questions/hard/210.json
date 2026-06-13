@@ -1,0 +1,16 @@
+{
+  "id": 210,
+  "title": "Critical Acclaim Volatility",
+  "difficulty": "Hard",
+  "company": "Game-Critics",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "For each genre, calculate the difference between the maximum and minimum critic_score for games released in the same year.",
+  "tableSchema": "games (game_id INT, genre VARCHAR, release_year INT), ratings (game_id INT, critic_score NUMERIC)",
+  "hint": "Use MAX() OVER(PARTITION BY genre, release_year).",
+  "correctQuery": "SELECT DISTINCT genre, release_year, MAX(critic_score) OVER(PARTITION BY genre, release_year) - MIN(critic_score) OVER(PARTITION BY genre, release_year) as volatility FROM games g JOIN ratings r ON g.game_id = r.game_id;",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR, release_year INT); CREATE TABLE ratings (game_id INT, critic_score NUMERIC);",
+  "enforceOrder": false
+}

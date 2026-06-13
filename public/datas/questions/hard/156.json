@@ -1,0 +1,15 @@
+{
+  "id": 156,
+  "title": "Price Stability Scoring",
+  "difficulty": "Hard",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Statistical Analysis"
+  ],
+  "scenario": "Calculate the Z-Score of price changes for each product.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Use STDDEV_SAMP for standard deviation.",
+  "correctQuery": "SELECT product_id, change_date, (price_diff - AVG(price_diff) OVER(PARTITION BY product_id)) / NULLIF(STDDEV_SAMP(price_diff) OVER(PARTITION BY product_id), 0) AS z_score FROM (SELECT product_id, change_date, new_price - LAG(new_price) OVER(PARTITION BY product_id ORDER BY change_date) AS price_diff FROM products) t;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE);",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 200,
+  "title": "Franchise Hierarchy Reconstruction",
+  "difficulty": "Hard",
+  "company": "GameDev-Global",
+  "tags": [
+    "Recursive CTE"
+  ],
+  "scenario": "Reconstruct the entire lineage of a game franchise. For a given game, find all ancestors (parent, grandparent, etc.). Return 'game_id' and 'lineage_depth'.",
+  "tableSchema": "game_sequences (game_id INT, parent_game_id INT)",
+  "hint": "Use a Recursive CTE to traverse parent_game_id links.",
+  "correctQuery": "WITH RECURSIVE lineage AS (SELECT game_id, parent_game_id, 0 AS depth FROM game_sequences WHERE game_id = 101 UNION ALL SELECT gs.game_id, gs.parent_game_id, l.depth + 1 FROM game_sequences gs JOIN lineage l ON gs.game_id = l.parent_game_id) SELECT game_id, depth AS lineage_depth FROM lineage;",
+  "setupSQL": "CREATE TABLE game_sequences (game_id INT, parent_game_id INT);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 272,
+  "title": "Commenter Engagement Depth",
+  "difficulty": "Hard",
+  "company": "User-Retention",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Calculate the average time a user spends commenting across different articles.",
+  "tableSchema": "comments (user_id INT, article_id INT, comment_date TIMESTAMP)",
+  "hint": "Sort by user then date, use LAG().",
+  "correctQuery": "SELECT user_id, AVG(time_diff) FROM (SELECT user_id, comment_date - LAG(comment_date) OVER(PARTITION BY user_id ORDER BY comment_date) as time_diff FROM comments) t GROUP BY user_id;",
+  "setupSQL": "CREATE TABLE comments (user_id INT, article_id INT, comment_date TIMESTAMP);",
+  "enforceOrder": false
+}

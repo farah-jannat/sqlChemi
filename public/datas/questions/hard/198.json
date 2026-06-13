@@ -1,0 +1,16 @@
+{
+  "id": 198,
+  "title": "Employee Bonus Thresholds",
+  "difficulty": "Hard",
+  "company": "CorporateHR",
+  "tags": [
+    "Window Functions",
+    "Offset"
+  ],
+  "scenario": "Find employees whose bonus increased every year for 3 consecutive years.",
+  "tableSchema": "bonuses (emp_id INT, yr INT, amt INT)",
+  "hint": "Check if current > lag1, lag1 > lag2.",
+  "correctQuery": "SELECT emp_id FROM (SELECT emp_id, amt, LAG(amt) OVER(PARTITION BY emp_id ORDER BY yr) as l1, LAG(amt, 2) OVER(PARTITION BY emp_id ORDER BY yr) as l2 FROM bonuses) t WHERE amt > l1 AND l1 > l2;",
+  "setupSQL": "CREATE TABLE bonuses (emp_id INT, yr INT, amt INT);",
+  "enforceOrder": false
+}

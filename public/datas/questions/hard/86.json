@@ -1,0 +1,16 @@
+{
+  "id": 86,
+  "title": "Rolling 7-Day Revenue",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions",
+    "Range"
+  ],
+  "scenario": "Calculate the total revenue for the trailing 7 days for each country. Return 'country', 'trans_date', and 'rolling_revenue'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use SUM() OVER(PARTITION BY country ORDER BY JULIANDAY(trans_date) RANGE BETWEEN 6 PRECEDING AND CURRENT ROW).",
+  "correctQuery": "SELECT country, trans_date, SUM(amount) OVER(PARTITION BY country ORDER BY JULIANDAY(trans_date) RANGE BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_revenue FROM transactions;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01'), (2, 'US', 'approved', 100, '2026-01-02');",
+  "enforceOrder": false
+}

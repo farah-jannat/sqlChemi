@@ -1,0 +1,16 @@
+{
+  "id": 168,
+  "title": "Employee Salary Rank Deviation",
+  "difficulty": "Hard",
+  "company": "Global-HR",
+  "tags": [
+    "Window Functions",
+    "Rank"
+  ],
+  "scenario": "Calculate how many salary ranks an employee is from the top earner in their division.",
+  "tableSchema": "staff (emp_id INT, div_id INT, salary INT)",
+  "hint": "Use RANK() and then subtract rank from the max rank.",
+  "correctQuery": "SELECT emp_id, (MAX(rnk) OVER(PARTITION BY div_id) - rnk) AS rank_dist FROM (SELECT emp_id, div_id, RANK() OVER(PARTITION BY div_id ORDER BY salary DESC) AS rnk FROM staff) t;",
+  "setupSQL": "CREATE TABLE staff (emp_id INT, div_id INT, salary INT);",
+  "enforceOrder": false
+}

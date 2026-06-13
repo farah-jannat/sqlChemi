@@ -1,0 +1,15 @@
+{
+  "id": 128,
+  "title": "Budget Efficiency Index",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Calculate the index: (Total Budget) / (Total Days Duration * Number of Employees). Return 'project_id' and 'efficiency_index'.",
+  "tableSchema": "projects (project_id INT, start_date DATE, end_date DATE, budget INT), employees (employee_id INT, project_id INT, role VARCHAR, salary INT)",
+  "hint": "Date difference calculation multiplied by employee count.",
+  "correctQuery": "SELECT p.project_id, p.budget::NUMERIC / (NULLIF((p.end_date - p.start_date), 0) * COUNT(e.employee_id)) AS efficiency_index FROM projects p JOIN employees e ON p.project_id = e.project_id GROUP BY p.project_id, p.budget, p.end_date, p.start_date;",
+  "setupSQL": "CREATE TABLE projects (project_id INT, start_date DATE, end_date DATE, budget INT); CREATE TABLE employees (employee_id INT, project_id INT, role VARCHAR, salary INT); INSERT INTO projects VALUES (1, '2026-01-01', '2026-01-11', 1000); INSERT INTO employees VALUES (101, 1, 'Dev', 100), (102, 1, 'Dev', 100);",
+  "enforceOrder": false
+}

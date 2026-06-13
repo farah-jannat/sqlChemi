@@ -1,0 +1,16 @@
+{
+  "id": 85,
+  "title": "Identify Fraud Clusters",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Self Join",
+    "Recursive CTE"
+  ],
+  "scenario": "Group transactions into clusters if they occur in the same country within 1 hour of each other. Return 'cluster_id' and the number of transactions.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATETIME)",
+  "hint": "Self-join on country and time difference < 1 hour, then use a connected components algorithm (or recursive CTE).",
+  "correctQuery": "WITH RECURSIVE clusters AS (SELECT id, id AS cluster_id FROM transactions UNION SELECT t.id, c.cluster_id FROM transactions t JOIN clusters c ON t.country = (SELECT country FROM transactions WHERE id = c.cluster_id) AND ABS(JULIANDAY(t.trans_date) - JULIANDAY((SELECT trans_date FROM transactions WHERE id = c.cluster_id))) * 24 <= 1) SELECT cluster_id, COUNT(DISTINCT id) FROM clusters GROUP BY cluster_id;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATETIME); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01 10:00:00'), (2, 'US', 'approved', 100, '2026-01-01 10:30:00');",
+  "enforceOrder": false
+}

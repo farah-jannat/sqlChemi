@@ -1,0 +1,15 @@
+{
+  "id": 75,
+  "title": "Transaction Anomaly Detection",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Identify transactions that are more than 2x the average 'amount' of all transactions within the same 'country'. Return the 'id' and 'amount'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use AVG(amount) OVER(PARTITION BY country) to find the local average.",
+  "correctQuery": "SELECT id, amount FROM (SELECT id, amount, AVG(amount) OVER(PARTITION BY country) AS avg_amt FROM transactions) t WHERE amount > 2 * avg_amt;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2019-01-01'), (2, 'US', 'approved', 1000, '2019-01-01');",
+  "enforceOrder": false
+}

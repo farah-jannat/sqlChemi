@@ -1,0 +1,16 @@
+{
+  "id": 260,
+  "title": "Sprint Progress Velocity",
+  "difficulty": "Hard",
+  "company": "Agile-Metrics",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the percentage of total sprint bugs resolved per day, and identify days where resolution fell below 5% of total.",
+  "tableSchema": "status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP), sprints (sprint_id INT, start_date DATE, end_date DATE)",
+  "hint": "Divide daily count by total count per sprint.",
+  "correctQuery": "SELECT sprint_id, changed_at::DATE FROM (SELECT s.sprint_id, sh.changed_at, COUNT(*) OVER(PARTITION BY s.sprint_id, sh.changed_at::DATE)::NUMERIC / COUNT(*) OVER(PARTITION BY s.sprint_id) as daily_pct FROM status_history sh JOIN sprints s ON sh.changed_at::DATE BETWEEN s.start_date AND s.end_date WHERE sh.status = 'Resolved') t WHERE daily_pct < 0.05;",
+  "setupSQL": "CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP); CREATE TABLE sprints (sprint_id INT, start_date DATE, end_date DATE);",
+  "enforceOrder": false
+}

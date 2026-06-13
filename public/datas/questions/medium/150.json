@@ -1,0 +1,16 @@
+{
+  "id": 150,
+  "title": "Price Velocity at Change",
+  "difficulty": "Medium",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Window Functions",
+    "Delta Analysis"
+  ],
+  "scenario": "For every price change, calculate the 'velocity' as (price_change_amount / days_since_last_change). Return 'product_id', 'change_date', and 'velocity'.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Use LAG to find the previous price and date, calculate date diff, and divide.",
+  "correctQuery": "SELECT product_id, change_date, (new_price - LAG(new_price) OVER(PARTITION BY product_id ORDER BY change_date))::FLOAT / NULLIF(change_date - LAG(change_date) OVER(PARTITION BY product_id ORDER BY change_date), 0) AS velocity FROM products;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE); INSERT INTO products VALUES (1, 20, '2019-08-14'), (1, 30, '2019-08-16');",
+  "enforceOrder": false
+}

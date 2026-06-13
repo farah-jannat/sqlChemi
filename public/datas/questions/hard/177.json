@@ -1,0 +1,16 @@
+{
+  "id": 177,
+  "title": "Average Time Between Events",
+  "difficulty": "Hard",
+  "company": "App-Metrics",
+  "tags": [
+    "Window Functions",
+    "Subqueries"
+  ],
+  "scenario": "For each user, calculate the average time gap between events.",
+  "tableSchema": "events (user_id INT, event_time TIMESTAMP)",
+  "hint": "Calculate gaps with LEAD(), then AVG() them.",
+  "correctQuery": "SELECT user_id, AVG(gap) AS avg_gap FROM (SELECT user_id, (LEAD(event_time) OVER(PARTITION BY user_id ORDER BY event_time) - event_time) as gap FROM events) t GROUP BY user_id;",
+  "setupSQL": "CREATE TABLE events (user_id INT, event_time TIMESTAMP);",
+  "enforceOrder": false
+}

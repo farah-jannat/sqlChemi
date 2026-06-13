@@ -1,0 +1,16 @@
+{
+  "id": 226,
+  "title": "Annual Temperature Convergence",
+  "difficulty": "Hard",
+  "company": "Climate-Policy",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "Find cities where the yearly mean temperature has moved closer to the global mean temperature for 3 consecutive years.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC)",
+  "hint": "Calculate yearly city mean, yearly global mean, then compute diffs and compare with LAG().",
+  "correctQuery": "SELECT city_name FROM (SELECT city_name, yr, diff, LAG(diff) OVER(PARTITION BY city_name ORDER BY yr) as prev_diff, LAG(diff, 2) OVER(PARTITION BY city_name ORDER BY yr) as pprev_diff FROM (SELECT city_name, EXTRACT(YEAR FROM reading_date) as yr, ABS(AVG(temp_c) - AVG(AVG(temp_c)) OVER(PARTITION BY EXTRACT(YEAR FROM reading_date))) as diff FROM weather_data GROUP BY city_name, yr) t) t2 WHERE diff < prev_diff AND prev_diff < pprev_diff;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

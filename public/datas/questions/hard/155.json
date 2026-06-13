@@ -1,0 +1,15 @@
+{
+  "id": 155,
+  "title": "Cumulative Price Index",
+  "difficulty": "Hard",
+  "company": "Unique-Analytica",
+  "tags": [
+    "String Aggregation"
+  ],
+  "scenario": "Construct the price trajectory string for each product (e.g., '10->20->30') considering the initial price of 10.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Use STRING_AGG to build the path.",
+  "correctQuery": "SELECT product_id, '10->' || STRING_AGG(new_price::text, '->' ORDER BY change_date) AS price_path FROM products GROUP BY product_id;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE);",
+  "enforceOrder": false
+}

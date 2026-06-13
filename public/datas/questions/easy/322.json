@@ -1,0 +1,15 @@
+{
+  "id": 322,
+  "title": "Count Departments",
+  "difficulty": "Easy",
+  "company": "CorpOps",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Count how many employees are in each department. Output 'dept_id' and the count.",
+  "tableSchema": "Employees (id INT, dept_id INT)",
+  "hint": "Use GROUP BY on dept_id.",
+  "correctQuery": "SELECT dept_id, COUNT(*) FROM Employees GROUP BY dept_id;",
+  "setupSQL": "CREATE TABLE Employees (id INT, dept_id INT);",
+  "enforceOrder": false
+}

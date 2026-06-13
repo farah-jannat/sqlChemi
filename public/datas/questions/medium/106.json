@@ -1,0 +1,15 @@
+{
+  "id": 106,
+  "title": "Customers with Delayed First Orders",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Find the 'customer_id' of all customers whose first order was scheduled (not immediate).",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Join first order data with the main table where order_date < customer_pref_delivery_date.",
+  "correctQuery": "SELECT d.customer_id FROM delivery d JOIN (SELECT customer_id, MIN(order_date) AS first_date FROM delivery GROUP BY customer_id) f ON d.customer_id = f.customer_id AND d.order_date = f.first_date WHERE d.order_date < d.customer_pref_delivery_date;",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02');",
+  "enforceOrder": false
+}

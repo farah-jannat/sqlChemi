@@ -1,0 +1,15 @@
+{
+  "id": 331,
+  "title": "Find Employees by Letter",
+  "difficulty": "Easy",
+  "company": "CompanyRegistry",
+  "tags": [
+    "Pattern Matching"
+  ],
+  "scenario": "Find all employees whose name starts with 'A'.",
+  "tableSchema": "Employees (name VARCHAR)",
+  "hint": "Use LIKE 'A%'.",
+  "correctQuery": "SELECT * FROM Employees WHERE name LIKE 'A%';",
+  "setupSQL": "CREATE TABLE Employees (name VARCHAR);",
+  "enforceOrder": false
+}

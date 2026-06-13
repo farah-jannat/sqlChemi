@@ -1,0 +1,16 @@
+{
+  "id": 305,
+  "title": "Dynamic Seat Reassignment",
+  "difficulty": "Medium",
+  "company": "Edu-Logistics",
+  "tags": [
+    "Window Functions",
+    "Conditional Logic"
+  ],
+  "scenario": "You are organizing a seminar where students are seated in an ordered row based on their registration ID. To encourage interaction, you decide to swap the seat assignments for every pair of adjacent students. If the total number of students is odd, the student in the final position must remain in their original seat. Provide a list of students mapped to their newly assigned IDs, ensuring the final output is sorted by ID in ascending order.",
+  "tableSchema": "Seat (id INT, student VARCHAR)",
+  "hint": "Use the CASE statement to reassign IDs: if an ID is odd and not the last record, add 1; if an ID is even, subtract 1. You can identify the last record using a subquery for the total count.",
+  "correctQuery": "SELECT CASE WHEN id % 2 != 0 AND id = (SELECT MAX(id) FROM Seat) THEN id WHEN id % 2 != 0 THEN id + 1 ELSE id - 1 END AS id, student FROM Seat ORDER BY id ASC;",
+  "setupSQL": "CREATE TABLE Seat (id INT PRIMARY KEY, student VARCHAR); INSERT INTO Seat VALUES (1, 'Abbot'), (2, 'Doris'), (3, 'Emerson'), (4, 'Green'), (5, 'Jeames');",
+  "enforceOrder": true
+}

@@ -1,0 +1,16 @@
+{
+  "id": 248,
+  "title": "Severity Shift Correlation",
+  "difficulty": "Hard",
+  "company": "Analytics-Lab",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "Calculate the correlation between the number of times a bug status changes and the eventual severity level.",
+  "tableSchema": "bugs (bug_id INT, severity VARCHAR), status_history (bug_id INT, status VARCHAR)",
+  "hint": "Count history entries per bug and group by severity.",
+  "correctQuery": "SELECT severity, AVG(change_count) FROM (SELECT b.severity, b.bug_id, COUNT(sh.status) as change_count FROM bugs b JOIN status_history sh ON b.bug_id = sh.bug_id GROUP BY b.severity, b.bug_id) t GROUP BY severity;",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, severity VARCHAR); CREATE TABLE status_history (bug_id INT, status VARCHAR);",
+  "enforceOrder": false
+}

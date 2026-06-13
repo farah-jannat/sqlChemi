@@ -1,0 +1,16 @@
+{
+  "id": 229,
+  "title": "Regional Climate Parity",
+  "difficulty": "Hard",
+  "company": "Met-Analytics",
+  "tags": [
+    "CTE",
+    "Comparative Analytics"
+  ],
+  "scenario": "Identify regions where the standard deviation of humidity across all sensors is lower than the previous month.",
+  "tableSchema": "weather_data (sensor_id INT, reading_date DATE, humidity NUMERIC)",
+  "hint": "Use date_trunc('month', reading_date).",
+  "correctQuery": "WITH monthly_stats AS (SELECT DATE_TRUNC('month', reading_date) as mon, STDDEV(humidity) as sd FROM weather_data GROUP BY mon) SELECT mon FROM (SELECT mon, sd, LAG(sd) OVER(ORDER BY mon) as prev_sd FROM monthly_stats) t WHERE sd < prev_sd;",
+  "setupSQL": "CREATE TABLE weather_data (sensor_id INT, reading_date DATE, humidity NUMERIC);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 313,
+  "title": "Consecutive High-Rating streaks",
+  "difficulty": "Hard",
+  "company": "Cinema-Metrics",
+  "tags": [
+    "Gaps and Islands",
+    "Window Functions"
+  ],
+  "scenario": "Identify movies that have received a rating of 5 (the highest score) for at least 3 consecutive reviews in the database, ordered chronologically by 'created_at'. Return the movie title and the dates of the first and last reviews in such streaks.",
+  "tableSchema": "Movies (movie_id INT, title VARCHAR), MovieRating (movie_id INT, rating INT, created_at DATE)",
+  "hint": "Use the difference of row numbers technique to identify consecutive rating islands.",
+  "correctQuery": "WITH RatingIslands AS (SELECT m.title, mr.created_at, (ROW_NUMBER() OVER (PARTITION BY m.title ORDER BY mr.created_at) - ROW_NUMBER() OVER (PARTITION BY m.title, (CASE WHEN mr.rating = 5 THEN 1 ELSE 0 END) ORDER BY mr.created_at)) as island_id FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id) SELECT title, MIN(created_at), MAX(created_at) FROM RatingIslands GROUP BY title, island_id HAVING COUNT(*) >= 3;",
+  "setupSQL": "CREATE TABLE Movies (movie_id INT PRIMARY KEY, title VARCHAR); CREATE TABLE MovieRating (movie_id INT, rating INT, created_at DATE);",
+  "enforceOrder": true
+}

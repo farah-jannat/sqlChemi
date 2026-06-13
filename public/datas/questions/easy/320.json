@@ -1,0 +1,15 @@
+{
+  "id": 320,
+  "title": "High Salary Employees",
+  "difficulty": "Easy",
+  "company": "FinanceCo",
+  "tags": [
+    "Filtering"
+  ],
+  "scenario": "Find all employees with a salary greater than 50000. Output their names.",
+  "tableSchema": "Employees (id INT, name VARCHAR, salary INT)",
+  "hint": "Use a simple WHERE clause.",
+  "correctQuery": "SELECT name FROM Employees WHERE salary > 50000;",
+  "setupSQL": "CREATE TABLE Employees (id INT, name VARCHAR, salary INT);",
+  "enforceOrder": false
+}

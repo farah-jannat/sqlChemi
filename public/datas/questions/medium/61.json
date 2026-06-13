@@ -1,0 +1,16 @@
+{
+  "id": 61,
+  "title": "Frequent Confirmers",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Aggregation",
+    "HAVING"
+  ],
+  "scenario": "Find the 'user_id' of all users who have requested more than 2 confirmation messages in total. Return the result table as 'user_id'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Group the confirmations table by user_id and count requests using HAVING.",
+  "correctQuery": "SELECT user_id FROM confirmations GROUP BY user_id HAVING COUNT(*) > 2;",
+  "setupSQL": "CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO confirmations VALUES (7, '2021-06-12 11:57:29', 'confirmed'), (7, '2021-06-13 12:58:28', 'confirmed'), (7, '2021-06-14 13:59:27', 'confirmed'), (3, '2021-01-06 03:30:46', 'timeout');",
+  "enforceOrder": false
+}

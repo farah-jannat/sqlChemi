@@ -1,0 +1,16 @@
+{
+  "id": 337,
+  "title": "List Departments by Size",
+  "difficulty": "Easy",
+  "company": "CorpStructure",
+  "tags": [
+    "Aggregation",
+    "Sorting"
+  ],
+  "scenario": "List department IDs and the number of employees in them, sorted by the number of employees in descending order.",
+  "tableSchema": "Employees (dept_id INT)",
+  "hint": "GROUP BY and ORDER BY.",
+  "correctQuery": "SELECT dept_id, COUNT(*) as emp_count FROM Employees GROUP BY dept_id ORDER BY emp_count DESC;",
+  "setupSQL": "CREATE TABLE Employees (dept_id INT);",
+  "enforceOrder": false
+}

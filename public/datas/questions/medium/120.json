@@ -1,0 +1,15 @@
+{
+  "id": 120,
+  "title": "Median Salary per Role",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the median salary for each 'role' across all projects. Return the result table as 'role' and 'median_salary'.",
+  "tableSchema": "employees (employee_id INT, project_id INT, role VARCHAR, salary INT)",
+  "hint": "Use PERCENT_RANK() or ROW_NUMBER() to identify the middle element(s).",
+  "correctQuery": "SELECT role, AVG(salary) AS median_salary FROM (SELECT role, salary, PERCENT_RANK() OVER(PARTITION BY role ORDER BY salary) AS pr FROM employees) t WHERE pr BETWEEN 0.45 AND 0.55 GROUP BY role;",
+  "setupSQL": "CREATE TABLE employees (employee_id INT, project_id INT, role VARCHAR, salary INT); INSERT INTO employees VALUES (101, 1, 'Dev', 30000), (102, 1, 'Dev', 40000), (103, 1, 'Dev', 50000);",
+  "enforceOrder": false
+}

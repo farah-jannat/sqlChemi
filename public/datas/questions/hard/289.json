@@ -1,0 +1,16 @@
+{
+  "id": 289,
+  "title": "Artist Playlist Dominance Transition",
+  "difficulty": "Hard",
+  "company": "SoundGraph",
+  "tags": [
+    "Window Functions",
+    "Rank"
+  ],
+  "scenario": "Identify the top 3 artists by playlist adds each month, then find artists who moved up in rank for 3 consecutive months.",
+  "tableSchema": "artists (art_id INT), songs (song_id INT, art_id INT), playlists (list_id INT, song_id INT, added_date TIMESTAMP)",
+  "hint": "Rank monthly, then use LAG to compare rank positions.",
+  "correctQuery": "WITH monthly_rank AS (SELECT art_id, DATE_TRUNC('month', added_date) as mon, RANK() OVER(PARTITION BY DATE_TRUNC('month', added_date) ORDER BY COUNT(*) DESC) as rnk FROM songs JOIN playlists USING (song_id) GROUP BY 1, 2) SELECT art_id FROM (SELECT art_id, rnk, LAG(rnk) OVER(PARTITION BY art_id ORDER BY mon) as p1, LAG(rnk, 2) OVER(PARTITION BY art_id ORDER BY mon) as p2 FROM monthly_rank) t WHERE rnk < p1 AND p1 < p2;",
+  "setupSQL": "CREATE TABLE artists (art_id INT); CREATE TABLE songs (song_id INT, art_id INT); CREATE TABLE playlists (list_id INT, song_id INT, added_date TIMESTAMP);",
+  "enforceOrder": false
+}

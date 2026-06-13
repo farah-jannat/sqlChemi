@@ -1,0 +1,16 @@
+{
+  "id": 283,
+  "title": "Complex Author Contribution Peaks",
+  "difficulty": "Hard",
+  "company": "Deep-Research",
+  "tags": [
+    "Window Functions",
+    "Gaps and Islands"
+  ],
+  "scenario": "Find authors whose total article view count in a rolling 7-day period is in the 99th percentile of all authors, calculated using a sliding range frame.",
+  "tableSchema": "articles (author_id INT, article_id INT), page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Use PERCENTILE_CONT(0.99) OVER().",
+  "correctQuery": "SELECT author_id FROM (SELECT author_id, SUM(views_count) OVER(PARTITION BY author_id ORDER BY view_date RANGE BETWEEN INTERVAL '7 days' PRECEDING AND CURRENT ROW) as rolling_sum FROM articles JOIN page_views USING (article_id)) t WHERE rolling_sum > (SELECT PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY rolling_sum) FROM (SELECT SUM(views_count) OVER(PARTITION BY author_id ORDER BY view_date RANGE BETWEEN INTERVAL '7 days' PRECEDING AND CURRENT ROW) as rolling_sum FROM articles JOIN page_views USING (article_id)) t2);",
+  "setupSQL": "CREATE TABLE articles (author_id INT, article_id INT); CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

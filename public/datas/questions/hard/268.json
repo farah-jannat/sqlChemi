@@ -1,0 +1,16 @@
+{
+  "id": 268,
+  "title": "Top Author Contribution Delta",
+  "difficulty": "Hard",
+  "company": "Media-Metrics",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find authors who contributed to the Top 10 viewed articles in two consecutive months.",
+  "tableSchema": "articles (article_id INT, author_id INT), page_views (article_id INT, view_date DATE, views_count INT)",
+  "hint": "Rank articles by views per month, filter top 10, then join with self on author.",
+  "correctQuery": "SELECT author_id FROM (SELECT author_id, mon, RANK() OVER(PARTITION BY mon ORDER BY views DESC) as rnk FROM (SELECT a.author_id, DATE_TRUNC('month', p.view_date) as mon, SUM(p.views_count) as views FROM articles a JOIN page_views p USING (article_id) GROUP BY a.author_id, mon) t) t2 WHERE rnk <= 10 GROUP BY author_id HAVING COUNT(DISTINCT mon) >= 2;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, author_id INT); CREATE TABLE page_views (article_id INT, view_date DATE, views_count INT);",
+  "enforceOrder": false
+}

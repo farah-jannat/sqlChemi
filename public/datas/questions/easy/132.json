@@ -1,0 +1,15 @@
+{
+  "id": 132,
+  "title": "Unique Product Affinity",
+  "difficulty": "Easy",
+  "company": "Unique-Ecom",
+  "tags": [
+    "Subqueries"
+  ],
+  "scenario": "Find the 'product_key' that was bought by the highest number of unique customers.",
+  "tableSchema": "customer (customer_id INT, product_key INT)",
+  "hint": "Group by product_key, count distinct customer_id, order descending.",
+  "correctQuery": "SELECT product_key FROM customer GROUP BY product_key ORDER BY COUNT(DISTINCT customer_id) DESC LIMIT 1;",
+  "setupSQL": "CREATE TABLE customer (customer_id INT, product_key INT); INSERT INTO customer VALUES (1, 5), (2, 5), (3, 6);",
+  "enforceOrder": true
+}

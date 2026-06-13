@@ -1,0 +1,16 @@
+{
+  "id": 119,
+  "title": "Project Budget Overrun Probability",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Aggregation",
+    "Subqueries"
+  ],
+  "scenario": "Identify projects where the sum of employee salaries exceeds the project budget. Return the result table as 'project_id' and 'overrun_amount'.",
+  "tableSchema": "projects (project_id INT, start_date DATE, end_date DATE, budget INT), employees (employee_id INT, project_id INT, role VARCHAR, salary INT)",
+  "hint": "Join projects and employees on project_id, group by project_id, and filter where SUM(salary) > budget.",
+  "correctQuery": "SELECT p.project_id, (SUM(e.salary) - p.budget) AS overrun_amount FROM projects p JOIN employees e ON p.project_id = e.project_id GROUP BY p.project_id, p.budget HAVING SUM(e.salary) > p.budget;",
+  "setupSQL": "CREATE TABLE projects (project_id INT, start_date DATE, end_date DATE, budget INT); CREATE TABLE employees (employee_id INT, project_id INT, role VARCHAR, salary INT); INSERT INTO projects VALUES (1, '2026-01-01', '2026-12-31', 50000); INSERT INTO employees VALUES (101, 1, 'Dev', 30000), (102, 1, 'Lead', 25000);",
+  "enforceOrder": false
+}

@@ -1,0 +1,15 @@
+{
+  "id": 332,
+  "title": "Min/Max Price",
+  "difficulty": "Easy",
+  "company": "CommerceData",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Return the minimum and maximum price found in the Products table.",
+  "tableSchema": "Products (price INT)",
+  "hint": "Use MIN() and MAX().",
+  "correctQuery": "SELECT MIN(price), MAX(price) FROM Products;",
+  "setupSQL": "CREATE TABLE Products (price INT);",
+  "enforceOrder": false
+}

@@ -17,7 +17,7 @@
   },
   {
     "id": 3,
-    "difficulty": "None",
+    "difficulty": "Medium",
     "tags": [
       "Subqueries",
       "Window Functions",
@@ -396,6 +396,2163 @@
     "difficulty": "Medium",
     "tags": [
       "Window Functions"
+    ]
+  },
+  {
+    "id": 59,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "LEFT JOIN"
+    ]
+  },
+  {
+    "id": 60,
+    "difficulty": "Medium",
+    "tags": [
+      "LEFT JOIN",
+      "Filtering"
+    ]
+  },
+  {
+    "id": 61,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "HAVING"
+    ]
+  },
+  {
+    "id": 62,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 63,
+    "difficulty": "Medium",
+    "tags": [
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 64,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "Date Formatting"
+    ]
+  },
+  {
+    "id": 65,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 66,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "CASE Statement"
+    ]
+  },
+  {
+    "id": 67,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 68,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 69,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "Conditional Sum"
+    ]
+  },
+  {
+    "id": 70,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "HAVING"
+    ]
+  },
+  {
+    "id": 71,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "Percentage"
+    ]
+  },
+  {
+    "id": 72,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 73,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 74,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 75,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 76,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 77,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 78,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 79,
+    "difficulty": "Hard",
+    "tags": [
+      "Recursive CTE",
+      "Graph"
+    ]
+  },
+  {
+    "id": 80,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 81,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Grouping"
+    ]
+  },
+  {
+    "id": 82,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 83,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 84,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 85,
+    "difficulty": "Hard",
+    "tags": [
+      "Self Join",
+      "Recursive CTE"
+    ]
+  },
+  {
+    "id": 86,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Range"
+    ]
+  },
+  {
+    "id": 87,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 88,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 89,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 90,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 91,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "LAG"
+    ]
+  },
+  {
+    "id": 92,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 93,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 94,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 95,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 96,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 97,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 98,
+    "difficulty": "Hard",
+    "tags": [
+      "Recursive CTE"
+    ]
+  },
+  {
+    "id": 99,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 100,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 101,
+    "difficulty": "Medium",
+    "tags": [
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 102,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 103,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 104,
+    "difficulty": "Medium",
+    "tags": [
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 105,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 106,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 107,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 108,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 109,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Filtering"
+    ]
+  },
+  {
+    "id": 110,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "LAG"
+    ]
+  },
+  {
+    "id": 111,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 112,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 113,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 114,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 115,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 116,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 117,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "HAVING"
+    ]
+  },
+  {
+    "id": 118,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 119,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 120,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 121,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 122,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 123,
+    "difficulty": "Medium",
+    "tags": [
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 124,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 125,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 126,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 127,
+    "difficulty": "Medium",
+    "tags": [
+      "Recursive CTE"
+    ]
+  },
+  {
+    "id": 128,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 129,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation",
+      "Relational Division"
+    ]
+  },
+  {
+    "id": 130,
+    "difficulty": "Medium",
+    "tags": [
+      "Set Theory"
+    ]
+  },
+  {
+    "id": 131,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 132,
+    "difficulty": "Easy",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 133,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 134,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 135,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 136,
+    "difficulty": "Medium",
+    "tags": [
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 137,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 138,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 139,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 140,
+    "difficulty": "Medium",
+    "tags": [
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 141,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 142,
+    "difficulty": "Medium",
+    "tags": [
+      "Set Theory"
+    ]
+  },
+  {
+    "id": 143,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 144,
+    "difficulty": "Medium",
+    "tags": [
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 145,
+    "difficulty": "Medium",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 146,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 147,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 148,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 149,
+    "difficulty": "Medium",
+    "tags": [
+      "Temporal Analysis",
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 150,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Delta Analysis"
+    ]
+  },
+  {
+    "id": 151,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "Range Analysis"
+    ]
+  },
+  {
+    "id": 152,
+    "difficulty": "Hard",
+    "tags": [
+      "Set Theory"
+    ]
+  },
+  {
+    "id": 153,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Math"
+    ]
+  },
+  {
+    "id": 154,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Self-Join"
+    ]
+  },
+  {
+    "id": 155,
+    "difficulty": "Hard",
+    "tags": [
+      "String Aggregation"
+    ]
+  },
+  {
+    "id": 156,
+    "difficulty": "Hard",
+    "tags": [
+      "Statistical Analysis"
+    ]
+  },
+  {
+    "id": 157,
+    "difficulty": "Medium",
+    "tags": [
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 158,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 159,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Median"
+    ]
+  },
+  {
+    "id": 160,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 161,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 162,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 163,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 164,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Range Frame"
+    ]
+  },
+  {
+    "id": 165,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 166,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Offsets"
+    ]
+  },
+  {
+    "id": 167,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 168,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 169,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 170,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 171,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 172,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ntile"
+    ]
+  },
+  {
+    "id": 173,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 174,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 175,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 176,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 177,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 178,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 179,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Cumulative Distribution"
+    ]
+  },
+  {
+    "id": 180,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 181,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 182,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Offsets"
+    ]
+  },
+  {
+    "id": 183,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Range Frame"
+    ]
+  },
+  {
+    "id": 184,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 185,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 186,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Conditional Aggregation"
+    ]
+  },
+  {
+    "id": 187,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistical Z-Score"
+    ]
+  },
+  {
+    "id": 188,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Running Total"
+    ]
+  },
+  {
+    "id": 189,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 190,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Partitioning"
+    ]
+  },
+  {
+    "id": 191,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Percentages"
+    ]
+  },
+  {
+    "id": 192,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Offsets"
+    ]
+  },
+  {
+    "id": 193,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 194,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 195,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Percentile"
+    ]
+  },
+  {
+    "id": 196,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Running Total"
+    ]
+  },
+  {
+    "id": 197,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 198,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Offset"
+    ]
+  },
+  {
+    "id": 199,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 200,
+    "difficulty": "Hard",
+    "tags": [
+      "Recursive CTE"
+    ]
+  },
+  {
+    "id": 201,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 202,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 203,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 204,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Conditional Aggregation"
+    ]
+  },
+  {
+    "id": 205,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 206,
+    "difficulty": "Hard",
+    "tags": [
+      "Subqueries",
+      "Set Theory"
+    ]
+  },
+  {
+    "id": 207,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 208,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 209,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Joins"
+    ]
+  },
+  {
+    "id": 210,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 211,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Offsets"
+    ]
+  },
+  {
+    "id": 212,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 213,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 214,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 215,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 216,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Percentage"
+    ]
+  },
+  {
+    "id": 217,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 218,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 219,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 220,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 221,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 222,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistical Z-Score"
+    ]
+  },
+  {
+    "id": 223,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 224,
+    "difficulty": "Hard",
+    "tags": [
+      "Recursive CTE",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 225,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 226,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 227,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 228,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Moving Average"
+    ]
+  },
+  {
+    "id": 229,
+    "difficulty": "Hard",
+    "tags": [
+      "CTE",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 230,
+    "difficulty": "Hard",
+    "tags": [
+      "Recursive CTE",
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 231,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Subqueries"
+    ]
+  },
+  {
+    "id": 232,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 233,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Running Total"
+    ]
+  },
+  {
+    "id": 234,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 235,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps"
+    ]
+  },
+  {
+    "id": 236,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 237,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 238,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 239,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 240,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Moving Average"
+    ]
+  },
+  {
+    "id": 241,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 242,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 243,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 244,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 245,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 246,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Running Total"
+    ]
+  },
+  {
+    "id": 247,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Interval"
+    ]
+  },
+  {
+    "id": 248,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 249,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 250,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 251,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 252,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 253,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Offsets"
+    ]
+  },
+  {
+    "id": 254,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 255,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 256,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Running Total"
+    ]
+  },
+  {
+    "id": 257,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 258,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 259,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 260,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 261,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 262,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 263,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 264,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 265,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 266,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 267,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Recursive CTE"
+    ]
+  },
+  {
+    "id": 268,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 269,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Moving Average"
+    ]
+  },
+  {
+    "id": 270,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 271,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 272,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Lead/Lag"
+    ]
+  },
+  {
+    "id": 273,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 274,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Percentile"
+    ]
+  },
+  {
+    "id": 275,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 276,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Running Total"
+    ]
+  },
+  {
+    "id": 277,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Percentage"
+    ]
+  },
+  {
+    "id": 278,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 279,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 280,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 281,
+    "difficulty": "Hard",
+    "tags": [
+      "Recursive CTE",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 282,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Filter Clause"
+    ]
+  },
+  {
+    "id": 283,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 284,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Self-Join"
+    ]
+  },
+  {
+    "id": 285,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Normalization"
+    ]
+  },
+  {
+    "id": 286,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 287,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Comparative Analytics"
+    ]
+  },
+  {
+    "id": 288,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Boolean Aggregation"
+    ]
+  },
+  {
+    "id": 289,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Rank"
+    ]
+  },
+  {
+    "id": 290,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 291,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 292,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 293,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Gaps and Islands"
+    ]
+  },
+  {
+    "id": 294,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "Filtering",
+      "Conditional Logic"
+    ]
+  },
+  {
+    "id": 295,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 296,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 297,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 298,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 299,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 300,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "CTE"
+    ]
+  },
+  {
+    "id": 301,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 302,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Ratio Analysis"
+    ]
+  },
+  {
+    "id": 303,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 304,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "Union",
+      "Ranking"
+    ]
+  },
+  {
+    "id": 305,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Conditional Logic"
+    ]
+  },
+  {
+    "id": 306,
+    "difficulty": "Medium",
+    "tags": [
+      "Window Functions",
+      "Conditional Logic",
+      "Data Transformation"
+    ]
+  },
+  {
+    "id": 307,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "Window Functions",
+      "Sequence Logic"
+    ]
+  },
+  {
+    "id": 308,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Data Manipulation"
+    ]
+  },
+  {
+    "id": 309,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "Ranking",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 310,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "CTE"
+    ]
+  },
+  {
+    "id": 311,
+    "difficulty": "Hard",
+    "tags": [
+      "Date Arithmetic",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 312,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Statistics"
+    ]
+  },
+  {
+    "id": 313,
+    "difficulty": "Hard",
+    "tags": [
+      "Gaps and Islands",
+      "Window Functions"
+    ]
+  },
+  {
+    "id": 314,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "Window Functions",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 315,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Time-Series"
+    ]
+  },
+  {
+    "id": 316,
+    "difficulty": "Hard",
+    "tags": [
+      "Window Functions",
+      "Filtering"
+    ]
+  },
+  {
+    "id": 317,
+    "difficulty": "Hard",
+    "tags": [
+      "Gaps and Islands",
+      "Date Arithmetic"
+    ]
+  },
+  {
+    "id": 318,
+    "difficulty": "Hard",
+    "tags": [
+      "Aggregation",
+      "Self-Join"
+    ]
+  },
+  {
+    "id": 319,
+    "difficulty": "Easy",
+    "tags": [
+      "Joins"
+    ]
+  },
+  {
+    "id": 320,
+    "difficulty": "Easy",
+    "tags": [
+      "Filtering"
+    ]
+  },
+  {
+    "id": 321,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 322,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 323,
+    "difficulty": "Easy",
+    "tags": [
+      "Filtering"
+    ]
+  },
+  {
+    "id": 324,
+    "difficulty": "Easy",
+    "tags": [
+      "Distinct"
+    ]
+  },
+  {
+    "id": 325,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 326,
+    "difficulty": "Easy",
+    "tags": [
+      "Sorting"
+    ]
+  },
+  {
+    "id": 327,
+    "difficulty": "Easy",
+    "tags": [
+      "Filtering"
+    ]
+  },
+  {
+    "id": 328,
+    "difficulty": "Easy",
+    "tags": [
+      "Null Handling"
+    ]
+  },
+  {
+    "id": 329,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 330,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 331,
+    "difficulty": "Easy",
+    "tags": [
+      "Pattern Matching"
+    ]
+  },
+  {
+    "id": 332,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 334,
+    "difficulty": "Easy",
+    "tags": [
+      "Sorting"
+    ]
+  },
+  {
+    "id": 335,
+    "difficulty": "Easy",
+    "tags": [
+      "Filtering"
+    ]
+  },
+  {
+    "id": 336,
+    "difficulty": "Easy",
+    "tags": [
+      "Filtering",
+      "Aggregation"
+    ]
+  },
+  {
+    "id": 337,
+    "difficulty": "Easy",
+    "tags": [
+      "Aggregation",
+      "Sorting"
+    ]
+  },
+  {
+    "id": 338,
+    "difficulty": "Easy",
+    "tags": [
+      "Sorting"
+    ]
+  },
+  {
+    "id": 339,
+    "difficulty": "Easy",
+    "tags": [
+      "Data Manipulation"
     ]
   }
 ]

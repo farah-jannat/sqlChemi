@@ -1,0 +1,16 @@
+{
+  "id": 196,
+  "title": "University Library Traffic Analysis",
+  "difficulty": "Hard",
+  "company": "LibSys",
+  "tags": [
+    "Window Functions",
+    "Running Total"
+  ],
+  "scenario": "Calculate how many students were in the library at any given timestamp.",
+  "tableSchema": "logins (user_id INT, enter_t TIMESTAMP, exit_t TIMESTAMP)",
+  "hint": "Union entry and exit events and take a running sum of +1/-1.",
+  "correctQuery": "SELECT ts, SUM(event_type) OVER(ORDER BY ts) as current_occupancy FROM (SELECT enter_t as ts, 1 as event_type FROM logins UNION ALL SELECT exit_t as ts, -1 as event_type FROM logins) t;",
+  "setupSQL": "CREATE TABLE logins (user_id INT, enter_t TIMESTAMP, exit_t TIMESTAMP);",
+  "enforceOrder": false
+}

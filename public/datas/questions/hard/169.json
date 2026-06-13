@@ -1,0 +1,16 @@
+{
+  "id": 169,
+  "title": "Peak Traffic Intensity",
+  "difficulty": "Hard",
+  "company": "Network-Ops",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "For every server, identify the day where traffic was higher than the average traffic of the previous 3 days.",
+  "tableSchema": "logs (srv_id INT, log_date DATE, traffic INT)",
+  "hint": "Use AVG() OVER window with frame specification.",
+  "correctQuery": "SELECT srv_id, log_date FROM (SELECT srv_id, log_date, traffic, AVG(traffic) OVER(PARTITION BY srv_id ORDER BY log_date ROWS BETWEEN 3 PRECEDING AND 1 PRECEDING) AS prev_avg FROM logs) t WHERE traffic > prev_avg;",
+  "setupSQL": "CREATE TABLE logs (srv_id INT, log_date DATE, traffic INT);",
+  "enforceOrder": false
+}

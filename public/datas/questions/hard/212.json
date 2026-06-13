@@ -1,0 +1,16 @@
+{
+  "id": 212,
+  "title": "Genre-Specific User Enthusiasm",
+  "difficulty": "Hard",
+  "company": "User-Metrics",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find games that are in the Top 10% by user_score within their specific genre.",
+  "tableSchema": "games (game_id INT, genre VARCHAR), ratings (game_id INT, user_score NUMERIC)",
+  "hint": "Use PERCENT_RANK().",
+  "correctQuery": "SELECT game_id FROM (SELECT game_id, PERCENT_RANK() OVER(PARTITION BY genre ORDER BY user_score DESC) as pr FROM games g JOIN ratings r ON g.game_id = r.game_id) t WHERE pr <= 0.1;",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR); CREATE TABLE ratings (game_id INT, user_score NUMERIC);",
+  "enforceOrder": false
+}

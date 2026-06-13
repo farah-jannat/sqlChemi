@@ -1,0 +1,16 @@
+{
+  "id": 227,
+  "title": "Sensor Fleet Degradation",
+  "difficulty": "Hard",
+  "company": "IoT-Ops",
+  "tags": [
+    "Window Functions",
+    "Subqueries"
+  ],
+  "scenario": "Identify sensors whose readings are consistently drifting from the city average for 10+ days.",
+  "tableSchema": "weather_data (sensor_id INT, city_name VARCHAR, reading_date DATE, temp_c NUMERIC)",
+  "hint": "Compare sensor daily avg vs city daily avg, then group anomalies.",
+  "correctQuery": "SELECT sensor_id FROM (SELECT sensor_id, reading_date, (reading_date - ROW_NUMBER() OVER(PARTITION BY sensor_id ORDER BY reading_date)::INT) as grp FROM (SELECT sensor_id, reading_date, temp_c, AVG(temp_c) OVER(PARTITION BY city_name, reading_date) as city_avg FROM weather_data) t WHERE ABS(temp_c - city_avg) > 2) t2 GROUP BY sensor_id, grp HAVING COUNT(*) >= 10;",
+  "setupSQL": "CREATE TABLE weather_data (sensor_id INT, city_name VARCHAR, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

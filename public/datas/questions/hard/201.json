@@ -1,0 +1,16 @@
+{
+  "id": 201,
+  "title": "Critic vs User Score Divergence",
+  "difficulty": "Hard",
+  "company": "MetaReview-Analytics",
+  "tags": [
+    "Window Functions",
+    "Subqueries"
+  ],
+  "scenario": "Identify games where the critic_score is more than 2 standard deviations away from the average critic_score for that genre.",
+  "tableSchema": "games (game_id INT, genre VARCHAR), ratings (game_id INT, critic_score NUMERIC)",
+  "hint": "Use window functions AVG() and STDDEV() partitioned by genre.",
+  "correctQuery": "SELECT game_id FROM (SELECT g.game_id, r.critic_score, AVG(r.critic_score) OVER(PARTITION BY g.genre) as avg_cs, STDDEV(r.critic_score) OVER(PARTITION BY g.genre) as std_cs FROM games g JOIN ratings r ON g.game_id = r.game_id) t WHERE ABS(critic_score - avg_cs) > 2 * std_cs;",
+  "setupSQL": "CREATE TABLE games (game_id INT, title VARCHAR, genre VARCHAR); CREATE TABLE ratings (game_id INT, critic_score NUMERIC);",
+  "enforceOrder": false
+}

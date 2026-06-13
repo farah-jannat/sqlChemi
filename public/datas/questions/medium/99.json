@@ -1,0 +1,16 @@
+{
+  "id": 99,
+  "title": "Immediate First Order Percentage",
+  "difficulty": "Medium",
+  "company": "Unique-Logistics",
+  "tags": [
+    "Aggregation",
+    "Subqueries"
+  ],
+  "scenario": "Calculate the percentage of immediate orders in the first orders of all customers. An order is immediate if order_date equals customer_pref_delivery_date. Return the result as 'immediate_percentage'.",
+  "tableSchema": "delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE)",
+  "hint": "Find the minimum order_date per customer first, then filter for those records.",
+  "correctQuery": "SELECT ROUND(100.0 * SUM(CASE WHEN order_date = customer_pref_delivery_date THEN 1 ELSE 0 END) / COUNT(*), 2) AS immediate_percentage FROM delivery WHERE (customer_id, order_date) IN (SELECT customer_id, MIN(order_date) FROM delivery GROUP BY customer_id);",
+  "setupSQL": "CREATE TABLE delivery (delivery_id INT, customer_id INT, order_date DATE, customer_pref_delivery_date DATE); INSERT INTO delivery VALUES (1, 1, '2019-08-01', '2019-08-02'), (2, 2, '2019-08-02', '2019-08-02');",
+  "enforceOrder": false
+}

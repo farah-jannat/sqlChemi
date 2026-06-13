@@ -1,0 +1,16 @@
+{
+  "id": 254,
+  "title": "Bug Resolution Clustering",
+  "difficulty": "Hard",
+  "company": "Dev-Analytics",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Find dates where more than 5 bugs were resolved within the same 1-hour window.",
+  "tableSchema": "status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP)",
+  "hint": "Use window function with range frame.",
+  "correctQuery": "SELECT changed_at FROM (SELECT changed_at, COUNT(*) OVER(ORDER BY changed_at RANGE BETWEEN CURRENT ROW AND INTERVAL '1 hour' FOLLOWING) as bug_burst FROM status_history WHERE status = 'Resolved') t WHERE bug_burst > 5;",
+  "setupSQL": "CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

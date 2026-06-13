@@ -1,0 +1,16 @@
+{
+  "id": 249,
+  "title": "Rapid-Fix Sprints",
+  "difficulty": "Hard",
+  "company": "Dev-Flow",
+  "tags": [
+    "Window Functions",
+    "Rank"
+  ],
+  "scenario": "Identify sprints where the MTTR was 20% lower than the rolling 3-sprint average.",
+  "tableSchema": "sprints (sprint_id INT, start_date DATE, end_date DATE), status_history (bug_id INT, changed_at TIMESTAMP)",
+  "hint": "Calculate MTTR per sprint, then use AVG() OVER (ROWS 3 PRECEDING).",
+  "correctQuery": "SELECT sprint_id FROM (SELECT sprint_id, mttr, AVG(mttr) OVER(ORDER BY sprint_id ROWS BETWEEN 3 PRECEDING AND 1 PRECEDING) as prev_avg FROM (SELECT sprint_id, AVG(...) as mttr FROM sprints s JOIN status_history sh ON ...) t) t2 WHERE mttr < 0.8 * prev_avg;",
+  "setupSQL": "CREATE TABLE sprints (sprint_id INT, start_date DATE, end_date DATE); CREATE TABLE status_history (bug_id INT, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

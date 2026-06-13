@@ -1,0 +1,16 @@
+{
+  "id": 297,
+  "title": "Churned User Re-engagement",
+  "difficulty": "Hard",
+  "company": "Growth-Team",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Identify users who did not book a trip for at least 30 days and then completed at least 5 trips in the following 7 days.",
+  "tableSchema": "trips (rider_id INT, request_date DATE)",
+  "hint": "Use LEAD/LAG to find inactivity gaps, then join with aggregate counts.",
+  "correctQuery": "WITH Gaps AS (SELECT rider_id, request_date, LAG(request_date) OVER(PARTITION BY rider_id ORDER BY request_date) as prev_date FROM trips) SELECT DISTINCT g.rider_id FROM Gaps g JOIN trips t ON g.rider_id = t.rider_id WHERE (g.request_date - g.prev_date) >= 30 AND t.request_date BETWEEN g.request_date AND g.request_date + INTERVAL '7 days' GROUP BY g.rider_id, g.request_date HAVING COUNT(*) >= 5;",
+  "setupSQL": "CREATE TABLE trips (rider_id INT, request_date DATE);",
+  "enforceOrder": false
+}

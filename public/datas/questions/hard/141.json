@@ -1,0 +1,15 @@
+{
+  "id": 141,
+  "title": "Numbers with Fluctuating Streaks",
+  "difficulty": "Hard",
+  "company": "Unique-Data",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Identify numbers that have at least two separate streaks of 3+ consecutive occurrences. Return 'num'.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Count how many islands of size >= 3 exist for each number.",
+  "correctQuery": "SELECT num FROM (SELECT num, COUNT(*) AS streak_count FROM (SELECT num, COUNT(*) as s FROM (SELECT id, num, id - ROW_NUMBER() OVER(PARTITION BY num ORDER BY id)::INT AS grp FROM logs) t GROUP BY num, grp HAVING COUNT(*) >= 3) t2 GROUP BY num) t3 WHERE streak_count >= 2;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (2, '1'), (3, '1'), (4, '2'), (5, '1'), (6, '1'), (7, '1');",
+  "enforceOrder": false
+}

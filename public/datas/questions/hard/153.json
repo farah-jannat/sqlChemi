@@ -1,0 +1,16 @@
+{
+  "id": 153,
+  "title": "Time-Weighted Average Price",
+  "difficulty": "Hard",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Window Functions",
+    "Math"
+  ],
+  "scenario": "Calculate the time-weighted average price for each product from the first recorded date to 2019-09-01.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Use native date subtraction in PostgreSQL.",
+  "correctQuery": "SELECT product_id, SUM(new_price * duration) * 1.0 / SUM(duration) AS twa_price FROM (SELECT product_id, new_price, (LEAD(change_date, 1, '2019-09-01'::date) OVER(PARTITION BY product_id ORDER BY change_date) - change_date) AS duration FROM products) t GROUP BY product_id;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE);",
+  "enforceOrder": false
+}

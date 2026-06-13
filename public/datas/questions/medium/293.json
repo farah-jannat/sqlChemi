@@ -1,0 +1,16 @@
+{
+  "id": 293,
+  "title": "Stock Market Hot Streak Identification",
+  "difficulty": "Medium",
+  "company": "Alpha-Trading",
+  "tags": [
+    "Window Functions",
+    "Gaps and Islands"
+  ],
+  "scenario": "Identify 'Hot Streaks' as assets that closed with a positive percentage gain for at least five consecutive trading days. Return ticker_symbol, trade_date, and percentage_change for all days within such streaks.",
+  "tableSchema": "stock_history (ticker_symbol VARCHAR, trade_date DATE, percentage_change NUMERIC)",
+  "hint": "Use two window functions: one for total rank and one for rank within positive-gain subset, then subtract to form grouping islands.",
+  "correctQuery": "WITH StreakCalculations AS (SELECT ticker_symbol, trade_date, percentage_change, (ROW_NUMBER() OVER (PARTITION BY ticker_symbol ORDER BY trade_date) - ROW_NUMBER() OVER (PARTITION BY ticker_symbol, CASE WHEN percentage_change > 0 THEN 1 ELSE 0 END ORDER BY trade_date)) as streak_grp FROM stock_history) SELECT ticker_symbol, trade_date, percentage_change FROM StreakCalculations WHERE percentage_change > 0 AND (ticker_symbol, streak_grp) IN (SELECT ticker_symbol, streak_grp FROM StreakCalculations WHERE percentage_change > 0 GROUP BY ticker_symbol, streak_grp HAVING COUNT(*) >= 5) ORDER BY ticker_symbol, trade_date;",
+  "setupSQL": "CREATE TABLE stock_history (ticker_symbol VARCHAR, trade_date DATE, percentage_change NUMERIC);",
+  "enforceOrder": true
+}

@@ -1,0 +1,16 @@
+{
+  "id": 183,
+  "title": "Ride-Sharing Peak Pricing",
+  "difficulty": "Hard",
+  "company": "SwiftGo",
+  "tags": [
+    "Window Functions",
+    "Range Frame"
+  ],
+  "scenario": "Calculate the 3-hour rolling average fare for a specific city to determine peak pricing triggers.",
+  "tableSchema": "rides (ride_id INT, city_id INT, fare NUMERIC, request_time TIMESTAMP)",
+  "hint": "Use RANGE BETWEEN INTERVAL '3 hours' PRECEDING AND CURRENT ROW.",
+  "correctQuery": "SELECT city_id, request_time, AVG(fare) OVER(PARTITION BY city_id ORDER BY request_time RANGE BETWEEN INTERVAL '3 hours' PRECEDING AND CURRENT ROW) AS rolling_avg_fare FROM rides;",
+  "setupSQL": "CREATE TABLE rides (ride_id INT, city_id INT, fare NUMERIC, request_time TIMESTAMP);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 228,
+  "title": "Rapid Climate Shifts",
+  "difficulty": "Hard",
+  "company": "GeoScience",
+  "tags": [
+    "Window Functions",
+    "Moving Average"
+  ],
+  "scenario": "Find dates where the 3-day moving average temperature shifted by more than 5 degrees compared to the previous 3-day moving average.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC)",
+  "hint": "Calculate moving avg, then take difference.",
+  "correctQuery": "SELECT city_name, reading_date FROM (SELECT city_name, reading_date, mavg, LAG(mavg) OVER(PARTITION BY city_name ORDER BY reading_date) as prev_mavg FROM (SELECT city_name, reading_date, AVG(temp_c) OVER(PARTITION BY city_name ORDER BY reading_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as mavg FROM weather_data) t) t2 WHERE ABS(mavg - prev_mavg) > 5;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

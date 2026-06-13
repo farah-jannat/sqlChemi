@@ -1,0 +1,16 @@
+{
+  "id": 231,
+  "title": "Average Time Between Climate Events",
+  "difficulty": "Hard",
+  "company": "Nature-Watch",
+  "tags": [
+    "Window Functions",
+    "Subqueries"
+  ],
+  "scenario": "For each city, calculate the average time gap between 'High' severity climate alerts.",
+  "tableSchema": "climate_alerts (city_name VARCHAR, alert_type VARCHAR, alert_time TIMESTAMP)",
+  "hint": "Filter for 'High', use LEAD() to get time difference.",
+  "correctQuery": "SELECT city_name, AVG(next_time - alert_time) FROM (SELECT city_name, alert_time, LEAD(alert_time) OVER(PARTITION BY city_name ORDER BY alert_time) as next_time FROM climate_alerts WHERE alert_type = 'High') t GROUP BY city_name;",
+  "setupSQL": "CREATE TABLE climate_alerts (city_name VARCHAR, alert_type VARCHAR, alert_time TIMESTAMP);",
+  "enforceOrder": false
+}

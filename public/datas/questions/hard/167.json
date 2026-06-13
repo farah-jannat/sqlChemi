@@ -1,0 +1,16 @@
+{
+  "id": 167,
+  "title": "Subscription Renewal Churn",
+  "difficulty": "Hard",
+  "company": "SaaS-Media",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Identify if a user renewed their subscription (exists in next row) or churned.",
+  "tableSchema": "subs (user_id INT, renewal_date DATE)",
+  "hint": "Compare renewal_date with the next date using LEAD().",
+  "correctQuery": "SELECT user_id, renewal_date, CASE WHEN LEAD(renewal_date) OVER(PARTITION BY user_id ORDER BY renewal_date) IS NULL THEN 'Churned' ELSE 'Renewed' END AS status FROM subs;",
+  "setupSQL": "CREATE TABLE subs (user_id INT, renewal_date DATE);",
+  "enforceOrder": false
+}

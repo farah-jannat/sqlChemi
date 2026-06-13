@@ -1,0 +1,15 @@
+{
+  "id": 327,
+  "title": "Product Price Check",
+  "difficulty": "Easy",
+  "company": "MarketData",
+  "tags": [
+    "Filtering"
+  ],
+  "scenario": "Select all products with a price between 10 and 50.",
+  "tableSchema": "Products (id INT, price INT)",
+  "hint": "Use BETWEEN or >= and <=.",
+  "correctQuery": "SELECT * FROM Products WHERE price BETWEEN 10 AND 50;",
+  "setupSQL": "CREATE TABLE Products (id INT, price INT);",
+  "enforceOrder": false
+}

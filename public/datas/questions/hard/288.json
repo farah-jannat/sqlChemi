@@ -1,0 +1,16 @@
+{
+  "id": 288,
+  "title": "LMS Quiz Mastery Retention",
+  "difficulty": "Hard",
+  "company": "SkillBuild",
+  "tags": [
+    "Window Functions",
+    "Boolean Aggregation"
+  ],
+  "scenario": "Find students who scored > 90 on all quizzes taken in a sequence of at least 5 quizzes.",
+  "tableSchema": "progress (stu_id INT, score INT, completion_date DATE)",
+  "hint": "Create islands of success by partitioning and comparing ranks.",
+  "correctQuery": "SELECT stu_id FROM (SELECT stu_id, COUNT(*) as streak FROM (SELECT stu_id, completion_date, (ROW_NUMBER() OVER(PARTITION BY stu_id ORDER BY completion_date) - ROW_NUMBER() OVER(PARTITION BY stu_id, CASE WHEN score > 90 THEN 1 ELSE 0 END ORDER BY completion_date)) as grp FROM progress) t WHERE score > 90 GROUP BY stu_id, grp) t2 WHERE streak >= 5;",
+  "setupSQL": "CREATE TABLE progress (stu_id INT, score INT, completion_date DATE);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 59,
+  "title": "Confirmation Rate",
+  "difficulty": "Medium",
+  "company": "Unique-System",
+  "tags": [
+    "Aggregation",
+    "LEFT JOIN"
+  ],
+  "scenario": "Calculate the confirmation rate for each user. The confirmation rate is the number of 'confirmed' actions divided by the total number of confirmation requests. Users with no requests should have a rate of 0.00. Return the result table as 'user_id' and 'confirmation_rate'.",
+  "tableSchema": "signups (user_id INT, time_stamp DATETIME), confirmations (user_id INT, time_stamp DATETIME, action VARCHAR)",
+  "hint": "Use a LEFT JOIN between Signups and Confirmations. Use IFNULL and AVG(action = 'confirmed') to calculate the rate.",
+  "correctQuery": "SELECT s.user_id, ROUND(IFNULL(AVG(c.action = 'confirmed'), 0), 2) AS confirmation_rate FROM signups s LEFT JOIN confirmations c ON s.user_id = c.user_id GROUP BY s.user_id;",
+  "setupSQL": "CREATE TABLE signups (user_id INT, time_stamp DATETIME); CREATE TABLE confirmations (user_id INT, time_stamp DATETIME, action VARCHAR); INSERT INTO signups VALUES (3, '2020-03-21 10:16:13'), (7, '2020-01-04 13:57:59'); INSERT INTO confirmations VALUES (3, '2021-01-06 03:30:46', 'timeout'), (7, '2021-06-12 11:57:29', 'confirmed');",
+  "enforceOrder": false
+}

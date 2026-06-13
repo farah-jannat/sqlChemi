@@ -1,0 +1,16 @@
+{
+  "id": 179,
+  "title": "Hospital Department Staffing Load",
+  "difficulty": "Hard",
+  "company": "Med-Tech Systems",
+  "tags": [
+    "Window Functions",
+    "Cumulative Distribution"
+  ],
+  "scenario": "In a hospital, calculate the running total of patient admissions per department, but reset the count every time the department reaches a threshold of 100 total admissions.",
+  "tableSchema": "admissions (adm_id INT, dept_id INT, adm_date DATE, patient_count INT)",
+  "hint": "Use a recursive sum logic or group segments by integer division of cumulative sums.",
+  "correctQuery": "SELECT dept_id, adm_date, patient_count, SUM(patient_count) OVER(PARTITION BY dept_id, grp ORDER BY adm_date) AS running_total FROM (SELECT *, SUM(patient_count) OVER(PARTITION BY dept_id ORDER BY adm_date) / 100 AS grp FROM admissions) t;",
+  "setupSQL": "CREATE TABLE admissions (adm_id INT, dept_id INT, adm_date DATE, patient_count INT);",
+  "enforceOrder": false
+}

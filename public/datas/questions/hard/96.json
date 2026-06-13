@@ -1,0 +1,15 @@
+{
+  "id": 96,
+  "title": "Time Until Next Session",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Calculate the number of days between a player's current login and their next login. Return 'player_id', 'event_date', and 'days_until_next'.",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Use LEAD() to get the next event_date.",
+  "correctQuery": "SELECT player_id, event_date, (LEAD(event_date) OVER(PARTITION BY player_id ORDER BY event_date) - event_date) AS days_until_next FROM activity;",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 1), (1, 1, '2026-01-05', 1);",
+  "enforceOrder": false
+}

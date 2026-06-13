@@ -1,0 +1,16 @@
+{
+  "id": 302,
+  "title": "Market Saturation Index",
+  "difficulty": "Hard",
+  "company": "Strategy-Analytics",
+  "tags": [
+    "Window Functions",
+    "Ratio Analysis"
+  ],
+  "scenario": "Identify cities where the ratio of 'active' drivers to 'active' riders has dropped below 0.1 for 3 consecutive days.",
+  "tableSchema": "trips (city_id INT, driver_id INT, rider_id INT, request_date DATE)",
+  "hint": "Count distinct drivers and riders daily, then compare ratio.",
+  "correctQuery": "WITH DailyActivity AS (SELECT city_id, request_date, COUNT(DISTINCT driver_id) as d_cnt, COUNT(DISTINCT rider_id) as r_cnt FROM trips GROUP BY 1, 2) SELECT city_id FROM (SELECT city_id, request_date, (d_cnt::NUMERIC/r_cnt) as ratio, LAG(d_cnt::NUMERIC/r_cnt, 1) OVER(PARTITION BY city_id ORDER BY request_date) as p1, LAG(d_cnt::NUMERIC/r_cnt, 2) OVER(PARTITION BY city_id ORDER BY request_date) as p2 FROM DailyActivity) t WHERE ratio < 0.1 AND p1 < 0.1 AND p2 < 0.1;",
+  "setupSQL": "CREATE TABLE trips (city_id INT, driver_id INT, rider_id INT, request_date DATE);",
+  "enforceOrder": false
+}

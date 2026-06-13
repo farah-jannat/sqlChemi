@@ -1,0 +1,16 @@
+{
+  "id": 244,
+  "title": "Severity Escalation Latency",
+  "difficulty": "Hard",
+  "company": "Risk-Mgmt",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the average time elapsed between a bug being created and its severity being upgraded (e.g., Medium to High).",
+  "tableSchema": "bugs (bug_id INT, severity VARCHAR, created_at TIMESTAMP), status_history (bug_id INT, changed_at TIMESTAMP)",
+  "hint": "Self-join or use lead/lag on history.",
+  "correctQuery": "SELECT AVG(EXTRACT(EPOCH FROM (sh.changed_at - b.created_at))/3600) FROM bugs b JOIN status_history sh ON b.bug_id = sh.bug_id WHERE b.severity = 'Medium' AND sh.status = 'Escalated_High';",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, severity VARCHAR, created_at TIMESTAMP); CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

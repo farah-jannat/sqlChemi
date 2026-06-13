@@ -1,0 +1,16 @@
+{
+  "id": 234,
+  "title": "Global Humidity Normalization",
+  "difficulty": "Hard",
+  "company": "Climate-Standard",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "Determine for each city how many days it remained within the 25th-75th percentile of global humidity for that month.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, humidity NUMERIC)",
+  "hint": "Calculate global percentiles per month using PERCENTILE_CONT().",
+  "correctQuery": "SELECT city_name, COUNT(*) FROM (SELECT city_name, humidity, DATE_TRUNC('month', reading_date) as mon, PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY humidity) OVER(PARTITION BY DATE_TRUNC('month', reading_date)) as p25, PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY humidity) OVER(PARTITION BY DATE_TRUNC('month', reading_date)) as p75 FROM weather_data) t WHERE humidity BETWEEN p25 AND p75 GROUP BY city_name;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, humidity NUMERIC);",
+  "enforceOrder": false
+}

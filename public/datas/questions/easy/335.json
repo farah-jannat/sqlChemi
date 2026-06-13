@@ -1,0 +1,15 @@
+{
+  "id": 335,
+  "title": "Product Category Search",
+  "difficulty": "Easy",
+  "company": "Stock-Metrics",
+  "tags": [
+    "Filtering"
+  ],
+  "scenario": "Select products where the category is 'Electronics'.",
+  "tableSchema": "Products (category VARCHAR)",
+  "hint": "Use WHERE clause.",
+  "correctQuery": "SELECT * FROM Products WHERE category = 'Electronics';",
+  "setupSQL": "CREATE TABLE Products (category VARCHAR);",
+  "enforceOrder": false
+}

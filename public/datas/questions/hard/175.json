@@ -1,0 +1,16 @@
+{
+  "id": 175,
+  "title": "Session Length Analysis",
+  "difficulty": "Hard",
+  "company": "Gaming-Platform",
+  "tags": [
+    "Window Functions",
+    "Date Arithmetic"
+  ],
+  "scenario": "Calculate the duration of each session (time diff between start and end).",
+  "tableSchema": "sessions (user_id INT, action_time TIMESTAMP, action_type VARCHAR)",
+  "hint": "Use LEAD() to find the next action timestamp.",
+  "correctQuery": "SELECT user_id, (LEAD(action_time) OVER(PARTITION BY user_id ORDER BY action_time) - action_time) AS duration FROM sessions WHERE action_type = 'start';",
+  "setupSQL": "CREATE TABLE sessions (user_id INT, action_time TIMESTAMP, action_type VARCHAR);",
+  "enforceOrder": false
+}

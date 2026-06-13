@@ -1,0 +1,16 @@
+{
+  "id": 282,
+  "title": "Sentiment Reversal Detection",
+  "difficulty": "Hard",
+  "company": "Opinion-Analytics",
+  "tags": [
+    "Window Functions",
+    "Filter Clause"
+  ],
+  "scenario": "Identify articles where the aggregate sentiment score of comments reversed polarity (from positive > 0 to negative < 0) within a 24-hour window.",
+  "tableSchema": "comments (article_id INT, sentiment_score NUMERIC, comment_date TIMESTAMP)",
+  "hint": "Use AVG(sentiment_score) FILTER (WHERE...) and window frames.",
+  "correctQuery": "SELECT article_id FROM (SELECT article_id, AVG(sentiment_score) OVER w_pos as avg_pos, AVG(sentiment_score) OVER w_neg as avg_neg FROM comments WINDOW w_pos AS (PARTITION BY article_id ORDER BY comment_date RANGE BETWEEN INTERVAL '24 hours' PRECEDING AND CURRENT ROW), w_neg AS (PARTITION BY article_id ORDER BY comment_date RANGE BETWEEN INTERVAL '24 hours' PRECEDING AND CURRENT ROW)) t WHERE avg_pos > 0 AND avg_neg < 0;",
+  "setupSQL": "CREATE TABLE comments (article_id INT, sentiment_score NUMERIC, comment_date TIMESTAMP);",
+  "enforceOrder": false
+}

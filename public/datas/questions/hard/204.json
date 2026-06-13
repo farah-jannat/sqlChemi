@@ -1,0 +1,16 @@
+{
+  "id": 204,
+  "title": "Genre Dominance Pivot",
+  "difficulty": "Hard",
+  "company": "Platform-Insights",
+  "tags": [
+    "Window Functions",
+    "Conditional Aggregation"
+  ],
+  "scenario": "For each platform, calculate the percentage of games released in each genre compared to the total games on that platform.",
+  "tableSchema": "games (game_id INT, genre VARCHAR), ratings (game_id INT, platform VARCHAR)",
+  "hint": "Use SUM(COUNT(*)) OVER(PARTITION BY platform).",
+  "correctQuery": "SELECT platform, genre, COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(PARTITION BY platform) as pct_share FROM games g JOIN ratings r ON g.game_id = r.game_id GROUP BY platform, genre;",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR); CREATE TABLE ratings (game_id INT, platform VARCHAR);",
+  "enforceOrder": false
+}

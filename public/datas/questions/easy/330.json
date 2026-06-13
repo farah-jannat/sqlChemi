@@ -1,0 +1,15 @@
+{
+  "id": 330,
+  "title": "Sales Count per Day",
+  "difficulty": "Easy",
+  "company": "Retail-Ops",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Find the number of sales that occurred on each unique date.",
+  "tableSchema": "Sales (sale_date DATE)",
+  "hint": "GROUP BY sale_date.",
+  "correctQuery": "SELECT sale_date, COUNT(*) FROM Sales GROUP BY sale_date;",
+  "setupSQL": "CREATE TABLE Sales (sale_date DATE);",
+  "enforceOrder": false
+}

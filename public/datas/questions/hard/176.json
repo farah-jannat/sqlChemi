@@ -1,0 +1,16 @@
+{
+  "id": 176,
+  "title": "Cumulative Revenue Per Region",
+  "difficulty": "Hard",
+  "company": "Global-Sales",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Calculate the cumulative revenue per region, resetting every quarter.",
+  "tableSchema": "orders (region_id INT, rev NUMERIC, order_date DATE)",
+  "hint": "Partition by region and date_trunc('quarter').",
+  "correctQuery": "SELECT region_id, order_date, SUM(rev) OVER(PARTITION BY region_id, DATE_TRUNC('quarter', order_date) ORDER BY order_date) AS cum_rev FROM orders;",
+  "setupSQL": "CREATE TABLE orders (region_id INT, rev NUMERIC, order_date DATE);",
+  "enforceOrder": false
+}

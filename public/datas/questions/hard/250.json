@@ -1,0 +1,16 @@
+{
+  "id": 250,
+  "title": "Bug Density by Reporter",
+  "difficulty": "Hard",
+  "company": "QA-Insights",
+  "tags": [
+    "Window Functions",
+    "Ranking"
+  ],
+  "scenario": "Find reporters whose reported bugs have the highest average time-to-resolution, signaling possible complex bug reporting.",
+  "tableSchema": "bugs (bug_id INT, reporter_id INT), status_history (bug_id INT, changed_at TIMESTAMP)",
+  "hint": "Calculate TTR per bug, then average by reporter.",
+  "correctQuery": "SELECT reporter_id, AVG(ttr) as avg_ttr FROM (SELECT b.reporter_id, b.bug_id, MAX(sh.changed_at) - MIN(b.created_at) as ttr FROM bugs b JOIN status_history sh ON b.bug_id = sh.bug_id GROUP BY b.reporter_id, b.bug_id) t GROUP BY reporter_id ORDER BY avg_ttr DESC;",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, reporter_id INT); CREATE TABLE status_history (bug_id INT, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

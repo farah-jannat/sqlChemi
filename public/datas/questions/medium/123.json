@@ -1,0 +1,15 @@
+{
+  "id": 123,
+  "title": "Longest Idle Period",
+  "difficulty": "Medium",
+  "company": "Unique-Corp",
+  "tags": [
+    "Date Arithmetic"
+  ],
+  "scenario": "Find the longest gap (in days) between the end date of one project and the start date of the next project for the company. Return 'max_idle_days'.",
+  "tableSchema": "projects (project_id INT, start_date DATE, end_date DATE, budget INT)",
+  "hint": "Sort by date, find the gap between current start_date and previous end_date.",
+  "correctQuery": "SELECT MAX(start_date - prev_end) AS max_idle_days FROM (SELECT start_date, LAG(end_date) OVER(ORDER BY start_date) AS prev_end FROM projects) t;",
+  "setupSQL": "CREATE TABLE projects (project_id INT, start_date DATE, end_date DATE, budget INT); INSERT INTO projects VALUES (1, '2026-01-01', '2026-02-01', 1000), (2, '2026-03-01', '2026-04-01', 1000);",
+  "enforceOrder": false
+}

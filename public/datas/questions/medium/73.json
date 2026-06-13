@@ -1,0 +1,15 @@
+{
+  "id": 73,
+  "title": "Top Transaction Countries",
+  "difficulty": "Medium",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the country with the highest total transaction 'amount' for each month. Return the result table as 'month' and 'country'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use RANK() OVER(PARTITION BY month ORDER BY SUM(amount) DESC) within a subquery.",
+  "correctQuery": "SELECT month, country FROM (SELECT STRFTIME('%Y-%m', trans_date) AS month, country, RANK() OVER(PARTITION BY STRFTIME('%Y-%m', trans_date) ORDER BY SUM(amount) DESC) AS rnk FROM transactions GROUP BY month, country) t WHERE rnk = 1;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 1000, '2019-01-01'), (2, 'DE', 'approved', 2000, '2019-01-01');",
+  "enforceOrder": false
+}

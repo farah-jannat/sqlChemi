@@ -1,0 +1,16 @@
+{
+  "id": 336,
+  "title": "High Salary Employees Count",
+  "difficulty": "Easy",
+  "company": "Management",
+  "tags": [
+    "Filtering",
+    "Aggregation"
+  ],
+  "scenario": "Count the number of employees earning more than 80000.",
+  "tableSchema": "Employees (salary INT)",
+  "hint": "Use COUNT(*) with WHERE.",
+  "correctQuery": "SELECT COUNT(*) FROM Employees WHERE salary > 80000;",
+  "setupSQL": "CREATE TABLE Employees (salary INT);",
+  "enforceOrder": false
+}

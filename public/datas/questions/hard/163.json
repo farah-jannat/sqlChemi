@@ -1,0 +1,16 @@
+{
+  "id": 163,
+  "title": "Inter-arrival Time Gap",
+  "difficulty": "Hard",
+  "company": "E-Com-Logistics",
+  "tags": [
+    "Window Functions",
+    "Date Arithmetic"
+  ],
+  "scenario": "Find the time gap (in days) between consecutive orders for each customer.",
+  "tableSchema": "orders (cust_id INT, order_date DATE)",
+  "hint": "Use LAG() to compare current date to previous date.",
+  "correctQuery": "SELECT cust_id, order_date, (order_date - LAG(order_date) OVER(PARTITION BY cust_id ORDER BY order_date)) AS days_since_last FROM orders;",
+  "setupSQL": "CREATE TABLE orders (cust_id INT, order_date DATE);",
+  "enforceOrder": false
+}

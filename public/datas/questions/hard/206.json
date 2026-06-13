@@ -1,0 +1,16 @@
+{
+  "id": 206,
+  "title": "Unrivaled Platform Portfolios",
+  "difficulty": "Hard",
+  "company": "Exclusive-Games",
+  "tags": [
+    "Subqueries",
+    "Set Theory"
+  ],
+  "scenario": "Find platforms that have exclusive games in every genre that exists in the database.",
+  "tableSchema": "games (game_id INT, genre VARCHAR), ratings (game_id INT, platform VARCHAR)",
+  "hint": "Use NOT EXISTS or division-like logic.",
+  "correctQuery": "SELECT platform FROM ratings r JOIN games g ON r.game_id = g.game_id GROUP BY platform HAVING COUNT(DISTINCT g.genre) = (SELECT COUNT(DISTINCT genre) FROM games);",
+  "setupSQL": "CREATE TABLE games (game_id INT, genre VARCHAR); CREATE TABLE ratings (game_id INT, platform VARCHAR);",
+  "enforceOrder": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": 240,
+  "title": "Sensor Reporting Density",
+  "difficulty": "Hard",
+  "company": "Data-Flow",
+  "tags": [
+    "Window Functions",
+    "Moving Average"
+  ],
+  "scenario": "Calculate the moving 7-day average of sensor reading counts per city to find reporting density.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE)",
+  "hint": "Count readings per city/date, then use AVG() OVER ROWS BETWEEN 6 PRECEDING.",
+  "correctQuery": "SELECT city_name, reading_date, AVG(daily_count) OVER(PARTITION BY city_name ORDER BY reading_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) as density FROM (SELECT city_name, reading_date, COUNT(*) as daily_count FROM weather_data GROUP BY city_name, reading_date) t;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE);",
+  "enforceOrder": false
+}

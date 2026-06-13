@@ -1,0 +1,16 @@
+{
+  "id": 232,
+  "title": "Sensor Battery Lifecycle",
+  "difficulty": "Hard",
+  "company": "Tech-IoT",
+  "tags": [
+    "Window Functions",
+    "Rank"
+  ],
+  "scenario": "Find the average lifespan (days between installation and first failure/alert) of different sensor models.",
+  "tableSchema": "sensor_registry (sensor_id INT, model_name VARCHAR, installation_date DATE), climate_alerts (sensor_id INT, alert_time TIMESTAMP)",
+  "hint": "Join registry with first alert timestamp, compute difference.",
+  "correctQuery": "SELECT model_name, AVG(first_alert - installation_date) FROM (SELECT r.model_name, r.installation_date, MIN(a.alert_time::DATE) as first_alert FROM sensor_registry r JOIN climate_alerts a ON r.sensor_id = a.sensor_id GROUP BY r.model_name, r.installation_date, r.sensor_id) t GROUP BY model_name;",
+  "setupSQL": "CREATE TABLE sensor_registry (sensor_id INT, model_name VARCHAR, installation_date DATE); CREATE TABLE climate_alerts (sensor_id INT, alert_time TIMESTAMP);",
+  "enforceOrder": false
+}

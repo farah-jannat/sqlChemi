@@ -1,0 +1,15 @@
+{
+  "id": 93,
+  "title": "Daily Average Games Per Device",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Calculate the moving average of 'games_played' for each 'device_id' over a 3-day window. Return 'device_id', 'event_date', and 'moving_avg'.",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Use AVG() OVER window with RANGE or ROWS frame.",
+  "correctQuery": "SELECT device_id, event_date, AVG(games_played) OVER(PARTITION BY device_id ORDER BY event_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg FROM activity;",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 2), (2, 1, '2026-01-02', 4), (3, 1, '2026-01-03', 6);",
+  "enforceOrder": false
+}

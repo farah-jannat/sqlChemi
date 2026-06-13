@@ -1,0 +1,16 @@
+{
+  "id": 298,
+  "title": "Driver Revenue Volatility",
+  "difficulty": "Hard",
+  "company": "FinTech-Transport",
+  "tags": [
+    "Window Functions",
+    "Statistics"
+  ],
+  "scenario": "Calculate the rolling standard deviation of daily earnings for drivers over a 14-day window.",
+  "tableSchema": "trips (driver_id INT, fare NUMERIC, request_date DATE)",
+  "hint": "Use STDDEV() OVER() with a range frame.",
+  "correctQuery": "SELECT driver_id, request_date, STDDEV(daily_fare) OVER(PARTITION BY driver_id ORDER BY request_date RANGE BETWEEN INTERVAL '14 days' PRECEDING AND CURRENT ROW) FROM (SELECT driver_id, request_date, SUM(fare) as daily_fare FROM trips GROUP BY 1, 2) t;",
+  "setupSQL": "CREATE TABLE trips (driver_id INT, fare NUMERIC, request_date DATE);",
+  "enforceOrder": false
+}

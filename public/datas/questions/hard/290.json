@@ -1,0 +1,16 @@
+{
+  "id": 290,
+  "title": "LMS Learning Path Acceleration",
+  "difficulty": "Hard",
+  "company": "FastLearner",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Calculate the average acceleration of completion (speeding up or slowing down) between successive lessons for each student.",
+  "tableSchema": "progress (stu_id INT, lesson_id INT, completion_date DATE)",
+  "hint": "Calculate delta time between lessons, then delta of deltas.",
+  "correctQuery": "SELECT stu_id, AVG(diff_delta) FROM (SELECT stu_id, (diff - LAG(diff) OVER(PARTITION BY stu_id ORDER BY completion_date)) as diff_delta FROM (SELECT stu_id, (completion_date - LAG(completion_date) OVER(PARTITION BY stu_id ORDER BY completion_date)) as diff FROM progress) t) t2 GROUP BY stu_id;",
+  "setupSQL": "CREATE TABLE progress (stu_id INT, lesson_id INT, completion_date DATE);",
+  "enforceOrder": false
+}

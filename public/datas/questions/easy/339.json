@@ -1,0 +1,15 @@
+{
+  "id": 339,
+  "title": "Delete Null Employees",
+  "difficulty": "Easy",
+  "company": "AdminSystem",
+  "tags": [
+    "Data Manipulation"
+  ],
+  "scenario": "Delete employees who have no name (name is NULL).",
+  "tableSchema": "Employees (name VARCHAR)",
+  "hint": "Use DELETE FROM WHERE.",
+  "correctQuery": "DELETE FROM Employees WHERE name IS NULL;",
+  "setupSQL": "CREATE TABLE Employees (name VARCHAR);",
+  "enforceOrder": false
+}

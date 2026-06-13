@@ -1,0 +1,15 @@
+{
+  "id": 83,
+  "title": "Cumulative Growth Velocity",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "Find the acceleration of transaction amounts (the change in growth rate) per country. Return 'country', 'trans_date', and 'acceleration'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Use LAG() twice to compute second-order difference.",
+  "correctQuery": "SELECT country, trans_date, (amount - LAG(amount) OVER(PARTITION BY country ORDER BY trans_date)) - (LAG(amount) OVER(PARTITION BY country ORDER BY trans_date) - LAG(amount, 2) OVER(PARTITION BY country ORDER BY trans_date)) AS acceleration FROM transactions;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 100, '2026-01-01'), (2, 'US', 'approved', 150, '2026-01-02'), (3, 'US', 'approved', 300, '2026-01-03');",
+  "enforceOrder": false
+}

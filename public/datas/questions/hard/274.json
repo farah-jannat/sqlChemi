@@ -1,0 +1,16 @@
+{
+  "id": 274,
+  "title": "Article View Distribution",
+  "difficulty": "Hard",
+  "company": "Analytics-Pro",
+  "tags": [
+    "Window Functions",
+    "Percentile"
+  ],
+  "scenario": "Identify articles in the Top 10% of total views per category.",
+  "tableSchema": "articles (article_id INT, category_id INT), page_views (article_id INT, views_count INT)",
+  "hint": "Use PERCENT_RANK().",
+  "correctQuery": "SELECT article_id FROM (SELECT article_id, PERCENT_RANK() OVER(PARTITION BY category_id ORDER BY SUM(views_count) DESC) as pr FROM articles JOIN page_views USING (article_id) GROUP BY article_id, category_id) t WHERE pr <= 0.1;",
+  "setupSQL": "CREATE TABLE articles (article_id INT, category_id INT); CREATE TABLE page_views (article_id INT, views_count INT);",
+  "enforceOrder": false
+}

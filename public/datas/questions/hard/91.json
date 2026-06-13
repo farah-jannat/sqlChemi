@@ -1,0 +1,16 @@
+{
+  "id": 91,
+  "title": "Device Switching Analysis",
+  "difficulty": "Hard",
+  "company": "Unique-Gaming",
+  "tags": [
+    "Window Functions",
+    "LAG"
+  ],
+  "scenario": "Find all players who logged in using a different 'device_id' on their second login compared to their first login. Return the result table as 'player_id'.",
+  "tableSchema": "activity (player_id INT, device_id INT, event_date DATE, games_played INT)",
+  "hint": "Use LEAD/LAG or ROW_NUMBER to isolate the first and second login devices.",
+  "correctQuery": "SELECT player_id FROM (SELECT player_id, device_id, ROW_NUMBER() OVER(PARTITION BY player_id ORDER BY event_date) AS rn FROM activity) t1 JOIN (SELECT player_id, device_id, ROW_NUMBER() OVER(PARTITION BY player_id ORDER BY event_date) AS rn FROM activity) t2 ON t1.player_id = t2.player_id AND t1.rn = 1 AND t2.rn = 2 WHERE t1.device_id != t2.device_id;",
+  "setupSQL": "CREATE TABLE activity (player_id INT, device_id INT, event_date DATE, games_played INT); INSERT INTO activity VALUES (1, 1, '2026-01-01', 1), (1, 2, '2026-01-02', 1);",
+  "enforceOrder": false
+}

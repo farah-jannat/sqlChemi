@@ -1,0 +1,16 @@
+{
+  "id": 189,
+  "title": "Social Media Virality",
+  "difficulty": "Hard",
+  "company": "ConnectSphere",
+  "tags": [
+    "Window Functions",
+    "Rank"
+  ],
+  "scenario": "Find users who had a higher follower growth rate than their previous month's growth.",
+  "tableSchema": "metrics (user_id INT, mon INT, followers INT)",
+  "hint": "Calculate monthly delta, then compare with LAG(delta).",
+  "correctQuery": "SELECT user_id, mon FROM (SELECT user_id, mon, (followers - LAG(followers) OVER(PARTITION BY user_id ORDER BY mon)) as delta, LAG(followers - LAG(followers) OVER(PARTITION BY user_id ORDER BY mon)) OVER(PARTITION BY user_id ORDER BY mon) as prev_delta FROM metrics) t WHERE delta > prev_delta;",
+  "setupSQL": "CREATE TABLE metrics (user_id INT, mon INT, followers INT);",
+  "enforceOrder": false
+}

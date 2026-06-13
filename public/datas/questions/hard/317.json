@@ -1,0 +1,16 @@
+{
+  "id": 317,
+  "title": "Engagement Drought Analysis",
+  "difficulty": "Hard",
+  "company": "Market-Insights",
+  "tags": [
+    "Gaps and Islands",
+    "Date Arithmetic"
+  ],
+  "scenario": "An 'engagement drought' is defined as any period where a movie receives no ratings for at least 7 consecutive days. Output the 'movie_title', 'start_drought_date', and 'end_drought_date' for every drought period longer than 7 days.",
+  "tableSchema": "Movies (movie_id INT, title VARCHAR), MovieRating (movie_id INT, created_at DATE)",
+  "hint": "Identify gaps by comparing the current review date with the next review date using LEAD(). Calculate the interval of these gaps.",
+  "correctQuery": "WITH ReviewGaps AS (SELECT movie_id, created_at, LEAD(created_at) OVER(PARTITION BY movie_id ORDER BY created_at) as next_review FROM MovieRating) SELECT m.title AS movie_title, created_at + INTERVAL '1 day' AS start_drought_date, next_review - INTERVAL '1 day' AS end_drought_date FROM ReviewGaps rg JOIN Movies m ON rg.movie_id = m.movie_id WHERE (next_review - created_at) > 7;",
+  "setupSQL": "CREATE TABLE Movies (movie_id INT PRIMARY KEY, title VARCHAR); CREATE TABLE MovieRating (movie_id INT, created_at DATE);",
+  "enforceOrder": true
+}

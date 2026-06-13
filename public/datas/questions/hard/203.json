@@ -1,0 +1,16 @@
+{
+  "id": 203,
+  "title": "Consecutive Flop Years",
+  "difficulty": "Hard",
+  "company": "Studio-Metrics",
+  "tags": [
+    "Window Functions",
+    "Gaps and Islands"
+  ],
+  "scenario": "Identify studios that have released games with an average user_score < 5.0 for 3 or more consecutive release_years.",
+  "tableSchema": "games (game_id INT, release_year INT), developers (game_id INT, studio_name VARCHAR), ratings (game_id INT, user_score NUMERIC)",
+  "hint": "Create groups using year minus rank, then count the size of each group.",
+  "correctQuery": "SELECT studio_name FROM (SELECT studio_name, grp, COUNT(*) as streak FROM (SELECT studio_name, release_year, (release_year::INT - DENSE_RANK() OVER(PARTITION BY studio_name ORDER BY release_year)) as grp FROM (SELECT d.studio_name, g.release_year FROM games g JOIN developers d ON g.game_id = d.game_id JOIN ratings r ON g.game_id = r.game_id GROUP BY d.studio_name, g.release_year HAVING AVG(r.user_score) < 5.0) t) t2 GROUP BY studio_name, grp) t3 WHERE streak >= 3;",
+  "setupSQL": "CREATE TABLE games (game_id INT, release_year INT); CREATE TABLE developers (game_id INT, studio_name VARCHAR); CREATE TABLE ratings (game_id INT, user_score NUMERIC);",
+  "enforceOrder": false
+}

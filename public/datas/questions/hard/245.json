@@ -1,0 +1,16 @@
+{
+  "id": 245,
+  "title": "Bottleneck Analysis",
+  "difficulty": "Hard",
+  "company": "Pipeline-Flow",
+  "tags": [
+    "Window Functions",
+    "Comparative Analytics"
+  ],
+  "scenario": "For each status, find the average time a bug stays in that state before transitioning to the next state.",
+  "tableSchema": "status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP)",
+  "hint": "Use LEAD() to find the timestamp of the next status change.",
+  "correctQuery": "SELECT status, AVG(EXTRACT(EPOCH FROM (next_changed_at - changed_at))/3600) FROM (SELECT status, changed_at, LEAD(changed_at) OVER(PARTITION BY bug_id ORDER BY changed_at) as next_changed_at FROM status_history) t GROUP BY status;",
+  "setupSQL": "CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

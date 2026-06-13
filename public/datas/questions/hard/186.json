@@ -1,0 +1,16 @@
+{
+  "id": 186,
+  "title": "E-Commerce Discount Impact",
+  "difficulty": "Hard",
+  "company": "CartMax",
+  "tags": [
+    "Window Functions",
+    "Conditional Aggregation"
+  ],
+  "scenario": "Identify if a user's purchase total is consistently higher following a discount coupon code usage.",
+  "tableSchema": "purchases (user_id INT, amt NUMERIC, has_coupon BOOLEAN, p_date DATE)",
+  "hint": "Compare avg spend before vs after has_coupon.",
+  "correctQuery": "SELECT user_id, AVG(amt) FILTER (WHERE has_coupon = true) OVER(PARTITION BY user_id) as avg_with_coupon, AVG(amt) FILTER (WHERE has_coupon = false) OVER(PARTITION BY user_id) as avg_without_coupon FROM purchases;",
+  "setupSQL": "CREATE TABLE purchases (user_id INT, amt NUMERIC, has_coupon BOOLEAN, p_date DATE);",
+  "enforceOrder": false
+}

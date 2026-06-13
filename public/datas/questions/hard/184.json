@@ -1,0 +1,16 @@
+{
+  "id": 184,
+  "title": "University Course Enrollment Growth",
+  "difficulty": "Hard",
+  "company": "EduStat",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "For every course, compute the year-over-year percentage growth in enrollment.",
+  "tableSchema": "enrollments (course_id INT, yr INT, student_count INT)",
+  "hint": "Use LAG to find previous year's student count.",
+  "correctQuery": "SELECT course_id, yr, (student_count - prev_count)::NUMERIC / NULLIF(prev_count, 0) AS growth_rate FROM (SELECT course_id, yr, student_count, LAG(student_count) OVER(PARTITION BY course_id ORDER BY yr) AS prev_count FROM enrollments) t;",
+  "setupSQL": "CREATE TABLE enrollments (course_id INT, yr INT, student_count INT);",
+  "enforceOrder": false
+}

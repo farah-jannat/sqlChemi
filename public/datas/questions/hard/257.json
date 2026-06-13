@@ -1,0 +1,16 @@
+{
+  "id": 257,
+  "title": "Incident Response Lag",
+  "difficulty": "Hard",
+  "company": "Site-Reliability",
+  "tags": [
+    "Window Functions",
+    "Time-Series"
+  ],
+  "scenario": "Identify incidents where the time between bug report and the first 'In_Progress' state is greater than the rolling average of the last 10 incidents.",
+  "tableSchema": "bugs (bug_id INT, created_at TIMESTAMP), status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP)",
+  "hint": "Calculate duration, then compare with AVG() OVER ROWS 10 PRECEDING.",
+  "correctQuery": "SELECT bug_id FROM (SELECT bug_id, duration, AVG(duration) OVER(ORDER BY created_at ROWS BETWEEN 10 PRECEDING AND 1 PRECEDING) as roll_avg FROM (SELECT b.bug_id, b.created_at, MIN(sh.changed_at) - b.created_at as duration FROM bugs b JOIN status_history sh ON b.bug_id = sh.bug_id WHERE sh.status = 'In_Progress' GROUP BY b.bug_id, b.created_at) t) t2 WHERE duration > roll_avg;",
+  "setupSQL": "CREATE TABLE bugs (bug_id INT, created_at TIMESTAMP); CREATE TABLE status_history (bug_id INT, status VARCHAR, changed_at TIMESTAMP);",
+  "enforceOrder": false
+}

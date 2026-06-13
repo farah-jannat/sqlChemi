@@ -1,0 +1,15 @@
+{
+  "id": 87,
+  "title": "Top K Contributers per Country",
+  "difficulty": "Hard",
+  "company": "Unique-FinTech",
+  "tags": [
+    "Window Functions"
+  ],
+  "scenario": "For each country, identify transactions that contribute to the top 50% of the total revenue. Return 'id', 'country', and 'amount'.",
+  "tableSchema": "transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE)",
+  "hint": "Calculate running sum of amounts per country and total sum per country, then filter where running sum / total sum <= 0.5.",
+  "correctQuery": "SELECT id, country, amount FROM (SELECT id, country, amount, SUM(amount) OVER(PARTITION BY country ORDER BY amount DESC) * 1.0 / SUM(amount) OVER(PARTITION BY country) AS ratio FROM transactions) t WHERE ratio <= 0.5;",
+  "setupSQL": "CREATE TABLE transactions (id INT, country VARCHAR, state VARCHAR, amount INT, trans_date DATE); INSERT INTO transactions VALUES (1, 'US', 'approved', 1000, '2026-01-01'), (2, 'US', 'approved', 500, '2026-01-02'), (3, 'US', 'approved', 100, '2026-01-03');",
+  "enforceOrder": false
+}

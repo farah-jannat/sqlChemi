@@ -1,0 +1,16 @@
+{
+  "id": 199,
+  "title": "E-Commerce Cart Abandonment",
+  "difficulty": "Hard",
+  "company": "ShopFast",
+  "tags": [
+    "Window Functions",
+    "Lead/Lag"
+  ],
+  "scenario": "Identify carts where the time between 'ADD_TO_CART' and 'CHECKOUT' exceeds 1 hour.",
+  "tableSchema": "cart_events (cart_id INT, event_t TIMESTAMP, event_type VARCHAR)",
+  "hint": "Join events or use lead() within a partitioned window.",
+  "correctQuery": "SELECT cart_id FROM (SELECT cart_id, event_t, event_type, LEAD(event_t) OVER(PARTITION BY cart_id ORDER BY event_t) as next_t FROM cart_events) t WHERE event_type = 'ADD_TO_CART' AND next_t > event_t + INTERVAL '1 hour';",
+  "setupSQL": "CREATE TABLE cart_events (cart_id INT, event_t TIMESTAMP, event_type VARCHAR);",
+  "enforceOrder": false
+}

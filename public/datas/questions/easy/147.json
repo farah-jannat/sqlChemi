@@ -1,0 +1,15 @@
+{
+  "id": 147,
+  "title": "Most Frequent Consecutive Number",
+  "difficulty": "Easy",
+  "company": "Unique-Data",
+  "tags": [
+    "Aggregation"
+  ],
+  "scenario": "Identify the number that has the highest 'streak' count (regardless of length). Return 'num'.",
+  "tableSchema": "logs (id INT, num VARCHAR)",
+  "hint": "Count how many islands exist for each number.",
+  "correctQuery": "SELECT num FROM (SELECT num, COUNT(*) AS cnt FROM (SELECT id, num, id - ROW_NUMBER() OVER(PARTITION BY num ORDER BY id)::INT AS grp FROM logs) t GROUP BY num, grp) t2 GROUP BY num ORDER BY SUM(cnt) DESC LIMIT 1;",
+  "setupSQL": "CREATE TABLE logs (id INT, num VARCHAR); INSERT INTO logs VALUES (1, '1'), (2, '1'), (4, '2'), (5, '2');",
+  "enforceOrder": true
+}

@@ -1,0 +1,16 @@
+{
+  "id": 213,
+  "title": "Studio Budget Efficiency Shift",
+  "difficulty": "Hard",
+  "company": "Studio-Finances",
+  "tags": [
+    "Window Functions",
+    "Aggregation"
+  ],
+  "scenario": "Identify studios that have released games with an increasing budget per unit of critic_score over time.",
+  "tableSchema": "developers (studio_name VARCHAR, game_id INT, budget NUMERIC), ratings (game_id INT, critic_score NUMERIC), games (game_id INT, release_year INT)",
+  "hint": "Compare (budget/critic) with LAG(budget/critic).",
+  "correctQuery": "SELECT studio_name FROM (SELECT studio_name, (budget / critic_score) as efficiency, LAG(budget / critic_score) OVER(PARTITION BY studio_name ORDER BY release_year) as prev_eff FROM developers d JOIN ratings r ON d.game_id = r.game_id JOIN games g ON d.game_id = g.game_id) t WHERE efficiency > prev_eff;",
+  "setupSQL": "CREATE TABLE developers (studio_name VARCHAR, game_id INT, budget NUMERIC); CREATE TABLE ratings (game_id INT, critic_score NUMERIC); CREATE TABLE games (game_id INT, release_year INT);",
+  "enforceOrder": false
+}

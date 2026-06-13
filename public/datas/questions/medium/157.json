@@ -1,0 +1,15 @@
+{
+  "id": 157,
+  "title": "Maximum Consecutive Price Increases",
+  "difficulty": "Medium",
+  "company": "Unique-Analytica",
+  "tags": [
+    "Gaps and Islands"
+  ],
+  "scenario": "Find the maximum number of times a product's price increased consecutively.",
+  "tableSchema": "products (product_id INT, new_price INT, change_date DATE)",
+  "hint": "Use window functions to define groups (islands) of increases.",
+  "correctQuery": "SELECT product_id, MAX(streak) AS max_inc_streak FROM (SELECT product_id, COUNT(*) AS streak FROM (SELECT product_id, change_date, SUM(is_increase) OVER(PARTITION BY product_id ORDER BY change_date) AS grp FROM (SELECT product_id, change_date, CASE WHEN new_price > LAG(new_price, 1, 0) OVER(PARTITION BY product_id ORDER BY change_date) THEN 0 ELSE 1 END AS is_increase FROM products) t) t2 GROUP BY product_id, grp) t3 GROUP BY product_id;",
+  "setupSQL": "CREATE TABLE products (product_id INT, new_price INT, change_date DATE);",
+  "enforceOrder": false
+}

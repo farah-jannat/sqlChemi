@@ -1,0 +1,16 @@
+{
+  "id": 222,
+  "title": "Temperature Volatility Anomaly",
+  "difficulty": "Hard",
+  "company": "EcoSystems-Analytics",
+  "tags": [
+    "Window Functions",
+    "Statistical Z-Score"
+  ],
+  "scenario": "Flag days where the daily temperature change (vs previous day) is more than 3 standard deviations from the city's annual average change.",
+  "tableSchema": "weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC)",
+  "hint": "Calculate daily diff with LAG(), then compute global avg/stddev of that diff.",
+  "correctQuery": "SELECT city_name, reading_date FROM (SELECT city_name, reading_date, change, AVG(change) OVER(PARTITION BY city_name) as mu, STDDEV(change) OVER(PARTITION BY city_name) as sigma FROM (SELECT city_name, reading_date, (temp_c - LAG(temp_c) OVER(PARTITION BY city_name ORDER BY reading_date)) as change FROM weather_data) t) t2 WHERE ABS(change - mu) > 3 * sigma;",
+  "setupSQL": "CREATE TABLE weather_data (city_name VARCHAR, reading_date DATE, temp_c NUMERIC);",
+  "enforceOrder": false
+}

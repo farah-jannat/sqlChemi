@@ -1,0 +1,15 @@
+{
+  "id": 324,
+  "title": "Unique Departments",
+  "difficulty": "Easy",
+  "company": "AdminSystem",
+  "tags": [
+    "Distinct"
+  ],
+  "scenario": "Find all unique department IDs present in the Employees table.",
+  "tableSchema": "Employees (id INT, dept_id INT)",
+  "hint": "Use the DISTINCT keyword.",
+  "correctQuery": "SELECT DISTINCT dept_id FROM Employees;",
+  "setupSQL": "CREATE TABLE Employees (id INT, dept_id INT);",
+  "enforceOrder": false
+}

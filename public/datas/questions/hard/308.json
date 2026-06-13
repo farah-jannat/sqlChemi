@@ -1,0 +1,16 @@
+{
+  "id": 308,
+  "title": "Digital Asset Priority Swapping",
+  "difficulty": "Hard",
+  "company": "Media-Distribution",
+  "tags": [
+    "Window Functions",
+    "Data Manipulation"
+  ],
+  "scenario": "You are organizing a playlist of digital assets where each asset is assigned a sequential rank (1 to N). To test varying user engagement based on placement, you are tasked with swapping the ranks of every two consecutive assets. Should the total number of assets be an odd number, the asset at the final rank must remain unchanged. Output the final table showing the new rank and the asset name, sorted by rank.",
+  "tableSchema": "DigitalAssets (rank_id INT, asset_name VARCHAR)",
+  "hint": "Identify the total count of assets to handle the odd-number edge case. Use the modulo operator on the rank_id to perform the conditional swap.",
+  "correctQuery": "SELECT CASE WHEN rank_id % 2 != 0 AND rank_id = (SELECT MAX(rank_id) FROM DigitalAssets) THEN rank_id WHEN rank_id % 2 != 0 THEN rank_id + 1 ELSE rank_id - 1 END AS rank_id, asset_name FROM DigitalAssets ORDER BY rank_id ASC;",
+  "setupSQL": "CREATE TABLE DigitalAssets (rank_id INT PRIMARY KEY, asset_name VARCHAR); INSERT INTO DigitalAssets VALUES (1, 'Podcast_01'), (2, 'Podcast_02'), (3, 'Podcast_03'), (4, 'Podcast_04'), (5, 'Podcast_05');",
+  "enforceOrder": true
+}
